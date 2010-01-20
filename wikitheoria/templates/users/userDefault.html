@@ -1,0 +1,38 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+	{{error}}
+{% else %}
+	<div id="mainContent">
+	        <h1>Users</h1>
+				
+			<div class="twoColumnBlue" style="margin-top:10px">
+				<div class="header"><h3>Browse Users</h3></div>
+			</div>
+			
+			<div class="twoColumnGreen" style="margin-top:10px">
+				<div class="header"><h3>Recent Users</h3></div>
+				    {% if ten_newest_users %}
+					<table>
+						<tr>
+					     <th>Username</th>
+					     <th>Join Date</th>
+						</tr>
+							{% for user in ten_newest_users %}
+							<tr>
+							   <td><a href="/users/{{user.uid}}">{{user.alias}}</a></td>
+								<td>{{user.join_date.month}}/{{user.join_date.day}}/{{user.join_date.year}}</td>
+							</tr>
+							{% endfor %}
+					</table>
+					{% endif %}
+			</div>
+			<div class="twoColumnBlue" style="margin-top:10px">
+				<div class="header"><h3>User Statistics</h3></div>
+					Insert statistics here!
+			</div>
+	</div>
+		
+{% endif %}
+{% endblock %}

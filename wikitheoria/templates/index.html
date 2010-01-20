@@ -1,0 +1,85 @@
+{% extends "_base.html" %}
+{% block bodyContent %}
+
+
+<div id="mainContent">
+    <div id="mainLeftContent">
+		<div id="featuredModule">
+			<div class="module">
+				<div class="header"><h3>Featured Module</h3></div>
+					{% if module_error %}
+						<p>{{module_error}}</p>
+					{% else %}
+					<div class="intro">
+						<div class="avatar">
+						    {% if avatar %}
+								<img src="{{ avatar_url }}" />
+							{% else %}
+							    
+							{% endif %}
+						</div>
+						<div class="metaData">
+							<div class="title"><a href="{{ module_url }}" target="_self">{{module_title_general}}</a></div>
+							<p>&nbsp</p>
+							<span class="descriptor">Contributor:</span> {{module_contrubutor_general}} <br />
+							<span class="descriptor">Updated:</span> {{module_last_update_general}} <br />
+						</div>
+						<div class="clear"></div>
+					</div><!-- end intro section -->
+						
+						<h3 class="sectionHeader">Meta Theory</h3>
+						<p>{{module_meta_theory_general}}</p>
+						<div class="scope">
+							<h3 class="sectionHeader">Scope</h3>
+							<ol>
+									{% for scope in module_scope_general %}
+										<li>{{scope}}</li>
+									{% endfor %}
+							</ol>
+						
+						</div><!-- end scope -->
+						<div class="terms">
+						<h3 class="sectionHeader">Terms</h3>
+    					<ul>
+                            {% for x in terms%}
+                                <li><a href="/terms/{{x.term.slug}}">{{x.term.word}}</a> ({{x.definition.function}}) - {{x.definition.definition}}</li>
+                            {% endfor %}
+                        </ul>
+						</div><!-- end terms -->
+						<div class="propositions">
+							<h3 class="sectionHeader">Propositions</h3>
+							<ol>
+								{% for prop in module_propositions_general %}
+									<li>{{prop}}</li>
+								{% endfor %}
+							</ol>
+						</div><!-- end propositions -->
+					{% endif %}		
+			</div><!-- end module -->
+		</div><!-- end featuredModule -->
+	</div><!-- end mainLeftContent -->
+	<div id="mainRightContent">
+    <div id="featuredArticle">
+            <div class="article">
+                <div class="header"><h3>Featured Article</h3></div>
+                    {% if article_error %}
+                        <p>{{article_error}}</p>
+                    {% else %}
+                    <div class="intro">
+                        <div class="avatar">
+                        </div>
+                        <div class="metaData">
+                            <div class="title"><a href="{{ article_url }}" target="_self">{{article_title_general}}</a></div>
+                            <p>&nbsp</p>
+                            <span class="descriptor">Author:</span> {{article_author_general}} <br />
+                            <span class="descriptor">Published:</span> {{article_date_pub_general}} <br />
+                        </div><br class="clear" />
+                    </div><!-- end intro -->
+                    <p>{{article_body_general}}</p>
+                    {% endif %}    
+            </div><!-- end article -->
+        </div><!-- end featuredArticle -->
+	</div><!-- end mainRightContent -->
+	<div class="clear"></div>
+</div><!-- end mainContent -->
+{% endblock %}

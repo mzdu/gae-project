@@ -1,0 +1,22 @@
+.sidebar
+{
+    float: left;
+    width: 10%;
+}
+
+.sidebar ul, ul .sidebar
+{
+    list-style-type: none;
+}
+
+.sidebar li, li .sidebar
+{
+    padding: 0px 0px 20px 0px;
+
+}
+
+.adminArea
+{
+    float: left;
+    margin: 10px 0px 0px 20px;
+}

@@ -1,0 +1,26 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+<div class="term">
+
+	<h2>{{term}} </h2>
+	
+	<h3></h3>
+		<ol>
+			{% for def in definitions %}
+				<li>{{def}}</li>
+			{% endfor %}
+		</ol>
+	<p><a href="/contribute/definition/{{slug}}">Add a new definition for this term</a></p>
+</div><!-- end term -->
+
+<div class="statistics">
+No statistics
+</div><!-- end statistics -->
+{% endif %}
+
+{% endblock %}

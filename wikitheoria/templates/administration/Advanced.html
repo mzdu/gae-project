@@ -1,0 +1,40 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+
+<div class="twoColumnGray">
+    <div class="header">
+        <h3>Advanced</h3>
+    </div>
+    
+    <form method="post" action="">
+        <p>The users listed below will be notified when a user submits feedback or requests to join the site</p>
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+            {% for user in feedback_notify_group %}
+            <tr>
+                <td>{{user.user}}</td>
+                <td><a href="mailto:{{user.email}}">{{user.email}}</a></td>
+                <td><input name="remove_user" type="submit" value="X" onclick="$(this).val({{user.user}})"/></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    <form method="post" action="">
+        Name: <input name="Name" type="text" /> Email: <input name="Email" type="text" /> <input name="add" type="submit" value="Add" />
+    </form>
+</div>
+
+
+
+
+{% endif %}
+{% endblock %}

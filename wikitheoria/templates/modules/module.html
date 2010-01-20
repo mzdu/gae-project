@@ -1,0 +1,82 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+{% if module_error %}
+		<p>{{module_error}}</p>
+{% else %}
+
+<div id="moduleWrapper">
+	<div class="module">
+			<div class="header">
+			  <span class="title"><a href="{{module_url}}" target="_self">{{module_title_general}}</a></span>
+			  {% if contributing_user %}
+				  [<a href="{{module_edit_url}}" target="_self">edit</a>]
+			  {% else %}
+			  {% endif %}
+			  
+			  <br />Version: {{module_version}}
+		</div>
+				
+					<h3 class="sectionHeader">Meta Theory</h3>
+					<p>{{module_meta_theory_general}}</p>
+					<h3 class="sectionHeader">Theory</h3>
+					<p>{{html}}</p>
+					<div class="scope">
+						<h3 class="sectionHeader">Scope</h3>
+						<ol>
+								{% for scope in module_scope_general %}
+									<li>{{scope}}</li>
+								{% endfor %}
+						</ol>
+					
+					</div><!-- end scope -->
+					<div class="terms">
+						<h3 class="sectionHeader">Terms</h3>
+						<ul>
+							{% for x in terms %}
+								<li><a href="/terms/{{x.term.slug}}">{{x.term.word}}</a> ({{x.definition.function}}) - {{x.definition.definition}}</li>
+							{% endfor %}
+						</ul>
+					</div><!-- end terms -->
+					<div class="propositions">
+						<h3 class="sectionHeader">Propositions</h3>
+						<ol>
+							{% for prop in module_propositions_general %}
+								<li>{{prop}}</li>
+							{% endfor %}
+						</ol>
+			</div><!-- end propositions -->
+				
+	</div><!-- end module -->
+		
+</div>
+	<div class="module_sideBar">
+		<div class="header">
+			  Title: <a href="{{module_url}}" target="_self">{{module_title_general}}</a><br />
+			  Version: {{module_version}}<br />
+			   <form method="post" action="">
+					  History: <select name="version">
+					  {% for version in versions %}
+					      <option value="{{version}}">{{version}}</option>
+					  {% endfor %}
+					  </select>
+					  <input type="submit" value="Go" />
+					  <input type="hidden" name="module_version_uid" value="{{module_uid}}" />
+				</form>
+		</div>
+				
+		<div class="intro">
+			<div class="metaData">
+				<span class="descriptor">Contributor:</span> <a href="/users/{{module_contrubutor_general.uid}}/" target="_self">{{module_contrubutor_general.alias}}</a> <br />
+				<span class="descriptor">Updated:</span> {{module_last_update_general}}
+			
+			</div><br class="clear" />
+		</div>
+	</div>	
+{% endif %}	
+{% endif %}
+{% endblock %}

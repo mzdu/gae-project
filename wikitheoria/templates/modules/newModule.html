@@ -1,0 +1,75 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+
+<div class="subHead"><h1>New Module</h1></div>
+<div id="moduleForm">
+	<table>
+		<tr><td class="title">Title: </td><td><input name="title" id="title" type="text" value="" style="width: 100%" /></td></tr>
+		<tr><td class="title">Meta Theory: </td>
+			<td>
+				<textarea cols="59" id="meta_theory" name="meta_theory" rows="15"></textarea>
+			</td>
+		</tr>
+	</table>
+		Theory: 
+			  <div id="wmd-button-bar" class="wmd-panel"></div>
+		      <br/>
+		      <textarea id="wmd-input" class="wmd-panel"></textarea>
+		      <br/>
+		      Preview:
+		      <div id="wmd-preview" class="wmd-panel"></div>
+
+	<table>
+		<tr><td class="title">Scope: </td>
+		<td>
+			<ol id="scope">
+				<li><input class="scopeItem" /></li>
+			</ol>
+			<input type="button" value="Add Scope" onclick="addScope()" />
+		</td></tr>
+	</table>
+<p class="title">Terms: </p>	
+	<table id="terms_new_module">	
+		<tr><td>Note: Adding a term is a multi-step process. Add only the term then click add then choose or add a definition. We are working on making this process clearer.</td></tr>
+		<tr>
+			<td id="termBuilder">
+			</td>
+		</tr>
+		<tr>
+			<td id="termResults"></td>
+		</tr>
+		<tr>	
+			<td>
+			<ul id="termList">
+			</ul>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td class="title">Propositions </td>
+			<td>
+				<ol id="proposition">
+					<li><input class="propositionItem" /></li>
+				</ol>
+				<input type="button" value="Add Proposition" onclick="addProposition()") />
+			</td>
+		</tr>
+		
+		<tr><td>Discipline:</td><td>
+			<select name="discipline" id="discipline">
+				<option>Sociology</option><option>Psychology</option><option>Political Science</option>
+		</td></tr>
+	</table>
+	<br />
+	<br />
+	
+	
+</div>
+<div id="buttons">
+<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save and Exit</button>
+<button name="btnPublish" onclick="submitForm('true','new')" value="Publish" id="publishBtn" disabled>Save and Publish</button>
+<button onclick="enableSubmit()" id="readyBtn">Ready?</button>
+</div>
+{% endblock %}

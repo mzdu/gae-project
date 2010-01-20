@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+{% endif %}
+<a href="/contribute/term">New Term</a><br />
+<a href="/contribute/module" target="_self">New Module</a><br />
+<a href="/contribute/article" target="_self">New Article</a><br />
+{% endblock %}

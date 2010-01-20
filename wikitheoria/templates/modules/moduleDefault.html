@@ -1,0 +1,70 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+<div id="mainContent">
+        <h1>Modules</h1>
+        <div id="moduleSubNav">
+        	<ul>
+        		<li><a href="/module/new">Contribute Module</a></li>
+        		<li onclick="showBrowse()"><a href="#">Browse Modules</a></li>
+        	</ul>
+        </div>
+        {% if unpublished_modules %}
+        	<div class="clear" />
+	        <div class="box">
+				<div class="header">
+					<h3>Your unpublished modules:</h3>
+				</div>
+			     <ol>
+			     {% for module in unpublished_modules %}
+			     	<li><a href="/module/edit/{{module.uid}}">{{module.title}}</a></li>
+			     {% endfor %}
+			 	</ol>
+			</div>
+		{% endif %}
+		<div class="clear" />
+		<div class="box" id="browse">
+			
+		</div>
+		<div class="clear" />
+		<div class="box" id="recentModules">	
+			<div class="header"><h3>Newest Modules</h3></div>
+			{% if ten_newest_modules %}
+			<table>
+			<tr>
+			     <th>Title</th>
+			     <th>Version</th>
+			     <th>Discipline</th>
+			     <th>Contributor</th>
+			     <th>Date Submitted</th>
+			</tr>
+			{% for module in ten_newest_modules %}
+			     <tr>
+					<td><a href="/modules/{{module.uid}}/{{module.slug}}">{{module.title}}</a></td>
+					<td>{{module.version}}</td>
+					<td>{{module.discipline}}</td>
+					<td><a href="/users/{{module.contributor.uid}}" target="_self">{{module.contributor.alias}}</a></td>
+					<td>{{module.date_submitted.month}}/{{module.date_submitted.day}}/{{module.date_submitted.year}}</td>
+				 </tr>
+			{% endfor %}
+			</table>
+			{% endif %}
+		</div>
+		<div class="clear"></div>
+		<div class="box" id="recentModules">
+			<div class="header"><h3>Module Statistics</h3></div>
+				<p>
+					<ul>
+						<li>Stats coming soon...</li>
+					</ul>
+				</p>
+		</div>
+	<div class="clear"></div>
+</div><!-- end mainContent -->
+
+{% endif %}
+{% endblock %}

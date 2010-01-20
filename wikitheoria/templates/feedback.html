@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+<div id="feedback">
+        <form method="post" action="">
+               <p>
+                Please submit all feedback with this form or 
+                at the <a href="http://groups.google.com/group/wikitheoria-development" target="_blank">Wikitheoria Project Google Group</a>
+            </p>
+            <textarea name="body" style="width: 600px; height: 200px"></textarea><br />
+            {% if uid %}
+              <input type="submit" value="Submit" />
+            {% else %}
+              <input type="submit" value="Submit" disabled /> Please <a href="{{login_url}}">Log in</a>
+            {% endif %}
+        </form>
+    </div>
+
+
+
+{% endif %}
+{% endblock %}

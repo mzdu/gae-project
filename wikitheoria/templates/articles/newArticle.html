@@ -1,0 +1,29 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+	<table>
+		
+			<tr>
+				<td class="title">
+					Title
+				</td>
+				<td>
+					<input name="title" id="title" type="text" />
+				</td>
+			</tr>
+	</table>				
+		Article:			<br />
+	<div id="wmd-button-bar" class="wmd-panel"></div>
+		      <br/>
+		      <textarea id="wmd-input" class="wmd-panel"></textarea>
+		      <br/>
+		      Preview:
+		      <div id="wmd-preview" class="wmd-panel">
+	</div>
+
+	
+	<div id="buttons">
+		<button id="submitBtn" onclick="submitArticle()">Submit</button>
+	</div>
+
+{% endblock %}

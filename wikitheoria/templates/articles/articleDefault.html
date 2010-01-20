@@ -1,0 +1,49 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+	{{error}}
+{% else %}
+
+<div id="mainContent">
+        <h1>Articles</h1>
+        <div id="moduleSubNav">
+        	<ul>
+        		<li><a href="/article/new">Contribute Article</a></li>
+        		<li onclick="showBrowse()"><a href="#">Browse Articles</a></li>
+        	</ul>
+        </div>
+			
+		<div class="clear" />
+		<div class="box" id="browse">
+			<h3>Browse Articles</h3>
+			<p>Browsing coming soon!</p>
+		</div>
+		<div class="clear" />	
+		
+		<div class="box" id="recentModules">
+			<div class="header"><h3>Recent Articles</h3></div>
+				{% if ten_newest_articles %}
+				<table>
+				    <tr>
+				        <th>Title</th>
+				        <th>Author</th>
+				        <th>Date Submitted</th>
+				    </tr>
+					{% for article in ten_newest_articles %}
+		            <tr>
+		                <td><a href="/articles/{{article.uid}}">{{article.title}}</a></td>
+		                <td><a href="/users/{{article.author.uid}}">{{article.author.alias}}</a></td>
+		                <td>{{article.date_pub.month}}/{{article.date_pub.day}}/{{article.date_pub.year}}</td>
+		            </tr>
+		            {% endfor %}
+				</table>
+				{% endif %}
+		</div>
+		<div class="box" id="recentModules">
+			<div class="header"><h3>Articles Statistics</h3></div>
+		</div>
+</div>
+
+{% endif %}
+{% endblock %}

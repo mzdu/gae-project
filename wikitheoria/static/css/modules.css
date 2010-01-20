@@ -1,0 +1,30 @@
+
+
+/* =Main Content
+-----------------------------------------------------------------------------*/
+
+/* =New Module
+-----------------------------------------------------------------------------*/
+#terms_new_module{
+	background-color:#F5FFFA;
+	padding:10px;
+	border:solid thin #CEF2E0;
+	width:600px;
+}
+
+#termResults{
+	background-color:#F5FFAA;
+	padding:10px;
+}
+
+
+#moduleForm{
+	padding:10px;
+	width:800px;
+	border:solid thin #CEF2E0;
+	margin-top:10px;
+}
+
+#subHead{
+	font-size:large;
+}

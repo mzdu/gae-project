@@ -1,0 +1,46 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+	{% if error %}
+		{{error}}
+	{% else %}
+	<h1>User Information</h1>
+	<div class="box">
+	{% if is_current_user %}
+	<p><a href="/users/edit/{{uid}}/{{alias_slug}}">Edit Profile</a></p>
+	{% endif %}
+		<h2>{{alias_general}}</h2>
+		
+		
+		<table>
+				{% if alias_general %}<tr><td class="title">Display Name</td><td>{{alias_general}}</td></tr>{% endif %}
+				{% if real_name_general %}<tr><td class="title">Real Name</td><td>{{real_name_general}}</td></tr>{% endif %}
+				{% if birthday_general %}<tr><td class="title">Birthday</td><td>{{birthday_general}}</td></tr>{% endif %}
+				{% if email_general %}<tr><td class="title">Email</td><td>{{email_general}}</td></tr>{% endif %}
+				{% if location_general %}<tr><td class="title">Location</td><td>{{location_general}}</td></tr>{% endif %}
+				{% if organization_general %}<tr><td class="title">Organization</td><td>{{organization_general}}</td></tr>{% endif %}
+		</table>
+		{% if about_general %}
+			<h3>About:</h3>
+			<blockquote>
+				{{about_general}}
+			</blockquote>
+		{% endif %}
+		</div>
+		
+	
+		{% if is_current_user %}
+			<div class="box" id="contributions">
+			<h2>Your Module Contributions</h2>
+			<table>
+				{% for module in contributed_modules %}
+					<tr>
+						<td><a href="#">{{module.title}}</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+			</div>
+		{% endif %}
+		
+	{% endif %}
+{% endblock %}

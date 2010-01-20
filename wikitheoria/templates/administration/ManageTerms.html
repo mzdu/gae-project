@@ -1,0 +1,20 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+
+    <div class="twoColumnRed">
+        <div class="header">
+            <h3>Manage Terms</h3>
+        </div>
+        <img src="/static/images/ajax-loader.gif" id="allTermsLoading" />
+        <table id="tblTerms"></table>
+    </div>
+
+
+
+{% endif %}
+{% endblock %}

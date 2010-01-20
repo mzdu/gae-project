@@ -1,0 +1,20 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+<form method="post" action="">
+	<table>
+		
+			<tr><td class="title">Display Name</td><td><input name="alias" type="text" value="{{alias_general}}" /></td></tr>
+			<tr><td class="title">Real Name</td><td><input name="real_name" type="text" value="{{real_name_general}}" /></td></tr>
+			<tr><td class="title">Birthday</td><td><input name="birthday" type="text" value="{{birthday_general}}" /> mm/dd/yyyy</td></tr>
+			<tr><td class="title">Email</td><td><input name="email" type="text" value="{{email_general}}" /></td></tr>
+			<tr><td class="title">Location</td><td><input name="location" type="text" value="{{location_general}}" /></td></tr>
+			<tr><td class="title">Organization</td><td><input name="organization" type="text" value="{{organization_general}}" /></td></tr>
+		
+	
+	</table>
+	
+	<textarea name="about" style="width: 452px; height: 180px">{{about_general}}</textarea><br />
+	<input name="Submit1" type="submit" value="Update" />
+</form>
+{% endblock %}

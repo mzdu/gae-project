@@ -1,0 +1,32 @@
+{% extends "../_base.html" %} 
+{% block bodyContent %} 
+<div class="article">
+			<div class="header">
+				<div class="title">
+					<a href="{{ article_url }}" target="_self">{{article_title_general}}</a>
+				</div>
+				<span class="descriptor">Author:</span> {{article_author_general}} <br />
+				<span class="descriptor">Published:</span> {{article_date_pub_general}} <br />
+			</div>
+				
+				<p>{{article_body_general}}</p>
+					
+		</div><!-- end article -->
+		<h2 style="margin-top:20px;">Comments</h2>
+        <img src="/static/images/ajax-loader.gif" id="allCommentsLoading" />
+		<div class="bubble" id="allCommentsDiv"></div>
+		<fieldset>
+		<legend>Write a Comment</legend>
+		<label>Message:</label><br />
+		{% if logged_in %} 
+		<input id="addCommentBox" type="text" style="width:50em; height: 10em;" onclick="$(this).val('')"/><br />
+		<button type="button"  onclick="addArticleComment({{article_uid}}, $('#addCommentBox').val())" >Submit Comment</button><br />
+		{% else %}
+		<p>Please <a href="{{login_url}}" target="_self">Login</a></p>
+		<input id="addCommentBox" type="text" style="width:50em; height: 10em;" onclick="$(this).val('')" disabled/><br />
+		<button type="button"  onclick="addArticleComment({{article_uid}}, $('#addCommentBox').val())" disabled>Submit Comment</button><br />
+		{% endif %}
+		Notify me of followup comments via email <input type="checkbox" disabled/>
+		</fieldset>
+
+{% endblock %} 

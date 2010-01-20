@@ -1,0 +1,72 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+
+    <div class="twoColumnYellow">
+        <div class="header">
+            <h3>Manage Users</h3>
+        </div>
+        <h4>All Users</h4>
+        <table>
+            <tr>
+                <th>User Name</th>
+                <th>Join Date</th>
+                <th>UID</th>
+            </tr>
+            {% for user in users %}
+            <tr>        
+                <td><a href="/users/{{user.uid}}">{{user.user_name}}</a></td>
+                <td>{{user.join_date.month}}/{{user.join_date.day}}/{{user.join_date.year}}</td>
+            	<td>{{user.uid}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <h4>Administrators</h4>
+	        <table>
+	            <tr>
+	                <th>User Name</th>
+	                <th>UID</th>
+	                <th></th>
+	            </tr>
+	            {% for user in administrators %}
+	            <tr>        
+	                <td><a href="/users/{{user.user.uid}}">{{user.user.user_name}}</a></td>
+	                <td>{{user.user.uid}}</td>
+	                <td><input name="Submit1" type="submit" value="X" disabled /></td>
+	            </tr>
+	            {% endfor %}
+	        </table>
+	     <form method="post" action="">
+        	Add Administrator: <input name="auid" type="text" value="Enter UID of User" /> <input name="administrator_user" type="submit" value="Add" />
+    	</form>
+
+        <h4>Contributors</h4>
+	        <table>
+	            <tr>
+	                <th>User Name</th>
+	                <th>UID</th>
+	                <th></th>
+	            </tr>
+	            {% for user in contributing_users %}
+	            <tr>        
+	                <td><a href="/users/{{user.user.uid}}">{{user.user.user_name}}</a></td>
+	                <td>{{user.user.uid}}</td>
+	                <td><input name="Submit2" type="submit" value="X" disabled /></td>
+	            </tr>
+	            {% endfor %}
+	        </table>
+        <form method="post" action="">
+        	Add Contributor: <input name="cuid" type="text" value="Enter UID of User" /> <input name="contributing_user" type="submit" value="Add" />
+    	</form>
+    </div>
+
+
+
+
+{% endif %}
+{% endblock %}

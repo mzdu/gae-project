@@ -1,0 +1,53 @@
+{% extends "_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+<div id="feedback">
+        <form method="post" action="">
+            <h2>Thank you for your interest in joining the Wikitheoria Project!</h2>
+            <p>
+                All content is publicly available, however, only select users have the ability to submit
+                modules, terms, and articles to the Wikitheoria project. 
+            </p>
+            <p>
+                Please submit the form below to start contributing articles,
+                modules, and terms.  You will be notified by Email when you can begin contributing
+                to the site.
+            </p>
+            <table>
+                <tr>
+                    <td>
+                {% if name %}
+                	Name:</td><td> <input type="text" name="name" value="{{alias}}" style="width: 200px;"></input>
+                {% else %}
+                	Name:</td><td> <input type="text" name="name" style="width: 200px;"></input>
+                {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                {% if email %}
+                	Email:</td><td> <input type="text" name="email" value="{{email}}" style="width: 200px;"></input>
+                {% else %}
+                	Email:</td><td> <input type="text" name="email" value="Must be a Google Account" style="width: 200px;"></input>
+                {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    Note:</td><td> <textarea name="note" style="width: 300px; height: 150px"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                <td></td>
+                <td><input type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+{% endif %}
+{% endblock %}

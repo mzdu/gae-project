@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Wikitheoria</title>
+<link href="/static/css/main.css" type="text/css" rel="stylesheet" />
+{% if css %}
+	{% for path in css %}
+	<link href="{{path}}" type="text/css" rel="stylesheet" />
+	{% endfor %}
+{% endif %}
+{% if javascript %}
+	{% for path in javascript %}
+	<script type="text/javascript" language="javascript" src="{{path}}"></script>
+	{% endfor %}
+{% endif %}
+
+</head>
+
+<body>
+<!-- Start of Wrapper -->
+<div id="wrapper">
+    <!-- Start of Header -->
+    <div id="base_header">
+		<!-- User Menu -->
+		<div id="userMenu">
+			{% if uid %}
+				<a href="{{user_profile_url}}">{{ alias }}</a> |
+				<a href="{{logout_url}}">logout</a> | <a href="/about">about</a> | <a href="/help">help</a> | <input value="Search" disabled>
+			{% else %}
+				<a href="{{login_url}}">login</a> | <a href="/about">about</a> | <a href="/help">help</a> | <input value="Search" disabled>
+			{% endif %}
+		</div>
+        <div style="float:left;margin-top:15px;margin-left:15px;">
+	        <a href="/" style="text-decoration:none;font-color:#000;">
+	           <img src="/static/images/Logo.jpg" alt="logo" style="width:100px;" />
+	        </a>
+	    </div>
+	    <div id="subNav">
+	        <span class="mainTitle">Wikitheoria</span> <b>{{num_modules}} <a href="/modules/" target="_self">modules</a></b> &#149; 
+	                                                   <b>{{num_articles}} <a href="/articles/" target="_self">articles</a></b> &#149; 
+	                                                   <b>{{num_users}} <a href="/users/" target="_self">users</a></b> &#149;
+	                                                   <b>{{num_contributions}} <a href="/" target="_self">contributions</a></b>
+	        <ul>
+	  		    <li><a href="/">Home</a></li>
+	    	    <li><a href="/modules">Modules</a></li>
+	    	    <li><a href="/articles">Articles</a></li>
+	    	    <li><a href="/terms">Terms</a></li>
+	    	    <li><a href="/users">Users</a></li>
+	    	    <li style="margin-left:20px;"><a href="/feedback" style="background-color:#FFFF00;color:#000;font-size:16px">Feedback</a></li>
+	    	</ul>
+        </div>
+    </div>
+    <!-- End of Header -->
+    <div class="clear"></div>
+        <!-- Start of Body -->
+        <div class="bodyContent">
+            {% block bodyContent %}
+            
+            {% endblock %}
+        </div>
+        <!-- End of Body -->
+
+    <!-- Start of Footer -->
+    <div class="clear"></div>
+    <div id="footer">
+    	<p>Wikitheoria 2009. University of South Carolina. National Science Foundation<br/>
+    		<a href="/api/docs">API for Developers</a> |
+    		<a href="/administration">Administration</a> |
+    		<a href="/help">Help</a> | 
+    		<a href="/about">About</a> | 
+    		<a href="/contact">Contact</a>
+   		</p>
+   	</div>
+    <!-- End of Footer -->
+</div>
+<!-- End of Wrapper -->
+<!-- Google analytics below to end -->
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-4254311-11");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+
+</html>

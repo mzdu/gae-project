@@ -1,0 +1,18 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+    <div class="twoColumnBlue">
+        <div class="header">
+            <h3>Manage Modules</h3>
+        </div>
+		<div id="featuredAdminContentFound"></div>
+		<img src="/static/images/ajax-loader.gif" id="allModulesLoading" />
+		<table id="tblModules"></table>     
+    </div>
+
+{% endif %}
+{% endblock %}

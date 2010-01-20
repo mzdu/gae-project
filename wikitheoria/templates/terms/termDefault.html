@@ -1,0 +1,50 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+<div id="mainContent">
+    <h1>Terms</h1>
+	<div class="twoColumnBlue">
+				<div class="header"><h3>Contribute</h3></div>
+				Do you have a term to contribute?<br />
+				{% if can_contribute %}
+				    <a href="/contribute/term" target="_self">Contribute a New Term</a>
+				{% else %}
+			         <a href="{{login_url}}" target="_self">Please join the Wikitheoria project</a>
+				{% endif %}
+			</div>
+	<div class="twoColumnGreen" style="margin-top:10px;">
+		<div class="header"><h3>Search</h3></div>
+		<input type="text" name="q" id="query" autocomplete="off"/> <input id="search" name="searchBtn" type="button" value="Search" onclick="searchBtnClicked()" /> <img src="/static/images/ajax-loader.gif" id="loading" /><br />
+		<div class="header" style="margin-top:10px;"></div>
+		<div id="searchResult"></div>
+	</div>
+	<div class="twoColumnYellow" style="margin-top:10px;">
+	    <div class="header"><h3>Recent Terms</h3></div>
+	        {% if ten_newest_terms %}
+	        <table>
+		        <tr>
+		             <th>Name</th>
+		             <th>Date Submitted</th>
+		        </tr>
+	            {% for term in ten_newest_terms %}
+	            <tr>
+	                <td><a href="/terms/{{term.slug}}">{{term.word}}</a></td> 
+	                <td>{{term.date_submitted.month}}/{{term.date_submitted.day}}/{{term.date_submitted.year}}</td>
+	            </tr>
+	            {% endfor %}
+	        </table>
+	       	{% endif %}
+	</div>
+	<div class="twoColumnRed" style="margin-top:10px;">
+				<div class="header"><h3>Term Statistics</h3></div>
+				Insert statistics here!
+			</div>
+	<div class="clear"></div>
+</div><!-- end mainContent -->
+
+{% endif %}
+{% endblock %}

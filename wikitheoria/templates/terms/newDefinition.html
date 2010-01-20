@@ -1,0 +1,43 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+<div class="term">
+	{% if message %}
+		<p>{{message}}</p>
+	{% endif %}
+	<h2>Add definition to an existing term</h2>
+	<form method="post" action="">
+	<table>
+		<tr>
+			<td>Term:</td><td>{{term}}</td>
+		</tr>
+		<tr>
+			<td>Class:</td>
+			<td><select name="function">
+				<optgroup label="Function">
+					<option>noun</option><option>verb</option><option>pronoun</option>
+					<option>adjective</option><option>adverb</option>
+					<option>preposition</option><option>conjunction</option>
+					<option>interjection</option>
+				</optgroup>
+					<optgroup label="Phrase">
+						<option label='noun phrase'>nounPhrase</option>
+						<option label='verb phrase'>verbPhrase</option>
+						<option label='prepositional phrase'>prepositionalPhrase</option>
+						<option label='adjectival phrase'>adjectivalPhrase</option>
+						<option label='adverbial phrase'>adverbialPhrase</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Define:</td>
+			<td><input name="definition" type="text" style="width: 450px" /></td>
+		</tr>
+	</table>
+	<input name="Submit1" type="submit" value="Define" />
+	<input type="hidden" name ="slug" value="{{slug}}" />
+</form>
+<h3>Existing Definitions</h3>
+
+</div><!-- end term -->
+
+{% endblock %}

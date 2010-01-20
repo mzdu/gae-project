@@ -1,0 +1,74 @@
+{% extends "../_base.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+<div class="apiWrapper">
+	<h1>API Documentation</h1>
+	<p>Note: 
+		<ul>
+			<li>Currently the only available return type is JSON</li>
+			<li>All responses contain either 'stat' : 'ok' or 'stat' : 'fail' for error checking.</li>
+		</ul>
+	</p>
+	
+	<div class="requestFormat">
+		<p>
+			REST request format<br />
+			<pre>http://wikitheoria.appspot.com/api?method=theMethod&paramName=yourParameter</pre>
+		</p>
+	</div>
+	
+	<h2 style="margin-bottom:20px;">Methods</h2>
+	
+	<div class="method0">
+		<h2>getSuggestions</h2>
+		<p>
+			<span class="description">Get a list of suggestions based on a query.</span><br/>
+			Example: 
+				<pre>http://wikitheoria.appspot.com/api?method=getSuggestions&query=a</pre>
+			Example Response: 
+				<pre>{"query": "a", "suggestions": ["after", "apple", "attitude", "suggestion n"], 'stat' : 'ok'}</pre>
+			<h3>Arguments</h3>
+			<strong>query</strong> (required) <br />
+			<span class="description">Look for words starting with these letters</span>
+		</p>
+	</div>
+	<div class="method1">
+		<h2>getTermDefinitions</h2>
+		<p>
+			<span class="description">Get a list of definitions for a particular term.</span><br/>
+			Example: 
+				<pre>http://wikitheoria.appspot.com/api?method=getTermDefinitions&term=apple</pre>
+			Example Response: 
+	<pre>
+	{"definitions": 
+		{"pronoun": ["def 1", "def 2", "def n"], 
+		"adverb": ["def 1", "def 2", "def n"], 
+		"adjective": ["def 1", "def 2", "def n"], 
+		"preposition": ["def 1", "def 2", "def n"], 
+		"verb": ["def 1", "def 2", "def n"], 
+		"nouns": ["def 1", "def 2", "def n"], 
+		"conjunction": ["def 1", "def 2", "def n"], 
+		"interjection": ["def 1", "def 2", "def n"]
+		.
+		.
+		.}, 
+	"term": "apple", 
+	'stat' : 'ok'}</pre>
+			<h3>Arguments</h3>
+			<strong>term</strong> (required) <br />
+			<span class="description">The term to get definitions for.</span> <br />
+			<strong>function</strong> (optional) (options = [noun,verb,adjective,pronoun,adverb,preposition,conjunction,interjection,nounPhrase,verbPhrase,prepositionalPhrase,adjectivalPhrase,adverbialPhrase]) <br />
+			<span class="description">Returns only definitions for a particular part of speech</span> <br />
+			Example: 
+				<pre>http://wikitheoria.appspot.com/api?method=getTermDefinitions&term=apple&function=noun</pre>
+			Example Response: 
+	
+<pre>{"definitions": {"nouns": ["def 1", "def 2", "def n"]}, "term": "apple", 'stat' : 'ok'}</pre>
+		</p>
+	</div>
+</div>
+{% endif %}
+{% endblock %}
