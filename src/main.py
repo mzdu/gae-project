@@ -419,26 +419,27 @@ class JoinHandler(webapp.RequestHandler):
 
 class MainPageHandler(webapp.RequestHandler):
     def get(self):
-        from google.appengine.api import memcache
         values = dict()
         from modules import getFeaturedModule
         from articles import getFeaturedArticle
+        from google.appengine.api import memcache
+        
         #import markdown
         #logging.error(markdown.markdown("blahbalhba"))
         
         #########Memcache featured module
-        featuredModule = memcache.get("featuredModule")
+        featuredModule = memcache.get("featuredModule") #@UndefinedVariable
         if featuredModule is None:
             featuredModule = getFeaturedModule()
-            if not memcache.add("featuredModule", featuredModule, 60):
+            if not memcache.add("featuredModule", featuredModule, 60): #@UndefinedVariable
                 logging.error("Memcache set failed.")
         #########end Memcache featured module
         
         #########Memcache featured article
-        featuredArticle = memcache.get("featuredArticle")
+        featuredArticle = memcache.get("featuredArticle") #@UndefinedVariable
         if featuredArticle is None:
             featuredArticle = getFeaturedArticle()
-            if not memcache.add("featuredArticle", featuredArticle, 60):
+            if not memcache.add("featuredArticle", featuredArticle, 60): #@UndefinedVariable
                 logging.error("Memcache set failed.")
         #########end Memcache featured article
         
