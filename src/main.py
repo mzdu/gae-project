@@ -16,11 +16,11 @@ from google.appengine.api import mail
 
 def getContributionCount():
     ''' @summary: Returns the count of articles, modules, and module versions
-        @return: an integer representing total contributions to wikitheoria blah
+        @return: an integer representing total contributions to wikitheoria
         @rtype: integer
     '''
     from articles import getArticleCount
-    from modules import getModuleCount, getModuleVersionCount
+    from modules import getModuleCount #, getModuleVersionCount
     count = 0
     count += getArticleCount()
     count += getModuleCount()

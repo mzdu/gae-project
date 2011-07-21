@@ -92,18 +92,18 @@ class ModuleTerm(db.Model):
     abbreviation = db.StringProperty()
 
 class ArticleComment(db.Model):
-	uid = db.IntegerProperty()
-	user = db.ReferenceProperty(WikiUser)
-	article = db.ReferenceProperty(Article)
-	comment = db.TextProperty()
-	comment_date = db.DateTimeProperty(auto_now_add=True)
-	
+    uid = db.IntegerProperty()
+    user = db.ReferenceProperty(WikiUser)
+    article = db.ReferenceProperty(Article)
+    comment = db.TextProperty()
+    comment_date = db.DateTimeProperty(auto_now_add=True)
+
 class ModuleComment(db.Model):
-	uid = db.IntegerProperty()
-	user = db.ReferenceProperty(WikiUser)
-	module = db.ReferenceProperty(Module)
-	comment = db.TextProperty()
-	comment_date = db.DateTimeProperty(auto_now_add=True)
+    uid = db.IntegerProperty()
+    user = db.ReferenceProperty(WikiUser)
+    module = db.ReferenceProperty(Module)
+    comment = db.TextProperty()
+    comment_date = db.DateTimeProperty(auto_now_add=True)
 
 class NotifyFeedbackUser(db.Model):
     user = db.StringProperty()
