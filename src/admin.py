@@ -21,7 +21,7 @@ class ManageUsersHandler(webapp.RequestHandler):
             values["users"] = users
             values['administrators'] = administrators
             values['contributing_users'] = contributing_users
-            doRender(self, 'administration/ManageUsers.html', values)
+            doRender(self, 'ManageUsers.html', values)
         else:
             self.redirect('/')
     def post(self):
@@ -44,7 +44,7 @@ class ManageModulesHandler(webapp.RequestHandler):
         if isAdministratorUser() is True:
             values = dict()
             values["javascript"] = ["/static/js/jquery.js","/static/js/admin/module.js"]
-            doRender(self, 'administration/ManageModules.html', values)
+            doRender(self, 'ManageModules.html', values)
         else:
             self.redirect('/')
 
@@ -53,7 +53,7 @@ class ManageArticlesHandler(webapp.RequestHandler):
 		if isAdministratorUser() is True:
 			values = dict()
 			values["javascript"] = ["/static/js/jquery.js","/static/js/admin/AdvancedPage.js"]
-			doRender(self, 'administration/ManageArticles.html', values)
+			doRender(self, 'ManageArticles.html', values)
 		else:
 			self.redirect('/')
 
@@ -62,7 +62,7 @@ class ManageTermsHandler(webapp.RequestHandler):
         if isAdministratorUser() is True:
             values = dict()
             values["javascript"] = ["/static/js/jquery.js","/static/js/admin/terms.js"]
-            doRender(self, 'administration/ManageTerms.html', values)
+            doRender(self, 'ManageTerms.html', values)
         else:
             self.redirect('/')
         
@@ -70,7 +70,7 @@ class SupportHandler(webapp.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
-            doRender(self, 'administration/Support.html', values)
+            doRender(self, 'Support.html', values)
         else:
             self.redirect('/')
         
@@ -80,7 +80,7 @@ class AdvancedHandler(webapp.RequestHandler):
 			users = db.Query(datamodel.NotifyFeedbackUser)
 			values = dict()
 			values["feedback_notify_group"] = users
-			doRender(self, 'administration/Advanced.html', values)
+			doRender(self, 'Advanced.html', values)
         else:
             self.redirect('/')
     def post(self):

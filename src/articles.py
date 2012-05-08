@@ -117,7 +117,7 @@ class NewArticleHandler(webapp.RequestHandler):
         values['javascript'] = ["/static/js/articles/newArticle.js",'/static/js/jquery.js', '/static/js/plugins/wmd_stackOverflow/wmd.js', '/static/js/plugins/wmd_stackOverflow/showdown.js']
         values['css'] = ['/static/js/plugins/wmd_stackOverflow/wmd.css']
         
-        doRender(self, 'articles/newArticle.html',values)
+        doRender(self, 'newArticle.html',values)
         return
   
     def post(self):
@@ -141,13 +141,13 @@ class ArticleHandler(webapp.RequestHandler):
         values["ten_newest_articles"] = articles
         if len(pathList) == 1 or pathList[1] == '':
             values['javascript'] = ['/static/js/jquery.js', '/static/js/articles/articleDefault.js']
-            doRender(self, 'articles/articleDefault.html', values)
+            doRender(self, 'articleDefault.html', values)
         else:
             values = getArticle(pathList[1])
             if isLoggedIn() is True:
             	values["logged_in"] = "True"
             values["javascript"] = "/static/js/jquery.js","/static/js/articles/main.js", "/static/js/rounded_corners.inc.js"
-            doRender(self, 'articles/article.html', values)
+            doRender(self, 'article.html', values)
 
 class DefaultHandler(webapp.RequestHandler):
     def get(self):
@@ -155,7 +155,7 @@ class DefaultHandler(webapp.RequestHandler):
         articles = db.Query(datamodel.Article).order('-date_pub').fetch(10)
         values["ten_newest_articles"] = articles
         
-        doRender(self, 'article/articleDefault.html', values) 
+        doRender(self, 'articleDefault.html', values) 
     
 def main():
     application = webapp.WSGIApplication(

@@ -131,16 +131,16 @@ class EditUserHandler(webapp.RequestHandler):
             uid = int(path[2])
         except:
             values['error'] = 'Invalid character after /user/'
-            doRender(self, 'users/user.html', values) 
+            doRender(self, 'user.html', values) 
             return
         # values['user_name_general'] = userName
         if isCurrentUser(uid):
             userInfo = getUserInfo(uid)
             for key in userInfo:
                 values[key] = userInfo[key] 
-            doRender(self, 'users/editUser.html', values)   
+            doRender(self, 'editUser.html', values)   
         else:
-            doRender(self, 'users/user.html', values) 
+            doRender(self, 'user.html', values) 
  
            
     def post(self):
@@ -150,7 +150,7 @@ class EditUserHandler(webapp.RequestHandler):
             uid = int(path[2])
         except:
             values['error'] = 'Invalid character after /user/'
-            doRender(self, 'users/user.html', values) 
+            doRender(self, 'user.html', values) 
             return
         
         values['user_name_general'] = self.request.get("alias")
@@ -189,7 +189,7 @@ class EditUserHandler(webapp.RequestHandler):
                     logging.error('Failed to update user profile' + str(uid))
             else:
                 logging.error('No user found')
-            doRender(self, 'users/user.html', values) 
+            doRender(self, 'user.html', values) 
            
     
     
@@ -203,7 +203,7 @@ class UserHandler(webapp.RequestHandler):
             uid = int(path[1])
         except:
             values['error'] = 'Invalid character after /user/'
-            doRender(self, 'users/user.html', values) 
+            doRender(self, 'user.html', values) 
             return
         
         if isCurrentUser(uid):
@@ -214,7 +214,7 @@ class UserHandler(webapp.RequestHandler):
         userInfo = getUserInfo(uid)
         for key in userInfo:
             values[key] = userInfo[key]
-        doRender(self, 'users/user.html', values)       
+        doRender(self, 'user.html', values)       
         
 class DefaultUserHandler(webapp.RequestHandler):
     def get(self):
@@ -225,7 +225,7 @@ class DefaultUserHandler(webapp.RequestHandler):
         values["login_url"] = getLoginUrl()
         users = db.Query(datamodel.WikiUser).order('-join_date').fetch(10)
         values["ten_newest_users"] = users
-        doRender(self, 'users/userDefault.html', values)    
+        doRender(self, 'userDefault.html', values)    
     
 def main():
     application = webapp.WSGIApplication(

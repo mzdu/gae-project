@@ -441,7 +441,7 @@ class ApiHandler(webapp.RequestHandler):
 class DocumentationHandler(webapp.RequestHandler):
     def get(self):
         values = dict()
-        doRender(self, 'api/library.html', values)
+        doRender(self, 'library.html', values)
 
 class MarkdownHandler(webapp.RequestHandler):
     def get(self):

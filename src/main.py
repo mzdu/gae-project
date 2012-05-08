@@ -377,7 +377,7 @@ def parseMarkdown(x):
 class HelpHandler(webapp.RequestHandler):
     def get(self):
         values = dict()
-        doRender(self, '/support/help.html', values)
+        doRender(self, 'help.html', values)
         
 class AboutHandler(webapp.RequestHandler):
     def get(self):
@@ -387,17 +387,17 @@ class AboutHandler(webapp.RequestHandler):
 class ContributeHandler(webapp.RequestHandler):
     def get(self):
         values = dict()
-        doRender(self, '/contribute.html', values)
+        doRender(self, 'contribute.html', values)
 
 class ContactHandler(webapp.RequestHandler):
     def get(self):
         values = dict()
-        doRender(self, '/feedback.html', values)
+        doRender(self, 'feedback.html', values)
 
 class FeedbackHandler(webapp.RequestHandler):
     def get(self):
         values = dict()
-        doRender(self, '/feedback.html', values)
+        doRender(self, 'feedback.html', values)
     def post(self):
         userInfo = getCurrentUserInfo()
         aSubject = userInfo['user_name'] + " left feedback for The Wikitheoria Project development site"
@@ -411,7 +411,7 @@ class JoinHandler(webapp.RequestHandler):
         userInfo = getCurrentUserInfo()
         if userInfo['isUser'] is 'True':
             values = userInfo
-        doRender(self, '/join.html', values)
+        doRender(self, 'join.html', values)
     def post(self):
         email = self.request.get("email")
         name = self.request.get("name")

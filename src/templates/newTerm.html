@@ -1,14 +1,14 @@
-{% extends "../_base.html" %}
+{% extends "_base.html" %}
 {% block bodyContent %}
 <div class="term">
 	{% if message %}
 		<p>{{message}}</p>
 	{% endif %}
-	<h2>Add definition to an existing term</h2>
+	<h2>Define a new term</h2>
 	<form method="post" action="">
 	<table>
 		<tr>
-			<td>Term:</td><td>{{term}}</td>
+			<td>Term:</td><td><input name="term" type="text"  /></td>
 		</tr>
 		<tr>
 			<td>Class:</td>
@@ -26,6 +26,7 @@
 						<option label='adjectival phrase'>adjectivalPhrase</option>
 						<option label='adverbial phrase'>adverbialPhrase</option>
 				</select>
+				
 			</td>
 		</tr>
 		<tr>
@@ -33,10 +34,8 @@
 			<td><input name="definition" type="text" style="width: 450px" /></td>
 		</tr>
 	</table>
-	<input name="Submit1" type="submit" value="Define" />
-	<input type="hidden" name ="slug" value="{{slug}}" />
+	<input name="Submit1" type="submit" value="Submit" />
 </form>
-<h3>Existing Definitions</h3>
 
 </div><!-- end term -->
 

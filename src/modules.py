@@ -313,7 +313,7 @@ class NewModuleHandler(webapp.RequestHandler):
             values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/modules/newModule.js',
                                     '/static/js/plugins/wmd_stackOverflow/wmd.js', '/static/js/plugins/wmd_stackOverflow/showdown.js']
             values['css'] = ['/static/js/plugins/autocomplete/styles.css', '/static/css/modules.css', '/static/js/plugins/wmd_stackOverflow/wmd.css']
-            doRender(self, 'modules/newModule.html',values)
+            doRender(self, 'newModule.html',values)
         else:
             doRender(self, 'join.html',values)
   
@@ -368,7 +368,7 @@ class EditModuleHandler(webapp.RequestHandler):
             values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/modules/newModule.js',
                                     '/static/js/plugins/wmd_stackOverflow/wmd.js', '/static/js/plugins/wmd_stackOverflow/showdown.js']
             values['css'] = ['/static/js/plugins/autocomplete/styles.css', '/static/css/modules.css', '/static/js/plugins/wmd_stackOverflow/wmd.css']
-            doRender(self, 'modules/editModule.html', values)
+            doRender(self, 'editModule.html', values)
         else:
             self.redirect('/modules/')
             
@@ -421,7 +421,7 @@ class ModuleHandler(webapp.RequestHandler):
         pathList = getUrlResourceList(self)
         values = dict()
         if len(pathList) == 1 or pathList[1] == '':
-            doRender(self, 'modules/moduleDefault.html', values)
+            doRender(self, 'moduleDefault.html', values)
         elif len(pathList) == 2 or pathList[2] == '':
             values = getModuleVersion(pathList[1])
             count = getModuleVersionCount(int(pathList[1]))+1
@@ -434,14 +434,14 @@ class ModuleHandler(webapp.RequestHandler):
             values['versions'] = versions
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
-            doRender(self, 'modules/module.html', values)
+            doRender(self, 'module.html', values)
         else:
             try:
             #check to see if the version is a slug or a version number.
                 uid = int(pathList[1])
             except:
                 values['error'] = 'Module id\'s and version numbers are numeric. Please check the URL. Example wikitheoria.appspot.com/1 or wikitheoria.appspot.com/1/2'
-                doRender(self, 'modules/module.html', values)
+                doRender(self, 'module.html', values)
                 return
             values = getModuleVersion(uid, pathList[2])
             count = getModuleVersionCount(uid)+1
@@ -454,7 +454,7 @@ class ModuleHandler(webapp.RequestHandler):
             values['versions'] = versions
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
-            doRender(self, 'modules/module.html', values)
+            doRender(self, 'module.html', values)
     def post(self):
         version = self.request.get("version")
         uid = self.request.get("module_version_uid")
@@ -479,7 +479,7 @@ class MainPageHandler(webapp.RequestHandler):
                 values[key] = featuredModule[key]
         values['javascript'] = ['/static/js/jquery.js', '/static/js/modules/moduleDefault.js']
             
-        doRender(self, 'modules/moduleDefault.html', values)
+        doRender(self, 'moduleDefault.html', values)
         
 def main():
     application = webapp.WSGIApplication(

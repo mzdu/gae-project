@@ -86,7 +86,7 @@ class DefineTermHandler(webapp.RequestHandler):
             doRender(self, 'error.html', {'error' : 'Not a valid term to define'})
             return
         values = {'slug' : slug, 'term' : slug.replace('-', ' ')}
-        doRender(self, 'terms/newDefinition.html', values)
+        doRender(self, 'newDefinition.html', values)
         
     def post(self):
         slug = self.request.get('slug').strip().lower()
@@ -96,7 +96,7 @@ class DefineTermHandler(webapp.RequestHandler):
     
 class NewTermHandler(webapp.RequestHandler):
     def get(self):
-        doRender(self, 'terms/newTerm.html')
+        doRender(self, 'newTerm.html')
     
     def post(self):
         term = self.request.get('term').strip().lower()
@@ -122,11 +122,11 @@ class TermHandler(webapp.RequestHandler):
         if len(pathList) == 1 or pathList[1] == '':
             values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/terms/termDefaultPage.js']
             values['css'] = ['/static/js/plugins/autocomplete/styles.css']
-            doRender(self, 'terms/termDefault.html', values)
+            doRender(self, 'termDefault.html', values)
         else:
             slug = pathList[1]
             values = getTerm(slug)
-            doRender(self, 'terms/term.html', values)
+            doRender(self, 'term.html', values)
 
 #Main
 def main():
