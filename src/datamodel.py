@@ -1,6 +1,8 @@
 #Database models used in Wikitheoria
 #Note: Organization of these classes is important for ReferenceProperty() to function
 
+#TODO: add (indexed=False) to a lot of these.
+
 from google.appengine.ext import db
 
 class Counter(db.Model):

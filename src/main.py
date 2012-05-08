@@ -2,6 +2,7 @@
 #Wikitheoria Project
 #@author: Jonathan Mayhak & Jason Rikard
 
+#TODO: the theory appears with <p> tags on it, un-escape the content before displaying.
 import os
 import datamodel
 import logging
