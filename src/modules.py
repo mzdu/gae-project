@@ -315,7 +315,7 @@ class NewModuleHandler(webapp.RequestHandler):
             values['css'] = ['/static/js/plugins/autocomplete/styles.css', '/static/css/modules.css', '/static/js/plugins/wmd_stackOverflow/wmd.css']
             doRender(self, 'modules/newModule.html',values)
         else:
-            doRender(self, '/join',values)
+            doRender(self, 'join.html',values)
   
     def post(self):
         title = self.request.get("title")

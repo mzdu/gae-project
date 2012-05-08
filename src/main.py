@@ -14,6 +14,12 @@ from google.appengine.ext import db
 from django.template.defaultfilters import slugify 
 from google.appengine.api import mail
 
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+from google.appengine.dist import use_library
+use_library('django', '1.2')
+
 def getContributionCount():
     ''' @summary: Returns the count of articles, modules, and module versions
         @return: an integer representing total contributions to wikitheoria
@@ -152,11 +158,9 @@ def doRender(handler, tname = 'index.html', values = {}):
     from users import getUserCount
     from articles import getArticleCount
     from modules import getModuleCount
-    
     temp = os.path.join(os.path.dirname(__file__), 'templates/' + tname)
     if not os.path.isfile(temp):
         return False
-    
     userMenuValues = buildUserMenu()
     for key in userMenuValues:
         values[key] = userMenuValues[key]
