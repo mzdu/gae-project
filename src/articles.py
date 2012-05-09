@@ -2,9 +2,8 @@ from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUI
 import datamodel
 import logging
 
-from django.template.defaultfilters import slugify 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
+#from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
 def getArticleCount():
@@ -44,7 +43,7 @@ def getFeaturedArticle():
         values['article_title_general'] = articleObject.article.title
         values['article_author_general'] = articleObject.article.author.alias
         values['article_date_pub_general'] = '%02d/%02d/%04d' % (articleObject.article.date_pub.month, articleObject.article.date_pub.day, articleObject.article.date_pub.year)
-        values['article_url'] = '/articles/' + str(articleObject.article.uid) + '/' + slugify(articleObject.article.title)
+        values['article_url'] = '/articles/' + str(articleObject.article.uid) + '/' + articleObject.article.title
         values['article_body_general'] = articleObject.article.body[0:500] + "<a href=" + values['article_url'] + ">Read More...</a>"
         values['article_uid'] = articleObject.article.uid
     else:
@@ -81,7 +80,7 @@ def getArticle(uid):
         values['article_author_general'] = articleObject.author.alias
         values['article_date_pub_general'] = '%02d/%02d/%04d' % (articleObject.date_pub.month, articleObject.date_pub.day, articleObject.date_pub.year)
         values['article_body_general'] = articleObject.body
-        values['article_url'] = '/articles/' + str(articleObject.uid) + '/' + slugify(articleObject.title)
+        values['article_url'] = '/articles/' + str(articleObject.uid) + '/' + articleObject.title
         values['article_uid'] = articleObject.uid
     else:
         values['error'] = 'Article does not exist'
@@ -111,7 +110,7 @@ def newArticle(title, markdown):
             return -1
 
 
-class NewArticleHandler(webapp.RequestHandler):
+class NewArticleHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         values['javascript'] = ["/static/js/articles/newArticle.js",'/static/js/jquery.js', '/static/js/plugins/wmd_stackOverflow/wmd.js', '/static/js/plugins/wmd_stackOverflow/showdown.js']
@@ -130,7 +129,7 @@ class NewArticleHandler(webapp.RequestHandler):
             values = {'error' : 'Failed to create article. Please try again later.'}
             doRender(self, 'error.html', values)
 
-class ArticleHandler(webapp.RequestHandler):
+class ArticleHandler(webapp2.RequestHandler):
     def get(self):
         from users import isContributingUser
         pathList = getUrlResourceList(self)
@@ -149,7 +148,7 @@ class ArticleHandler(webapp.RequestHandler):
             values["javascript"] = "/static/js/jquery.js","/static/js/articles/main.js", "/static/js/rounded_corners.inc.js"
             doRender(self, 'article.html', values)
 
-class DefaultHandler(webapp.RequestHandler):
+class DefaultHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         articles = db.Query(datamodel.Article).order('-date_pub').fetch(10)
@@ -157,15 +156,9 @@ class DefaultHandler(webapp.RequestHandler):
         
         doRender(self, 'articleDefault.html', values) 
     
-def main():
-    application = webapp.WSGIApplication(
+app = webapp2.WSGIApplication(
                                          [('/article/new.*', NewArticleHandler),
                                           ('/articles.*', ArticleHandler)],
                                           debug=True)
-    run_wsgi_app(application)
-
-
-if __name__ == "__main__":
-    main()
 
 

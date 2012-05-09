@@ -3,8 +3,8 @@ import datamodel
 import logging
 from django.utils import simplejson
 from users import isContributingUser, isAdministratorUser
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
+#from google.appengine.ext.webapp2.util import run_wsgi_app
 from google.appengine.ext import db
 
 def getSuggestions(self):
@@ -352,7 +352,7 @@ def removeTerm(self, term):
         jsonData = {'stat':'failed','message':'must be an administrator'}
     	return simplejson.dumps(jsonData)
 
-class ApiHandler(webapp.RequestHandler):
+class ApiHandler(webapp2.RequestHandler):
     def get(self):
         if self.request.get('method') == 'getSuggestions':
             getSuggestions(self)
@@ -438,25 +438,19 @@ class ApiHandler(webapp.RequestHandler):
             self.response.out.write(simplejson.dumps(jsonData))
             return
 
-class DocumentationHandler(webapp.RequestHandler):
+class DocumentationHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         doRender(self, 'library.html', values)
 
-class MarkdownHandler(webapp.RequestHandler):
+class MarkdownHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
 
 
 
-def main():
-    application = webapp.WSGIApplication(
+app = webapp2.WSGIApplication(
                                          [('/api/docs.*', DocumentationHandler),
                                           ('/api/markdown.*', MarkdownHandler),
                                           ('/api.*', ApiHandler)],
                                           debug=True)
-    run_wsgi_app(application)
-
-
-if __name__ == "__main__":
-    main()

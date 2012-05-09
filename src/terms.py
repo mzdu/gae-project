@@ -1,9 +1,8 @@
 import datamodel
 import logging
 from main import doRender, getUrlResourceList, createNewUID, getCurrentUserEntity
-from django.template.defaultfilters import slugify
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
+#from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
 def getTerm(slug):
@@ -77,7 +76,7 @@ def newTerm(term, slug, function, definition):
         else:
             return {'error' : ''}
     
-class DefineTermHandler(webapp.RequestHandler):
+class DefineTermHandler(webapp2.RequestHandler):
     def get(self):
         path = getUrlResourceList(self)
         try:
@@ -94,7 +93,7 @@ class DefineTermHandler(webapp.RequestHandler):
         newDefinition(slug, self.request.get('function'), definition)
         self.redirect('/terms/'+slug, False)
     
-class NewTermHandler(webapp.RequestHandler):
+class NewTermHandler(webapp2.RequestHandler):
     def get(self):
         doRender(self, 'newTerm.html')
     
@@ -102,7 +101,7 @@ class NewTermHandler(webapp.RequestHandler):
         term = self.request.get('term').strip().lower()
         definition = self.request.get('definition').strip()
         function = self.request.get('function')
-        slug = slugify(term)
+        slug = term
         values = newTerm(term, slug, function, definition)
         if not values['error'] == '':
             doRender(self, 'error.html', values)
@@ -110,7 +109,7 @@ class NewTermHandler(webapp.RequestHandler):
         else:
             self.redirect('/terms/'+slug, False)
         
-class TermHandler(webapp.RequestHandler):
+class TermHandler(webapp2.RequestHandler):
     def get(self):
         pathList = getUrlResourceList(self)
         values = dict()
@@ -128,15 +127,9 @@ class TermHandler(webapp.RequestHandler):
             values = getTerm(slug)
             doRender(self, 'term.html', values)
 
-#Main
-def main():
-    application = webapp.WSGIApplication(
+app = webapp2.WSGIApplication(
                                          [('/contribute/term.*', NewTermHandler),
                                           ('/contribute/definition.*', DefineTermHandler),
                                           ('/.*', TermHandler)],
                                           debug = True)
-    run_wsgi_app(application)
     
-if __name__ == "__main__":
-    main()
-

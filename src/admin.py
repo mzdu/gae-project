@@ -2,13 +2,12 @@ from main import doRender
 import logging
 import datamodel
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
 from google.appengine.api import users
 from google.appengine.ext import db
 from users import isContributingUser, isAdministratorUser
  
-class ManageUsersHandler(webapp.RequestHandler):
+class ManageUsersHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
@@ -39,7 +38,7 @@ class ManageUsersHandler(webapp.RequestHandler):
                 contrib_user.put()
         self.redirect('/administration/users/')
 
-class ManageModulesHandler(webapp.RequestHandler):
+class ManageModulesHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
@@ -48,7 +47,7 @@ class ManageModulesHandler(webapp.RequestHandler):
         else:
             self.redirect('/')
 
-class ManageArticlesHandler(webapp.RequestHandler):
+class ManageArticlesHandler(webapp2.RequestHandler):
 	def get(self):
 		if isAdministratorUser() is True:
 			values = dict()
@@ -57,7 +56,7 @@ class ManageArticlesHandler(webapp.RequestHandler):
 		else:
 			self.redirect('/')
 
-class ManageTermsHandler(webapp.RequestHandler):
+class ManageTermsHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
@@ -66,7 +65,7 @@ class ManageTermsHandler(webapp.RequestHandler):
         else:
             self.redirect('/')
         
-class SupportHandler(webapp.RequestHandler):
+class SupportHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
@@ -74,7 +73,7 @@ class SupportHandler(webapp.RequestHandler):
         else:
             self.redirect('/')
         
-class AdvancedHandler(webapp.RequestHandler):
+class AdvancedHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
 			users = db.Query(datamodel.NotifyFeedbackUser)
@@ -98,8 +97,7 @@ class AdvancedHandler(webapp.RequestHandler):
         	logging.error(str(arguments))
         self.redirect('/administration/advanced/')
                 
-def main():
-	application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
 										('/administration/users/.*', ManageUsersHandler),
 										('/administration/modules/.*', ManageModulesHandler),
 										('/administration/articles/.*', ManageArticlesHandler),
@@ -109,7 +107,4 @@ def main():
 										('/administration', SupportHandler),
 										('/administration/.*', SupportHandler)],
 										debug=True)
-	run_wsgi_app(application)
 	
-if __name__ == "__main__":
-	main()

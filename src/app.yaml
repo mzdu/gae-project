@@ -1,13 +1,10 @@
 application: wikitheoria
-version: 144
-runtime: python
+version: 145
+runtime: python27
 api_version: 1
+threadsafe: true
 
 handlers:
-- url: /remote_api
-  script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
-  login: admin
-
 - url: /static
   static_dir: static
 
@@ -22,48 +19,51 @@ handlers:
   upload: static/images/favicon.ico
 
 - url: /module/new.*
-  script: modules.py
+  script: modules.app
   login: required
 
 - url: /module/edit.*
-  script: modules.py
+  script: modules.app
   login: required
 
 - url: /modules.*
-  script: modules.py
+  script: modules.app
 
 - url: /administration.*
-  script: admin.py
+  script: admin.app
   login: required
 
 - url: /article/new.*
-  script: articles.py
+  script: articles.app
   login: required
 
 - url: /article/edit.*
-  script: articles.py
+  script: articles.app
   login: required
   
 - url: /articles.*
-  script: articles.py
+  script: articles.app
  
 - url: /users.*
-  script: users.py
+  script: users.app
   
 - url: /contribute/definition.*
-  script: terms.py
+  script: terms.app
   login: required
   
 - url: /contribute/term.*
-  script: terms.py
+  script: terms.app
   login: required
   
 - url: /terms.*
-  script: terms.py
+  script: terms.app
   
 - url: /api.*
-  script: api.py
+  script: api.app
   
 - url: /.*
-  script: main.py
-  
+  script: main.app
+
+libraries:
+- name: jinja2
+  version: latest

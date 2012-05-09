@@ -3,24 +3,24 @@
 #@author: Jonathan Mayhak & Jason Rikard
 
 #TODO: the theory appears with <p> tags on it, un-escape the content before displaying.
-#TODO: move to jinja2 
-import os
+
 import datamodel
+
+import cgi
+import datetime
+import urllib
+import webapp2
+import jinja2
+import os
 import logging
 
-from google.appengine.ext.webapp import template
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.api import users
 from google.appengine.ext import db
-from django.template.defaultfilters import slugify 
+from google.appengine.api import users
+#from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext import db
 from google.appengine.api import mail
 
-import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-
-from google.appengine.dist import use_library
-use_library('django', '1.2')
+jinja_environment = jinja2.Environment(loader = jinja2.FileSystemLoader(os.path.dirname(__file__) + '/templates'))
 
 def getContributionCount():
     ''' @summary: Returns the count of articles, modules, and module versions
@@ -160,20 +160,18 @@ def doRender(handler, tname = 'index.html', values = {}):
     from users import getUserCount
     from articles import getArticleCount
     from modules import getModuleCount
-    temp = os.path.join(os.path.dirname(__file__), 'templates/' + tname)
-    if not os.path.isfile(temp):
-        return False
+    temp = jinja_environment.get_template(tname)
+#    temp = os.path.join(os.path.dirname(__file__), 'templates/' + tname)
     userMenuValues = buildUserMenu()
     for key in userMenuValues:
         values[key] = userMenuValues[key]
-    
     values["num_users"] = getUserCount()
     values["num_articles"] = getArticleCount()
     values["num_modules"] = getModuleCount()
     values["num_contributions"] = getContributionCount()
-
-    outstr = template.render(temp, values)
-    handler.response.out.write(outstr)
+    handler.response.out.write(temp.render(values))
+#    outstr = template.render(temp, values)
+#    handler.response.out.write(outstr)
     return True
 
 def firstTimeLogin(user):
@@ -241,12 +239,12 @@ def getCurrentUserInfo():
     #If user is found in datastore return info, else create new user
     if userInfo:
         currentUserDict['alias'] = userInfo.alias
-        currentUserDict['alias_slug'] = slugify(userInfo.alias)
+        currentUserDict['alias_slug'] = userInfo.alias
         currentUserDict['uid'] = userInfo.uid
         currentUserDict['user_name'] = userInfo.user_name
         currentUserDict['logout_url'] = getLogoutUrl()
         currentUserDict['email'] = userInfo.email
-        currentUserDict['user_profile_url'] = '/users/' + str(currentUserDict['uid']) + '/' + slugify(userInfo.alias)
+        currentUserDict['user_profile_url'] = '/users/' + str(currentUserDict['uid']) + '/' + userInfo.alias
         currentUserDict['isUser'] = 'True'
         return currentUserDict
     else:
@@ -376,27 +374,27 @@ def parseMarkdown(x):
     else:
         return 'none'
         
-class HelpHandler(webapp.RequestHandler):
+class HelpHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         doRender(self, 'help.html', values)
         
-class AboutHandler(webapp.RequestHandler):
+class AboutHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         doRender(self, 'about.html', values)
 
-class ContributeHandler(webapp.RequestHandler):
+class ContributeHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         doRender(self, 'contribute.html', values)
 
-class ContactHandler(webapp.RequestHandler):
+class ContactHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         doRender(self, 'feedback.html', values)
 
-class FeedbackHandler(webapp.RequestHandler):
+class FeedbackHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         doRender(self, 'feedback.html', values)
@@ -407,7 +405,7 @@ class FeedbackHandler(webapp.RequestHandler):
         sendFeedbackEmail(userInfo["email"], aSubject, aBody)
         self.redirect('/')
 
-class JoinHandler(webapp.RequestHandler):
+class JoinHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         userInfo = getCurrentUserInfo()
@@ -423,7 +421,7 @@ class JoinHandler(webapp.RequestHandler):
         sendFeedbackEmail(email, aSubject, aBody)
         self.redirect('/')
 
-class MainPageHandler(webapp.RequestHandler):
+class MainPageHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         from modules import getFeaturedModule
@@ -464,9 +462,7 @@ class MainPageHandler(webapp.RequestHandler):
 
         doRender(self, 'index.html', values)
         
-
-def main():
-    application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
                                           ('/help.*', HelpHandler),
                                           ('/about.*', AboutHandler),
                                           ('/contribute.*', ContributeHandler),
@@ -475,8 +471,5 @@ def main():
                                           ('/join.*', JoinHandler),
                                           ('/.*', MainPageHandler)
                                           ],debug = True)
-    run_wsgi_app(application)
     
-if __name__ == "__main__":
-    main()
 

@@ -2,8 +2,7 @@ from main import doRender, isCurrentUser, getUserInfo,getUrlResourceList
 import logging
 import datamodel
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
 from google.appengine.ext import db
 
 def getUserCount():
@@ -123,7 +122,7 @@ def getUserEntity(uid):
         return -1
 
 
-class EditUserHandler(webapp.RequestHandler):
+class EditUserHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         path = getUrlResourceList(self)
@@ -195,7 +194,7 @@ class EditUserHandler(webapp.RequestHandler):
     
     
 #user handler
-class UserHandler(webapp.RequestHandler):
+class UserHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         path = getUrlResourceList(self)
@@ -216,7 +215,7 @@ class UserHandler(webapp.RequestHandler):
             values[key] = userInfo[key]
         doRender(self, 'user.html', values)       
         
-class DefaultUserHandler(webapp.RequestHandler):
+class DefaultUserHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         from main import getLoginUrl
@@ -227,17 +226,10 @@ class DefaultUserHandler(webapp.RequestHandler):
         values["ten_newest_users"] = users
         doRender(self, 'userDefault.html', values)    
     
-def main():
-    application = webapp.WSGIApplication(
+app = webapp2.WSGIApplication(
                                          [('/users/edit/.*', EditUserHandler),
                                           ('/users', DefaultUserHandler),
                                           ('/users/', DefaultUserHandler),
                                           ('/users/.*', UserHandler)],
                                           debug=True)
-    run_wsgi_app(application)
-
-
-if __name__ == "__main__":
-    main()
-
 

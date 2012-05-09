@@ -2,9 +2,8 @@
 from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID
 import datamodel
 import logging
-from django.template.defaultfilters import slugify 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
+#from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
 
@@ -78,7 +77,7 @@ def getFeaturedModule():
         values['module_last_update_general'] = '%02d/%02d/%04d' % (moduleObject.module.last_update.month, moduleObject.module.last_update.day, moduleObject.module.last_update.year)
         values['module_scope_general'] = moduleObject.module.scope
         values['module_propositions_general'] = moduleObject.module.propositions
-        values['module_url'] = '/modules/' + str(moduleObject.module.uid) + '/' + str(moduleObject.module.version) + '/'+ slugify(moduleObject.module.title)
+        values['module_url'] = '/modules/' + str(moduleObject.module.uid) + '/' + str(moduleObject.module.version) + '/'+ moduleObject.module.title
         values['module_meta_theory_general'] = moduleObject.module.meta_theory[0:500] + "<a href=" + values['module_url'] + ">Read More...</a>"
         values['module_version'] = str(moduleObject.module.version)
         terms = []
@@ -120,8 +119,8 @@ def getModule(uid):
         values['module_meta_theory_general'] = moduleObject.meta_theory
         values['module_scope_general'] = moduleObject.scope
         values['module_propositions_general'] = moduleObject.propositions
-        values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + str(moduleObject.version) + '/' + slugify(moduleObject.title)
-        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + slugify(moduleObject.title)
+        values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + str(moduleObject.version) + '/' + moduleObject.title
+        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + moduleObject.title
         values['module_uid'] = moduleObject.uid
         values['module_version'] = 1
         values['module_published'] = moduleObject.published
@@ -164,16 +163,16 @@ def getModuleVersion(uid, version=0):
         values['module_scope_general'] = moduleObject.scope
         values['module_propositions_general'] = moduleObject.propositions
         values['module_uid'] = moduleObject.uid
-        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + slugify(moduleObject.title)
+        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + moduleObject.title
         values['module_version'] = moduleObject.version
         values['markdown'] = moduleObject.theoryMarkdown
         values['html'] = moduleObject.theoryHtml
         values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)
         
         if moduleObject.current is True:
-            values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + slugify(moduleObject.title)
+            values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + moduleObject.title
         else:
-            values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + str(version) + '/' + slugify(moduleObject.title)
+            values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + str(version) + '/' + moduleObject.title
     else:
         values['error'] = 'Module does not exist'
     return values
@@ -305,7 +304,7 @@ def publishModule(uid):
     db.put(module)
 
 
-class NewModuleHandler(webapp.RequestHandler):
+class NewModuleHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         from users import isContributingUser
@@ -345,7 +344,7 @@ class NewModuleHandler(webapp.RequestHandler):
                     defKey = newDefinition(termKey.slug, function, definition)
             else:
                 from terms import newTerm
-                newTerm(term, slugify(term), function, definition)
+                newTerm(term, term, function, definition)
                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
             
@@ -358,7 +357,7 @@ class NewModuleHandler(webapp.RequestHandler):
             doRender(self, 'error.html', values)
         
 
-class EditModuleHandler(webapp.RequestHandler):
+class EditModuleHandler(webapp2.RequestHandler):
     def get(self):
         from users import isContributingUser
         if isContributingUser() is True:
@@ -403,7 +402,7 @@ class EditModuleHandler(webapp.RequestHandler):
                     defKey = newDefinition(termKey.slug, function, definition)
             else:
                 from terms import newTerm
-                newTerm(term, slugify(term), function, definition)
+                newTerm(term, term, function, definition)
                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
             
@@ -415,7 +414,7 @@ class EditModuleHandler(webapp.RequestHandler):
             values = {'error' : 'Failed to update module. Please try again later.'}
             doRender(self, 'error.html', values)
 
-class ModuleHandler(webapp.RequestHandler):
+class ModuleHandler(webapp2.RequestHandler):
     def get(self):
         from users import isContributingUser
         pathList = getUrlResourceList(self)
@@ -460,7 +459,7 @@ class ModuleHandler(webapp.RequestHandler):
         uid = self.request.get("module_version_uid")
         self.redirect('/modules/' + uid + '/' + version)
         
-class MainPageHandler(webapp.RequestHandler):
+class MainPageHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         from users import isContributingUser
@@ -481,17 +480,10 @@ class MainPageHandler(webapp.RequestHandler):
             
         doRender(self, 'moduleDefault.html', values)
         
-def main():
-    application = webapp.WSGIApplication(
+app = webapp2.WSGIApplication(
                                          [('/module/edit.*', EditModuleHandler),
                                           ('/module/new.*', NewModuleHandler),
                                           ('/modules/?', MainPageHandler),
                                           ('/modules/.*', ModuleHandler)],
                                           debug=True)
-    run_wsgi_app(application)
-
-
-if __name__ == "__main__":
-    main()
-
 
