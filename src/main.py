@@ -6,9 +6,6 @@
 
 import datamodel
 
-import cgi
-import datetime
-import urllib
 import webapp2
 import jinja2
 import os
@@ -16,7 +13,6 @@ import logging
 
 from google.appengine.ext import db
 from google.appengine.api import users
-from google.appengine.ext import db
 from google.appengine.api import mail
 
 jinja_environment = jinja2.Environment(loader = jinja2.FileSystemLoader(os.path.dirname(__file__) + '/templates'))
