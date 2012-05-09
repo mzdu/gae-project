@@ -1,4 +1,4 @@
-application: wikitheoria
+application: wikitheoria-hrd
 version: 145
 runtime: python27
 api_version: 1
@@ -67,3 +67,6 @@ handlers:
 libraries:
 - name: jinja2
   version: latest
+  
+builtins:
+- remote_api: on
