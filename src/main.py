@@ -3,6 +3,8 @@
 #@author: Jonathan Mayhak & Jason Rikard
 
 #TODO: the theory appears with <p> tags on it, un-escape the content before displaying.
+#TODO: entering items (lists) in the markdown wysiwig is broken. (and in article...slugify?)
+#TODO: use a javascript template library for module.js, terms.js, etc. (from backbone.js book)
 
 import datamodel
 
