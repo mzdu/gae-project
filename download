@@ -1,0 +1,1 @@
+appcfg.py download_data --application=s~wikitheoria-hrd --url=http://wikitheoria-hrd.appspot.com/_ah/remote_api --filename=data
