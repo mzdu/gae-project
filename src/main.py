@@ -1,6 +1,5 @@
 #main.py
 #Wikitheoria Project
-#@author: Jonathan Mayhak & Jason d
 
 #TODO: the theory appears with <p> tags on it, un-escape the content before displaying.
 #TODO: entering items (lists) in the markdown wysiwig is broken. (and in article...slugify?)
