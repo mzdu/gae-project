@@ -1,0 +1,24 @@
+High Priority
+
+1. Fix the link 
+(Modules) The link of newly created module is incorrect. 
+
+The link of newly created module is incorrect. When user clicks that link, the page will jump to an irrelevant place. Carefully checked the google database, it seems that the new link is referring 'uid', but 'uid' is not unique. Some of modules are sharing the same uid.
+
+What is this uid column for? Design flaw?
+
+
+2. Add text of modules
+
+Add the text of the modules
+
+Hahn -- The Shadow of Utility Part I.doc
+Hahn -- Endorsement by numbers or endorsement by status.doc
+
+to the website.
+
+
+3.(Modules) Fail to list all modules
+
+Browse Modules: No result was returned.
+
