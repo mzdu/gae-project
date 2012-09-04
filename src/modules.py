@@ -77,10 +77,12 @@ def getFeaturedModule():
         values['module_last_update_general'] = '%02d/%02d/%04d' % (moduleObject.module.last_update.month, moduleObject.module.last_update.day, moduleObject.module.last_update.year)
         values['module_scope_general'] = moduleObject.module.scope
         values['module_propositions_general'] = moduleObject.module.propositions
-        
-    ''' module_url is incorrect.
-    '''      
+
+     
         values['module_url'] = '/modules/' + str(moduleObject.module.uid) + '/' + str(moduleObject.module.version) + '/'+ moduleObject.module.title
+
+        
+        
         values['module_meta_theory_general'] = moduleObject.module.meta_theory[0:500] + "<a href=" + values['module_url'] + ">Read More...</a>"
         values['module_version'] = str(moduleObject.module.version)
         terms = []
@@ -124,7 +126,11 @@ def getModule(uid):
         values['module_propositions_general'] = moduleObject.propositions
         values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + str(moduleObject.version) + '/' + moduleObject.title
         values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + moduleObject.title
+        
+        
         values['module_uid'] = moduleObject.uid
+        
+        
         values['module_version'] = 1
         values['module_published'] = moduleObject.published
         values['markdown'] = moduleObject.theoryMarkdown
