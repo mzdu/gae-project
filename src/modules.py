@@ -150,6 +150,7 @@ def getModuleVersion(uid, version=0):
     values = dict()
     try:
         uid = int(uid)
+    # uid indicates the version of module???
     except:
         values['error'] = 'Module id\'s and version numbers are numeric. Please check the URL. Example wikitheoria.appspot.com/1 or wikitheoria.appspot.com/1/2'
         return values
