@@ -407,7 +407,10 @@ class JoinHandler(webapp2.RequestHandler):
         userInfo = getCurrentUserInfo()
         if userInfo['isUser'] is 'True':
             values = userInfo
+        
         doRender(self, 'join.html', values)
+            
+    # Test! Create a branch to block non-contributor
     def post(self):
         email = self.request.get("email")
         name = self.request.get("name")
