@@ -8,14 +8,16 @@
 <div id="mainContent">
         <h1>Modules</h1>
         <div id="moduleSubNav">
-        	<ul>
-        	<!--  Seperate user 09/16/2012-->
-
-        		<li><a href="/module/new">Contribute Module</a></li>
-
-        		<li onclick="showBrowse()"><a href="#">Browse Modules</a></li>
-        	</ul>
+         <ul>
+         {% if can_contribute %}
+         <li><a href="/module/new">Contribute Module..Yes</a></li>
+         {% else %}
+         <li><a href="join.html">Contribute Module..No</a></li>
+         {% endif %}
+         <li onclick="showBrowse()"><a href="#">Browse Modules</a></li>
+         </ul>
         </div>
+        
         {% if unpublished_modules %}
         	<div class="clear" />
 	        <div class="box">
