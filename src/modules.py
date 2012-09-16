@@ -77,12 +77,7 @@ def getFeaturedModule():
         values['module_last_update_general'] = '%02d/%02d/%04d' % (moduleObject.module.last_update.month, moduleObject.module.last_update.day, moduleObject.module.last_update.year)
         values['module_scope_general'] = moduleObject.module.scope
         values['module_propositions_general'] = moduleObject.module.propositions
-
-     
         values['module_url'] = '/modules/' + str(moduleObject.module.uid) + '/' + str(moduleObject.module.version) + '/'+ moduleObject.module.title
-
-        
-        
         values['module_meta_theory_general'] = moduleObject.module.meta_theory[0:500] + "<a href=" + values['module_url'] + ">Read More...</a>"
         values['module_version'] = str(moduleObject.module.version)
         terms = []
@@ -150,7 +145,6 @@ def getModuleVersion(uid, version=0):
     values = dict()
     try:
         uid = int(uid)
-    # uid indicates the version of module???
     except:
         values['error'] = 'Module id\'s and version numbers are numeric. Please check the URL. Example wikitheoria.appspot.com/1 or wikitheoria.appspot.com/1/2'
         return values
