@@ -58,9 +58,6 @@ handlers:
 - url: /terms.*
   script: terms.app
   
-- url: /api.*
-  script: api.app
-  
 - url: /.*
   script: main.app
 
