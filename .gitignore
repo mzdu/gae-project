@@ -3,3 +3,4 @@
 .settings
 .checkstyle
 *.pyc
+.DS_Store
