@@ -10,7 +10,6 @@ Hahn -- Endorsement by numbers or endorsement by status.doc
 to the website.
 
 
-2.Terms cannot be added while creating a new module.
 
 
 3.(Modules) Fail to list all modules
