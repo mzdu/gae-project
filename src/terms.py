@@ -2,7 +2,9 @@ import datamodel
 import logging
 from main import doRender, getUrlResourceList, createNewUID, getCurrentUserEntity
 import webapp2
+
 #from google.appengine.ext.webapp.util import run_wsgi_app
+
 from google.appengine.ext import db
 
 def getTerm(slug):
@@ -101,7 +103,8 @@ class NewTermHandler(webapp2.RequestHandler):
         term = self.request.get('term').strip().lower()
         definition = self.request.get('definition').strip()
         function = self.request.get('function')
-        slug = term
+        #slug = term
+        slug = term.replace(' ', '-')
         values = newTerm(term, slug, function, definition)
         if not values['error'] == '':
             doRender(self, 'error.html', values)
