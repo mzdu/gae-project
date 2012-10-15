@@ -8,6 +8,7 @@ import webapp2
 from google.appengine.ext import db
 
 def getSuggestions(self):
+#get json data 10/14/2012
     self.response.headers['Content-Type'] = 'application/json'
     if self.request.get('query'):
         query = self.request.get('query')

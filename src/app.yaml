@@ -60,6 +60,9 @@ handlers:
   
 - url: /.*
   script: main.app
+  
+- url: /api.*
+  script: api.app
 
 libraries:
 - name: jinja2
