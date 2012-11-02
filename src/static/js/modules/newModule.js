@@ -94,9 +94,10 @@ function showTermSearch(){
     $('#query').autocomplete({ serviceUrl:'/api?method=getSuggestions',
    							   deferRequestBy: 400,  
    							   width:200,
-   							   onSelect: function(value, data){termBuilder(value) }
+   							   onSelect: function(value, data){termBuilder(value) 
+   								   }
    	});
-   	 
+    
 	$("#loading").ajaxStart(function(){
 		$(this).show();
  	});
@@ -117,19 +118,17 @@ function showTermSearch(){
 //New term cannot be added.termBuilder can be triggered. Function JSON failed to run.
 
 function termBuilder(value){
-	
 	$.getJSON("/api?method=getTermDefinitions&term="+value,
 			function(json){
 				if(json.stat == 'fail'){
 					var newTerm = $("#query").val();
-
+					
 				    $("#termBuilder").html('<h2>"'+newTerm+'"</h2><input type="hidden" id="query" value = "'+newTerm+'" />Term not defined. Please define this term to begin using it.'+
-				    						'<br /> <input id="defineInput" type="text" />'+functionGroup+'<button type="button" onclick="addNewTerm()">Define</button><button type="button" onclick="showTermSearch()">Cancel</button>');
+				    						'<br /> <input id="defineInput" type="text"/>'+functionGroup+'<button type="button" onclick="addNewTerm()">Define</button><button type="button" onclick="showTermSearch()">Cancel</button>');
 					$("#termResults").html('');
 				}
 				//If the search is successful show the defintion options for the searched term.
 				else{
-					
 					slug = json.term.replace(' ', '-');
 	  				var tempHTML = '';
 	  				for(var i = 0; i < json.definitions.length; i++){

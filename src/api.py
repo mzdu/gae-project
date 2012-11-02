@@ -1,14 +1,13 @@
 from main import doRender, createNewUID, decrementCounter
 import datamodel
 import logging
-from django.utils import simplejson
+import json
 from users import isContributingUser, isAdministratorUser
 import webapp2
 #from google.appengine.ext.webapp2.util import run_wsgi_app
 from google.appengine.ext import db
 
 def getSuggestions(self):
-#get json data 10/14/2012
     self.response.headers['Content-Type'] = 'application/json'
     if self.request.get('query'):
         query = self.request.get('query')
@@ -16,17 +15,17 @@ def getSuggestions(self):
             termObject = db.Query(datamodel.Term).order("word").fetch(1000, 0)
         except:
             jsonData = {'query': query, 'suggestions' : [], 'stat' : 'fail'}
-            self.response.out.write(simplejson.dumps(jsonData))
+            self.response.out.write(json.dumps(jsonData))
             return
         if termObject:
             jsonData = {'query': query, 'suggestions' : [], 'stat' : 'ok'}
             for item in termObject:
                 if item.word.startswith(query):
                     jsonData['suggestions'].append(item.word)
-            self.response.out.write(simplejson.dumps(jsonData))
+            self.response.out.write(json.dumps(jsonData))
     else:
         jsonData = {'error': 'Argument: query(required)', 'stat' : 'fail'}
-        self.response.out.write(simplejson.dumps(jsonData))
+        self.response.out.write(json.dumps(jsonData))
 
 #getTermDefinitions helper
 def getAllTermDefinitions(term):
@@ -72,13 +71,13 @@ def getTermDefinitions(self):
     self.response.headers['Content-Type'] = 'application/json'
     if self.request.get('function') and self.request.get('term'):
         jsonData = getFilteredTermDefinitions(self.request.get('term'), self.request.get('function'))
-        self.response.out.write(simplejson.dumps(jsonData))
+        self.response.out.write(json.dumps(jsonData))
     elif self.request.get('term'):
         jsonData = getAllTermDefinitions(self.request.get('term'))
-        self.response.out.write(simplejson.dumps(jsonData))
+        self.response.out.write(json.dumps(jsonData))
     else:
         jsonData = {'error': 'Argument: term(required)', 'stat' : 'fail'}
-        self.response.out.write(simplejson.dumps(jsonData))
+        self.response.out.write(json.dumps(jsonData))
 
 
 
@@ -96,10 +95,10 @@ def getArticleComments(self, article_uid):
             jsonData['user'].append(comment.user.alias)
             jsonData['comment'].append(comment.comment)
             jsonData['comment_date'].append('%02d/%02d/%04d at %02d:%02d' % (comment.comment_date.month, comment.comment_date.day, comment.comment_date.year, comment.comment_date.hour, comment.comment_date.minute))
-        return simplejson.dumps(jsonData)
+        return json.dumps(jsonData)
     else:
         jsonData = {'stat' : 'fail'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def addArticleComment(self, article_uid, comment):
     try:
@@ -109,14 +108,14 @@ def addArticleComment(self, article_uid, comment):
         article = db.Query(datamodel.Article).filter("uid", int(article_uid)).get()
     except:
         jsonData = {'stat':'fail', 'message':'unable to find article from supplied uid'}
-        self.response.out.write(simplejson.dumps(jsonData))
+        self.response.out.write(json.dumps(jsonData))
     from main import getCurrentUserEntity
     try:
         datamodel.ArticleComment(uid=uid, user=getCurrentUserEntity(), article=article, comment=comment).put()
         jsonData = {'stat':'ok'}
     except:
         jsonData = {'stat':'fail', 'message':'unable to create new comment in datastore'}
-    self.response.out.write(simplejson.dumps(jsonData))
+    self.response.out.write(json.dumps(jsonData))
 
 def removeArticle(self, article_uid):
     try:
@@ -137,16 +136,16 @@ def removeArticle(self, article_uid):
             jsonData = {'stat' : 'ok'}
         except:
             jsonData = {'stat' : 'fail' , 'message' : 'could not delete article'}
-        return simplejson.dumps(jsonData)
+        return json.dumps(jsonData)
     else:
-        return simplejson.dumps({'stat' : 'fail', 'message' : 'must be an administrator'})
+        return json.dumps({'stat' : 'fail', 'message' : 'must be an administrator'})
 
 def getArticles(self):
     try:
         articles = db.Query(datamodel.Article).order("-date_pub")
     except:
         jsonData = {'stat':'fail', 'message': 'failed to retrieve articles'}
-        return simplejson.dumps(jsonData)
+        return json.dumps(jsonData)
     try:
         jsonData = {'stat':'ok', 'title': [], 'author':[], 'date_pub':[], 'body':[], 'uid':[]}
         for article in articles:
@@ -157,7 +156,7 @@ def getArticles(self):
             jsonData['body'].append(article.body)
     except:
         jsonData = {'stat':'fail', 'message':'failed to find all data'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def getFeaturedArticle(self):
     try:
@@ -165,7 +164,7 @@ def getFeaturedArticle(self):
         jsonData = {'stat':'ok', 'title': featured_article.article.title, 'author':featured_article.article.author.alias, 'date_pub':"hello", 'body':featured_article.article.body, 'uid':featured_article.article.uid}
     except:
         jsonData = {'stat':'failed','message':'failed to find featured article'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def featureArticle(self, article):
     try:
@@ -174,7 +173,7 @@ def featureArticle(self, article):
         jsonData = {'stat':'ok'}
     except:
         jsonData = {'stat':'failed','message':'failed to feature article'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def getCurrentModules(self):
     try:
@@ -191,7 +190,7 @@ def getCurrentModules(self):
             jsonData['current_version'].append(module.version)
     except:
         jsonData = {'stat':'fail','message':'failed to find all data'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def getPastModules(self, module):
     try:
@@ -207,7 +206,7 @@ def getPastModules(self, module):
             jsonData['version'].append(module.version)
     except:
         jsonData = {'stat':'fail','message':'failed to find all data'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def getFeaturedModule(self):
     try:
@@ -215,7 +214,7 @@ def getFeaturedModule(self):
         jsonData = {'stat':'ok','title':featured_module.module.title,'uid':featured_module.module.uid}
     except:
         jsonData = {'stat':'failed','message':'failed to find featured module'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def featureModule(self, module):
     try:
@@ -224,7 +223,7 @@ def featureModule(self, module):
         jsonData = {'stat' : 'ok'}
     except:
         jsonData = {'stat':'failed','message':'failed to feature module'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def removeModule(self, module_uid):
     try:
@@ -238,7 +237,7 @@ def removeModule(self, module_uid):
             #module_terms = db.Query(datamodel.ModuleTerms).filter("module", temp)
         except:
             jsonData = {'stat' : 'fail' , 'message' : 'no module found'}
-            return simplejson.dumps(jsonData)
+            return json.dumps(jsonData)
         try:
             for module in modules:
                 module.delete()
@@ -248,9 +247,9 @@ def removeModule(self, module_uid):
             jsonData = {'stat' : 'ok'}
         except:
             jsonData = {'stat' : 'fail' , 'message' : 'unable to delete module'}
-        return simplejson.dumps(jsonData)
+        return json.dumps(jsonData)
     else:
-        return simplejson.dumps({'stat' : 'fail', 'message' : 'must be an administrator'})
+        return json.dumps({'stat' : 'fail', 'message' : 'must be an administrator'})
 
 def setCurrentVersion(self, uid, version):
     try:
@@ -266,7 +265,7 @@ def setCurrentVersion(self, uid, version):
         jsonData = {'stat':'ok'}
     except:
         jsonData = {'stat':'failed','message':'could not update current version'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def browseModules(self):
     discipline = self.request.get('discipline')
@@ -312,14 +311,14 @@ def browseModules(self):
                 jsonData['discipline'].append(module.discipline)
     else:
         jsonData = {'stat':'failed','message':'could not load modules'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def getTerms(self):
     try:
         terms = db.Query(datamodel.Term).order("-date_submitted")
     except:
         jsonData = {'stat':'fail', 'message': 'failed to retrieve terms'}
-        return simplejson.dumps(jsonData)
+        return json.dumps(jsonData)
     try:
         jsonData = {'stat':'ok', 'word': [], 'slug':[], 'date_submitted':[], 'contributor':[], 'uid':[], 'popularity':[]}
         for term in terms:
@@ -331,7 +330,7 @@ def getTerms(self):
             jsonData['popularity'].append(term.popularity)
     except:
         jsonData = {'stat':'fail', 'message':'failed to find all data'}
-    return simplejson.dumps(jsonData)
+    return json.dumps(jsonData)
 
 def removeTerm(self, term):
     try:
@@ -343,15 +342,15 @@ def removeTerm(self, term):
             term = db.Query(datamodel.Term).filter("uid",int(term)).get()
         except:
             jsonData = {'stat':'failed','message':'failed to find term'}
-            return simplejson.dumps(jsonData)
+            return json.dumps(jsonData)
         try:
             term.delete()
         except:
             jsonData = {'stat':'failed','message':'failed to delete term'}
-            return simplejson.dumps(jsonData)
+            return json.dumps(jsonData)
     else:
         jsonData = {'stat':'failed','message':'must be an administrator'}
-    	return simplejson.dumps(jsonData)
+    	return json.dumps(jsonData)
 
 class ApiHandler(webapp2.RequestHandler):
     def get(self):
@@ -436,7 +435,7 @@ class ApiHandler(webapp2.RequestHandler):
         else:
             self.response.headers['Content-Type'] = 'application/json'
             jsonData = {'error': 'Unknown method.'}
-            self.response.out.write(simplejson.dumps(jsonData))
+            self.response.out.write(json.dumps(jsonData))
             return
 
 class DocumentationHandler(webapp2.RequestHandler):
