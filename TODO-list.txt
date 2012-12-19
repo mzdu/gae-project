@@ -1,18 +1,8 @@
 High Priority
 
-1. Add text of modules
+1. Reading more about Search function that is provided by GAE
+https://developers.google.com/appengine/docs/python/search/
 
-Add the text of the modules
-
-Hahn -- The Shadow of Utility Part I.doc
-Hahn -- Endorsement by numbers or endorsement by status.doc
-
-to the website.
-
-
-
-
-3.(Modules) Fail to list all modules
-
-Browse Modules: No result was returned.
-
+"The Search API gives your application the capability to perform Google-like searches over structured data within your application. 
+You can perform full-text searches across several different types of text (plain text, HTML, Atom, and others). 
+Searches return a ranked list of matching text, and you can customize the ranking of results."
