@@ -93,7 +93,6 @@ a:hover{
 }
 
 
-
 /* =Branding
 -----------------------------------------------------------------------------*/
 
@@ -110,6 +109,10 @@ a:hover{
 	font-weight:bold;
 	font-size:14px;
     margin-right:20px;
+}
+
+ul.childList{
+	display:none;	
 }
 
 #userMenu a{
@@ -155,6 +158,12 @@ a:hover{
 #subNav li a:hover {
     background-color:#00CC44;
 }
+
+#subNav li:hover > ul{
+	display:none;
+	font-size: 50%;
+}
+
 
 
 /* =Main Content

@@ -41,9 +41,18 @@
 	                                                   <b>{{num_articles}} <a href="/articles/" target="_self">articles</a></b> &#149; 
 	                                                   <b>{{num_users}} <a href="/users/" target="_self">users</a></b> &#149;
 	                                                   <b>{{num_contributions}} <a href="/" target="_self">contributions</a></b>
-	        <ul class="navTab">
-	  		    <li><a href="/">Home</a></li>
-	    	    <li><a href="/modules">Modules</a></li>
+	        
+	        
+	        <script src="http://code.jquery.com/jquery-latest.js"></script>
+	        <script src="highlightNav.js"></script>
+	        <ul class="navList">
+	  		    <li class="highlight"><a href="/" >Home</a></li>
+	    	    <li><a href="/modules">Modules</a>
+	    	    	<ul class="childList">
+	    	    		<li><a href="#">New</a></li>
+						<li><a href="#">Browse</a></li>
+	    	    	</ul>
+	    	    </li>
 	    	    <!-- 
 	    	    <li><a href="/articles">Articles</a></li>
 	    	     -->
@@ -52,6 +61,8 @@
 	    	    <li><a href="/help">Help</a></li>
 	    	    <li style="margin-left:20px;"><a href="/feedback" style="background-color:#FFFF00;color:#000;font-size:16px">Feedback</a></li>
 	    	</ul>
+	    	
+	    	
         </div>
     </div>
     <!-- End of Header -->
@@ -83,11 +94,13 @@
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
+
 <script type="text/javascript">
 try {
 var pageTracker = _gat._getTracker("UA-4254311-11");
 pageTracker._trackPageview();
-} catch(err) {}</script>
+} catch(err) {}
+</script>
 </body>
 
 </html>
