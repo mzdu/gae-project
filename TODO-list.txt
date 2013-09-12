@@ -1,3 +1,0 @@
-"The Search API gives your application the capability to perform Google-like searches over structured data within your application. 
-You can perform full-text searches across several different types of text (plain text, HTML, Atom, and others). 
-Searches return a ranked list of matching text, and you can customize the ranking of results."

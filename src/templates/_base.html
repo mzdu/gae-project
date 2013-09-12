@@ -26,9 +26,9 @@
 		<div id="userMenu">
 			{% if uid %}
 				<a href="{{user_profile_url}}">{{ alias }}</a> |
-				<a href="{{logout_url}}">logout</a> | <a href="/about">about</a> | <a href="/help">help</a> | <input value="Search" disabled>
+				<a href="{{logout_url}}">logout</a> | <a href="/about">about</a> |<!-- <a href="/help">help</a> | --> <input value="Search" disabled>
 			{% else %}
-				<a href="{{login_url}}">login</a> | <a href="/about">about</a> | <a href="/help">help</a> | <input value="Search" disabled>
+				<a href="{{login_url}}">login</a> | <a href="/about">about</a> | <!-- <a href="/help">help</a> |  --><input value="Search" disabled>
 			{% endif %}
 		</div>
         <div style="float:left;margin-top:15px;margin-left:15px;">
@@ -37,7 +37,7 @@
 	        </a>
 	    </div>
 	    <div id="subNav">
-	        <span class="mainTitle">Wikitheoria</span> <b>{{num_modules}} <a href="/modules/" target="_self">modules</a></b> &#149; 
+	        <a href="/"><span class="mainTitle">Wikitheoria</span></a> <b>{{num_modules}} <a href="/modules/" target="_self">modules</a></b> &#149; 
 	                                                   <b>{{num_articles}} <a href="/articles/" target="_self">articles</a></b> &#149; 
 	                                                   <b>{{num_users}} <a href="/users/" target="_self">users</a></b> &#149;
 	                                                   <b>{{num_contributions}} <a href="/" target="_self">contributions</a></b>
