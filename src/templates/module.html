@@ -21,13 +21,21 @@
 			  
 			  <br />Version: {{module_version}}
 		</div>
-				
-					<h3 class="sectionHeader">Meta Theory</h3>
-					<p>{{module_meta_theory_general}}</p>
-					<h3 class="sectionHeader">Theory</h3>
+					<h3 class="sectionHeader">KEY WORDS</h3>
 					<p>{{html}}</p>
+					<h3 class="sectionHeader">BACKGROUND/METATHEORY</h3>
+					<p>{{module_meta_theory_general}}</p>
+					<div class="terms">
+						<h3 class="sectionHeader">TERMS & DEFINITIONS</h3>
+						<ul>
+							{% for x in terms %}
+								<li><a href="/terms/{{x.term.slug}}">{{x.term.word}}</a> ({{x.definition.function}}) - {{x.definition.definition}}</li>
+							{% endfor %}
+						</ul>
+					</div><!-- end terms -->
+
 					<div class="scope">
-						<h3 class="sectionHeader">Scope</h3>
+						<h3 class="sectionHeader">SCOPE CONDITOINS</h3>
 						<ol>
 								{% for scope in module_scope_general %}
 									<li>{{scope}}</li>
@@ -35,21 +43,26 @@
 						</ol>
 					
 					</div><!-- end scope -->
-					<div class="terms">
-						<h3 class="sectionHeader">Terms</h3>
-						<ul>
-							{% for x in terms %}
-								<li><a href="/terms/{{x.term.slug}}">{{x.term.word}}</a> ({{x.definition.function}}) - {{x.definition.definition}}</li>
-							{% endfor %}
-						</ul>
-					</div><!-- end terms -->
 					<div class="propositions">
-						<h3 class="sectionHeader">Propositions</h3>
+						<h3 class="sectionHeader">PROPOSITIONS</h3>
 						<ol>
 							{% for prop in module_propositions_general %}
 								<li>{{prop}}</li>
 							{% endfor %}
 						</ol>
+					</div>
+					<div class="derivations">
+						<h3 class="sectionHeader">DERIVATIONS</h3>
+						<ol>
+							{{deri}}
+						</ol>
+					</div>
+					<div class="evidence">
+						<h3 class="sectionHeader">EVIDENCE</h3>
+						<ol>
+							{{evid}}
+						</ol>
+					</div>
 			</div><!-- end propositions -->
 				
 	</div><!-- end module -->

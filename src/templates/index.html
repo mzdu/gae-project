@@ -21,7 +21,11 @@
 						<div class="metaData">
 							<div class="title"><a href="{{ module_url }}" target="_self">{{module_title_general}}</a></div>
 							<p>&nbsp</p>
+							
+							<!-- 
 							<span class="descriptor">Contributor:</span> {{module_contrubutor_general}} <br />
+							 -->
+							
 							<span class="descriptor">Updated:</span> {{module_last_update_general}} <br />
 						</div>
 						<div class="clear"></div>
@@ -61,7 +65,7 @@
 	<div id="mainRightContent">
     <div id="featuredArticle">
             <div class="article">
-                <div class="header"><h3>Featured Article</h3></div>
+                <div class="header"><h3>Wikitheoria News</h3></div>
                     {% if article_error %}
                         <p>{{article_error}}</p>
                     {% else %}
@@ -71,7 +75,9 @@
                         <div class="metaData">
                             <div class="title"><a href="{{ article_url }}" target="_self">{{article_title_general}}</a></div>
                             <p>&nbsp</p>
+                            <!-- 
                             <span class="descriptor">Author:</span> {{article_author_general}} <br />
+                             -->
                             <span class="descriptor">Published:</span> {{article_date_pub_general}} <br />
                         </div><br class="clear" />
                     </div><!-- end intro -->

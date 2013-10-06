@@ -111,10 +111,6 @@ a:hover{
     margin-right:20px;
 }
 
-ul.childList{
-	display:none;	
-}
-
 #userMenu a{
 	text-decoration:none;
 }
@@ -132,7 +128,9 @@ ul.childList{
     list-style:none;
     margin:0;
     padding:5px 0px 0px 0px;
+    
 }
+
 
 #subNav li {
     float:left;
@@ -142,6 +140,7 @@ ul.childList{
     text-align:center;
     color:#FFF;
     font-size:14px;
+    
 }
 
 #subNav li a {
@@ -163,6 +162,8 @@ ul.childList{
 	display:none;
 	font-size: 50%;
 }
+
+
 
 
 

@@ -2,10 +2,13 @@
 
 //HTML constants
 var termSearchBoxHTML = '<input type="text" name="q" id="query" autocomplete="off"/> <input id="search" name="searchBtn" type="button" value="Add" onclick="searchBtnClicked()" /> <img src="/static/images/ajax-loader.gif" id="loading" /><br />'
-var functionGroup = "<select name='function' id='function'><optgroup label='Function'><option>noun</option><option>verb</option><option>pronoun</option>"
+
+	
+	
+	var functionGroup = "<select name='function' id='function'><optgroup label='Function'><option>verb</option><option>pronoun</option>"
 	+"<option>adjective</option><option>adverb</option><option>preposition</option><option>conjunction</option><option>interjection</option>"
-	+"</optgroup><optgroup label='Phrase'><option label='noun phrase'>nounPhrase</option><option label='verb phrase'>verbPhrase</option>"
-	+"<option label='prepositional phrase'>prepositionalPhrase</option><option label='adjectival phrase'>adjectivalPhrase</option><option label='adverbial phrase'>adverbialPhrase</option></select>"
+	+"</optgroup><option disabled>——————————</option><optgroup label='Phrase'><option>nounPhrase</option><option>verbPhrase</option>"
+	+"<option>prepositionalPhrase</option><option>adjectivalPhrase</option><option>adverbialPhrase</option></select>"
 
 
 //bind ajax for showTermSearch when documented is loaded
@@ -24,7 +27,7 @@ $(document).ready(function(){
 
 
 function addScope(){
-	$("#scope").append("<li><input class='scopeItem' /> <button class='removeScope'>X</button></li>");
+	$("#scope").append("<li><input class='scopeItem' size='100%'/> <button class='removeScope'>X</button></li>");
 	$(".removeScope").bind("click", function(e){
 			$(this).parent().remove();
 		});
@@ -32,7 +35,7 @@ function addScope(){
 }
 
 function addProposition(){
-	$("#proposition").append("<li><input class='propositionItem' /> <button class='removeProposition'>X</button></li>");
+	$("#proposition").append("<li><input class='propositionItem' size='100%'/> <button class='removeProposition'>X</button></li>");
 	$(".removeProposition").bind("click", function(e){
 			$(this).parent().remove();
 		});
@@ -124,7 +127,7 @@ function termBuilder(value){
 					var newTerm = $("#query").val();
 					
 				    $("#termBuilder").html('<h2>"'+newTerm+'"</h2><input type="hidden" id="query" value = "'+newTerm+'" />Term not defined. Please define this term to begin using it.'+
-				    						'<br /> <input id="defineInput" type="text"/>'+functionGroup+'<button type="button" onclick="addNewTerm()">Define</button><button type="button" onclick="showTermSearch()">Cancel</button>');
+				    						'<br /> <input id="defineInput" type="text" size="100"/>'+functionGroup+'<button type="button" onclick="addNewTerm()">Define</button><button type="button" onclick="showTermSearch()">Cancel</button>');
 					$("#termResults").html('');
 				}
 				//If the search is successful show the defintion options for the searched term.
@@ -134,7 +137,7 @@ function termBuilder(value){
 	  				for(var i = 0; i < json.definitions.length; i++){
 	  					tempHTML += '<li><button type="button" onclick="addTerm(\''+ json.term  +'\',\''+ json.definitions[i].definition +'\',\''+ json.definitions[i].func +'\')">-></button>' + json.definitions[i].definition + ' (' + json.definitions[i].func + ') </li>';
 	  				}
-	  				$("#termResults").html('<p>Choose an existing definition or add a new definition.</p><ul>' + tempHTML + '</ul><input id="defineInput" type="text" />'+functionGroup+'<button type="button" onclick="defineExistingTerm(\''+ json.term +'\')">Define</button>')
+	  				$("#termResults").html('<p>Choose an existing definition or add a new definition.</p><ul>' + tempHTML + '</ul><input id="defineInput" type="text" size="100"/>'+functionGroup+'<button type="button" onclick="defineExistingTerm(\''+ json.term +'\')">Define</button>')
 	  				
 	  			}			  	 
 			}

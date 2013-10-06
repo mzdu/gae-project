@@ -1,42 +1,49 @@
 {% extends "_base.html" %}
 {% block bodyContent %}
-
+<script language="javascript" type="text/javascript">
+function limitText(limitField, limitCount, limitNum) {
+	if (limitField.value.length > limitNum) {
+		limitField.value = limitField.value.substring(0, limitNum);
+	} else {
+		limitCount.value = limitNum - limitField.value.length;
+	}
+}
+</script>
 
 <div class="subHead"><h1>Edit Module: <a href="{{module_url}}" target="_self">{{module_title_general}}</a></h1></div>
 <p>Note: Editing modules is still under development.  Please submit <a href="/feedback" target="_blank">feedback</a></p>
+	
 	<table>
-		<tr><td class="title">Title: </td><td><input name="title" id="title" type="text" value="{{module_title_general}}" style="width: 100%" /></td></tr>
-		<tr><td class="title">Meta Theory: </td>
+		<tr><td class="title">TITLE: </td><td><input name="title" id="title" type="text" value="{{module_title_general}}" size="100" /></td></tr>
+		<tr><td class="title">KEYWORDS: </td>
 			<td>
-				<textarea cols="59" id="meta_theory" name="meta_theory" rows="15">{{module_meta_theory_general}}</textarea>
+				<input id="keywords" name="keywords" type="text" value="" size="100" />
 			</td>
 		</tr>
 	</table>
-		Theory: 
+	<br />
+		<form name="myform">
+		<strong>BACKGROUND/METATHEORY:</strong><font size="1">You have <input readonly type="text" name="countdown" size="3" value="500"> characters left.(Maximum characters: 500)</font>
 			  <div id="wmd-button-bar" class="wmd-panel"></div>
 		      <br/>
-		      <textarea id="wmd-input" class="wmd-panel">{{markdown}}</textarea>
+		      <textarea id="wmd-input" class="wmd-panel" name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,500);" 
+onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" rows="">{{module_meta_theory_general}}</textarea>
 		      <br/>
 		      Preview:
 		      <div id="wmd-preview" class="wmd-panel"></div>
-	<table>
-		<tr><td class="title">Scope: </td><td>
-				<ol id="scope">
-				{% for scope in module_scope_general %}
-					<li><input class="scopeItem" value="{{scope}}" style="width: 100%;" /><button class='removeScope'>X</button></li>
-				{% endfor %}
-				</ol>
-				<input type="button" value="Add Scope" onclick="addScope()" />
-		</td></tr>
-	</table>
-<p class="title">Terms: </p>	
+		      
+		      <br/>
+		</form>        
+	<p class="title">TERMS & DEFINITIONS: </p>	
 	<table id="terms_new_module">	
+		<tr><td>Note: Adding a term is a multi-step process. Add only the term then click add then choose or add a definition. We are working on making this process clearer.</td></tr>
 		<tr>
 			<td id="termBuilder">
 			</td>
 		</tr>
 		<tr>
-			<td id="termResults"></td>
+			<td id="termResults">
+			</td>
 		</tr>
 		<tr>	
 			<td>
@@ -47,25 +54,53 @@
 			</ul>
 			</td>
 		</tr>
-		</table>
+	</table>
+		      
+
+	<table>
+		<tr><td class="title">SCOPE CONDITIONS: </td>
+		<td>
+			<ol id="scope">
+				{% for scope in module_scope_general %}
+				<li><input class="scopeItem" value="{{scope}}" style="size: 100px;" /><button class='removeScope'>X</button></li>
+				{% endfor %}
+			</ol>
+			<input type="button" value="Add Scope" onclick="addScope()" />
+		</td></tr>
+	</table>
+
 	<table>
 		<tr>
-			<td class="title">Propositions </td>
+			<td class="title">PROPOSITIONS </td>
 			<td>
 				<ol id="proposition">
 				{% for proposition in module_propositions_general %}
-					<li><input class="propositionItem" value="{{proposition}}" style="width: 100%" /><button class='removeProposition'>X</button></li>
-				{% endfor %}
+					<li><input class="propositionItem" value="{{proposition}}" style="size: 100px"/><button class='removeProposition'>X</button></li>
+				{% endfor %}				
 				</ol>
 				<input type="button" value="Add Proposition" onclick="addProposition()") />
 			</td>
 		</tr>
-		
-		<tr><td>Discipline:</td><td>
-			<select name="discipline" id="discipline">
-				<option>Sociology</option><option>Psychology</option><option>Political Science</option>
-		</td></tr>
+		<!-- Not ready -->
+		<tr>
+			<td class="title">DERIVATIONS </td>
+			<td>
+				<ol id="derivations">
+					<li><input class="derivationItem" size="100px"/></li>
+				</ol>
+				<input type="button" value="Add Derivation" onclick="addDerivation()") />
+			</td>
+		</tr>
+				
+		<tr>
+			<td class="title">EVIDENCE: </td>
+			<td>
+				<textarea cols="59" id="evidence" name="evidence" rows="10"></textarea>
+			</td>
+		</tr>		
+
 	</table>
+	
 	<br />
 	<input name="uid" id="uid" type="hidden" value="{{module_uid}}"/>
 
