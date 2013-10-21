@@ -1,1 +1,4 @@
 appcfg.py download_data --application=s~wikitheoria-hrd --url=http://wikitheoria-hrd.appspot.com/_ah/remote_api --filename=data
+
+10/20/2013
+GAE 1.8.3 still does not support this command.

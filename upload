@@ -1,1 +1,5 @@
 appcfg.py upload_data --url=http://localhost:8080/_ah/remote_api --filename=data --num_thread=1
+
+
+Before you upload the data, you would better to make sure the datastore is clean.
+Next step is to add your test user to the list of the Administrator and the ContributingUser. 
