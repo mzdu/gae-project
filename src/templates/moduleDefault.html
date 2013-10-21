@@ -43,17 +43,21 @@
 			<tr>
 			     <th>Title</th>
 			     <th>Version</th>
+			     <!-- 
 			     <th>Discipline</th>
+			      -->
 			     <th>Contributor</th>
-			     <th>Date Submitted</th>
+			     <th style="width:15%; text-align:right; margin-right:0px">Date Submitted</th>
 			</tr>
 			{% for module in ten_newest_modules %}
 			     <tr>
 					<td><a href="/modules/{{module.uid}}/{{module.slug}}">{{module.title}}</a></td>
 					<td>{{module.version}}</td>
+					<!-- 
 					<td>{{module.discipline}}</td>
+					 -->
 					<td><a href="/users/{{module.contributor.uid}}" target="_self">{{module.contributor.alias}}</a></td>
-					<td>{{module.date_submitted.month}}/{{module.date_submitted.day}}/{{module.date_submitted.year}}</td>
+					<td style="text-align:right; padding-right:25px">{{module.date_submitted.month}}/{{module.date_submitted.day}}/{{module.date_submitted.year}}</td>
 				 </tr>
 			{% endfor %}
 			</table>
