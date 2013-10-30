@@ -162,9 +162,13 @@ a:hover{
 	display:none;
 	font-size: 50%;
 }
+/* =Tally
+-----------------------------------------------------------------------------*/
 
+#tally{
 
-
+	padding-left: 30px;
+}
 
 
 /* =Main Content
