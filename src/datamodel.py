@@ -39,7 +39,8 @@ class Module(db.Model):
     theoryHtml = db.TextProperty()
     scope = db.StringListProperty()
     propositions = db.StringListProperty()
-    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
+    # no need for version150   
+#    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
     date_submitted = db.DateTimeProperty(auto_now_add=True)
     last_update = db.DateTimeProperty(auto_now=True)
     version = db.IntegerProperty()
@@ -49,6 +50,12 @@ class Module(db.Model):
     uid = db.IntegerProperty()
     published = db.BooleanProperty()
     current = db.BooleanProperty()
+    
+    # extended module attributes for version 150
+    keywords = db.StringProperty()
+    derivations = db.StringListProperty()
+    evidence = db.StringListProperty()
+    
 
 class VersionCounter(db.Model):
     module = db.IntegerProperty()
@@ -60,10 +67,16 @@ class ModuleVersion(db.Model):
     meta_theory = db.TextProperty()
     scope = db.StringListProperty()
     propositions = db.StringListProperty()
-    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
+    # no need for version 150
+#    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
     date_submitted = db.DateTimeProperty(auto_now_add=True)
     title = db.StringProperty()
     contributor = db.ReferenceProperty(WikiUser)
+    
+    # extended module attributes for version 150
+    keywords = db.StringProperty()
+    derivations = db.StringListProperty()
+    evidence = db.StringListProperty()
 
 #One Term to many TermDefinitions
 class Term(db.Model):
@@ -78,8 +91,9 @@ class Term(db.Model):
 class TermDefinition(db.Model):
     term = db.ReferenceProperty(Term)
     definition = db.StringProperty()
-    function = db.StringProperty(choices = ('noun', 'verb', 'pronoun', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection', 
-                                            'nounPhrase', 'verbPhrase', 'prepositionalPhase', 'adjectivalPhrase', 'adverbialPhrase'))
+    
+    # no need for version150
+#    function = db.StringProperty(choices = ('noun', 'verb', 'pronoun', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection', 'nounPhrase', 'verbPhrase', 'prepositionalPhase', 'adjectivalPhrase', 'adverbialPhrase'))
     popularity = db.IntegerProperty()
     discipline = db.StringProperty()
     date_defined = db.DateTimeProperty(auto_now_add=True)
