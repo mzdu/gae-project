@@ -23,6 +23,7 @@ def getContributionCount():
         @return: an integer representing total contributions to wikitheoria
         @rtype: integer
     '''
+
     from articles import getArticleCount
     from modules import getModuleCount #, getModuleVersionCount
     count = 0
@@ -154,7 +155,7 @@ def doRender(handler, tname = 'index.html', values = {}):
         @rtype: Boolean
     '''
     from users import getUserCount
-    from articles import getArticleCount
+#    from articles import getArticleCount
     from modules import getModuleCount
     temp = jinja_environment.get_template(tname)
 #    temp = os.path.join(os.path.dirname(__file__), 'templates/' + tname)
@@ -162,7 +163,7 @@ def doRender(handler, tname = 'index.html', values = {}):
     for key in userMenuValues:
         values[key] = userMenuValues[key]
     values["num_users"] = getUserCount()
-    values["num_articles"] = getArticleCount()
+#    values["num_articles"] = getArticleCount()
     values["num_modules"] = getModuleCount()
     values["num_contributions"] = getContributionCount()
     handler.response.out.write(temp.render(values))
@@ -302,7 +303,7 @@ def getUrlResourceList(handler):
     url = handler.request.path
     parse_object = urlparse(url)
     resourceList = parse_object.path.split('/')
-    resourceList.pop(0) #Remove empty list item
+    resourceList.pop(0) # Remove empty list item
     return resourceList
 
 def getUserInfo(uid):
