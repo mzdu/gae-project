@@ -428,8 +428,8 @@ class MainPageHandler(webapp2.RequestHandler):
         from articles import getFeaturedArticle
         from google.appengine.api import memcache
         
-        #import markdown
-        #logging.error(markdown.markdown("blahbalhba"))
+#        import markdown
+#        logging.error(markdown.markdown("test markdown"))
         
         #########Memcache featured module
         featuredModule = memcache.get("featuredModule") #@UndefinedVariable
