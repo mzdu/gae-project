@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Wikitheoria</title>
+<link href="/static/css/main.css" type="text/css" rel="stylesheet" />
+{% if css %}
+	{% for path in css %}
+	<link href="{{path}}" type="text/css" rel="stylesheet" />
+	{% endfor %}
+{% endif %}
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+{% if javascript %}
+	{% for path in javascript %}
+	<script type="text/javascript" language="javascript" src="{{path}}"></script>
+	{% endfor %}
+{% endif %}
+
+
+</head>
+
+<body>
+<!-- Start of Wrapper -->
+<div id="wrapper">
+    <!-- Start of Header -->
+    <div id="base_header">
+		<!-- User Menu -->
+		<div id="userMenu">
+			{% if uid %}
+				<a href="{{user_profile_url}}">{{ alias }}</a> | <a href="{{logout_url}}">logout</a>  
+			{% else %}
+				<a href="{{login_url}}">login</a>
+			{% endif %}
+		</div>
+        <div style="float:left;margin-top:20px;margin-left:15px;">
+	        <a href="/" style="text-decoration:none;font-color:#000;">
+	           <img src="/static/images/Logo.jpg" alt="logo" style="width:90px;" />
+	        </a>
+	    </div>
+	    <div id="subNav">
+	        <a href="/"><span class="mainTitle">Wikitheoria</span></a> 
+	        <ul id="navList">
+	  		    <li><a href="/" >New User</a></li>
+				<li style="width:150px"><a href="/">Experienced User</a></li>
+	    	    <li><a href="/">My Work</a></li>
+	    	</ul>
+	    	
+        </div>
+    </div>
+    <!-- End of Header -->
+    <div class="clear"></div>
+        <!-- Start of Body -->
+        <div class="bodyContent">
+            {% block bodyContent %}
+            
+            {% endblock %}
+        </div>
+        <!-- End of Body -->
+
+    <!-- Start of Footer -->
+    <div class="clear"></div>
+    <div id="footer">
+    	<p>Sponsored by the University of South Carolina and the National Science Foundation.<br/>
+    		<a href="/api/docs">API for Developers</a> |
+    		<a href="/administration">Administration</a> |
+    		<a href="/help">Help</a> | 
+    		<a href="/about">About</a> | 
+    		<a href="/contact">Contact</a>
+   		</p>
+   	</div>
+    <!-- End of Footer -->
+</div>
+<!-- End of Wrapper -->
+<!-- Google analytics below to end -->
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-4254311-11");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+
+</html>

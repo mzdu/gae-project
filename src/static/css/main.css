@@ -61,7 +61,7 @@ body {
 }
 
 #sidebarMainContent {
-    float:right:
+    float:right;
     width:70%;
 }
 
@@ -105,10 +105,11 @@ a:hover{
 	width: auto;
 	background-color:#EEEEEE;
 	float:right;
-	padding: 9px;
+	padding: 6px;
 	font-weight:bold;
 	font-size:14px;
-    margin-right:20px;
+    margin-right:300px;
+    margin-top:59px;
 }
 
 #userMenu a{
@@ -120,7 +121,7 @@ a:hover{
 }
 
 #subNav {
-	margin:0px 15px 15px 15px;
+	margin:25px 15px 15px 15px;
     float:left;
 }
 
@@ -162,6 +163,12 @@ a:hover{
 	display:none;
 	font-size: 50%;
 }
+
+#subNav #navList{
+	margin-top: 5px;	
+}
+
+
 /* =Tally
 -----------------------------------------------------------------------------*/
 
@@ -752,6 +759,31 @@ div#pimped.bubble div.rounded {
 div#pimped.bubble cite.rounded {
 	background: transparent url(/static/images/tip-pimped.gif) no-repeat 15px 0;
 }
+
+/* Prezi */
+
+#preziGrid{
+	position: relative;
+	width: 60%;
+	float: left;
+	
+}
+
+#preziGrid img{
+	width: 300px;
+	padding: 10px;
+}
+
+#preziList{
+	width: 30%;
+	float: right;
+}
+
+#preziList li{
+	font-size: 15pt;
+	padding: 5px;
+}
+
 
 
 

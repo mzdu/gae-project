@@ -1,0 +1,132 @@
+{% extends "_base2.html" %}
+{% block bodyContent %}
+
+<style type="text/css">
+	.jqiwide {width:600px}
+	.jqi .errorBlock{ background-color: #FFC6A5; border: solid 1px #ff0000; color: #ff0000; padding: 5px 10px; font-weight: bold; }
+	.jqi .field{ margin: 4px 0; font-size: 11px; }
+	.jqi .field label{ font-weight: bold; display: block; width: 100px; float: left; clear: left; }
+	.jqi .field input { border: solid 1px #777777; width: 100px; }
+</style>
+
+<script type="text/javascript">
+	// html controls the content of prezi
+	function openPrompt(o){
+		if (o.prezi==1){
+			var statesdemo = {
+				state0: {
+					title: 'Wikitheoria 101',
+					html:'<iframe src="http://prezi.com/embed/cfaghhqztosj/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0"></iframe>',
+					buttons: { Close: false}
+
+				}
+			
+			};	
+		}
+		else if (o.prezi==2){
+			var statesdemo = {
+				state0: {
+					title: 'How To Build a Theory Module',
+					html:'<iframe src="http://prezi.com/embed/wnzvks_0hzzq/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0"></iframe>',
+					buttons: { Close: false}
+
+				}
+				
+			};				
+		}
+
+		else if (o.prezi==3){
+			var statesdemo = {
+				state0: {
+					title: 'How To Build a Theory Module',
+					html:'<iframe src="http://prezi.com/embed/wnzvks_0hzzq/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0"></iframe>',
+					buttons: { Close: false}
+
+				}
+				
+			};				
+		}
+
+		else if (o.prezi==4){
+			var statesdemo = {
+				state0: {
+					title: 'How To Build a Theory Module',
+					html:'<iframe src="http://prezi.com/embed/wnzvks_0hzzq/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0"></iframe>',
+					buttons: { Close: false}
+
+				}
+				
+			};				
+		}				
+		
+		else{
+		}
+	
+		
+		$.prompt(statesdemo);
+		$('div.jqi').css('width','570px');
+
+	}
+</script>
+
+<div id="mainContent">
+    <div id="mainTopContent">
+    	<div id="featuredModule">
+			<div class="module">
+				<div class="header"><h3>New Users</h3></div>
+				<div id="newUsers">
+		
+					<div id="preziGrid">
+						<a href="javascript:openPrompt({prezi:1})"><img src="static/images/prezi1.jpg"/></a>
+						<a href="javascript:openPrompt({prezi:2})"><img src="static/images/prezi2.jpg"/></a>
+						<a href="javascript:openPrompt({prezi:3})"><img src="static/images/prezi3.jpg"/></a>
+						<a href="javascript:openPrompt({prezi:4})"><img src="static/images/prezi4.jpg"/></a>
+
+					</div>
+					
+					<div id="preziList">
+						<ul>
+							<li><a href="javascript:openPrompt({prezi:1})">This is the first prezi.</a></li>
+							<li><a href="javascript:openPrompt({prezi:2})">This is the second prezi.</a></li>
+							<li><a href="javascript:openPrompt({prezi:3})">This is the third prezi.</a></li>
+							<li><a href="javascript:openPrompt({prezi:4})">This is the forth prezi.</a></li>
+						</ul>
+					</div><!-- end preziList -->
+					
+				</div><!-- end newUsers -->
+
+	
+			</div><!-- end module -->
+		</div><!-- end featuredModule -->
+    	
+
+		
+
+		
+		
+	</div><!-- end mainTopContent -->
+	
+	<div id="mainMiddleContent">
+		<div id="experiencedUsers">
+			
+		</div><!-- end experiencedUsers -->
+		
+		<div id="searchBox">
+			
+		</div><!-- end searchBox -->
+		
+		
+	</div><!-- end mainMiddleContent -->
+	
+	<div id="mainBottomContent">
+		<div id="newsList">
+			
+		</div><!-- end newsList -->
+		
+
+
+	</div><!-- end mainBottomContent -->	
+	
+	
+</div><!-- end mainContent -->
+{% endblock %}

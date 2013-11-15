@@ -85,7 +85,7 @@ class DefineTermHandler(webapp2.RequestHandler):
             slug = str(path[2])
         except:
             doRender(self, 'error.html', {'error' : 'Not a valid term to define'})
-            return
+            return None
         values = {'slug' : slug, 'term' : slug.replace('-', ' ')}
         doRender(self, 'newDefinition.html', values)
         
@@ -108,7 +108,7 @@ class NewTermHandler(webapp2.RequestHandler):
         values = newTerm(term, slug, function, definition)
         if not values['error'] == '':
             doRender(self, 'error.html', values)
-            return
+            return None
         else:
             self.redirect('/terms/'+slug, False)
         

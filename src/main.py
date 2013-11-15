@@ -461,6 +461,16 @@ class MainPageHandler(webapp2.RequestHandler):
         
 
         doRender(self, 'index.html', values)
+
+class MainPageHandler2(webapp2.RequestHandler):
+    def get(self):
+        values = dict()
+        values['css'] = ['/static/css/jquery-impromptu.css']
+        values['javascript'] = ['/static/js/jquery-impromptu.min.js']
+        logging.info(values['css'])
+        
+        
+        doRender(self, 'index2.html', values)
         
 app = webapp2.WSGIApplication([
                                           ('/help.*', HelpHandler),
@@ -469,7 +479,7 @@ app = webapp2.WSGIApplication([
                                           ('/feedback.*', FeedbackHandler),
                                           ('/contact.*', ContactHandler),
                                           ('/join.*', JoinHandler),
-                                          ('/.*', MainPageHandler)
+                                          ('/.*', MainPageHandler2)
                                           ],debug = True)
     
 
