@@ -467,8 +467,6 @@ class MainPageHandler2(webapp2.RequestHandler):
         values = dict()
         values['css'] = ['/static/css/jquery-impromptu.css']
         values['javascript'] = ['/static/js/jquery-impromptu.min.js']
-        logging.info(values['css'])
-        
         
         doRender(self, 'index2.html', values)
         
