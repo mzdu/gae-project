@@ -64,7 +64,7 @@
 	
 	
     $(function() {
-        $("#organisation").orgChart({container: $("#treecanvas")});
+        $("#organisation").orgChart({container: $("#treecanvas"),interactive: true, fade: true, speed: 'slow'});
     });
 </script>
 
@@ -113,25 +113,25 @@
 			        <div style="display:none">
 			
 			            <ul id="organisation">
-			                <li><em><a href="/">Wikitheoria</a></em>
+			                <li title="Welcome to Wikitheoria"><em><a href="/">Wikitheoria</a></em>
 			                    <ul>
-			                        <li>Contribute<br/>
+			                        <li title="You could contribute your modules and terms here">Contribute<br/>
 			                            <ul>
 			                                <li><a href="/module/new">Contribute Module</a></li>
 			                                <li><a href="/contribute/term">Contribute Term</a></li>
 			                            </ul>
 			                        </li>
-			                        <li>Search<br/>
+			                        <li title="What do you need?">Search<br/>
 			                            <ul>
-			                                <li><a href="#">Modules</a></li>
-											<li><a href="">Propositions</a></li>
-			                                <li><a href="">Terms</a></li>
+			                                <li><a href="/modules">Modules</a></li>
+											<li><a href="/modules">Propositions</a></li>
+			                                <li><a href="/terms">Terms</a></li>
 			                            </ul>
 			                        </li>
-			                        <li><a href="">Readings</a><br/>
+			                        <li title="More about Wikitheoria"><a href="/articles">Readings</a><br/>
 			                            <ul>
 			                                <li><a href="/about">About</a></li>
-			                                <li><a href="/feedback">Contract Us</a></li>
+			                                <li title="Questions and Comments?"><a href="/feedback">Contract Us</a></li>
 			                            </ul>
 			                        </li>
 			                    </ul>
