@@ -465,8 +465,8 @@ class MainPageHandler(webapp2.RequestHandler):
 class MainPageHandler2(webapp2.RequestHandler):
     def get(self):
         values = dict()
-        values['css'] = ['/static/css/jquery-impromptu.css']
-        values['javascript'] = ['/static/js/jquery-impromptu.min.js']
+        values['css'] = ['/static/css/jquery-impromptu.css','/static/css/jquery.orgchart.css']
+        values['javascript'] = ['/static/js/jquery-impromptu.min.js','/static/js/jquery.orgchart.min.js']
         
         doRender(self, 'index2.html', values)
         

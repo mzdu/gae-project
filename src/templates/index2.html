@@ -1,14 +1,6 @@
 {% extends "_base2.html" %}
 {% block bodyContent %}
 
-<style type="text/css">
-	.jqiwide {width:600px}
-	.jqi .errorBlock{ background-color: #FFC6A5; border: solid 1px #ff0000; color: #ff0000; padding: 5px 10px; font-weight: bold; }
-	.jqi .field{ margin: 4px 0; font-size: 11px; }
-	.jqi .field label{ font-weight: bold; display: block; width: 100px; float: left; clear: left; }
-	.jqi .field input { border: solid 1px #777777; width: 100px; }
-</style>
-
 <script type="text/javascript">
 	// html controls the content of prezi
 	function openPrompt(o){
@@ -64,28 +56,42 @@
 	
 		
 		$.prompt(statesdemo);
-		$('div.jqi').css('width','570px');
+		$('div.jqi').css('width','585px');
+		
 
 	}
+	
+	
+	
+    $(function() {
+        $("#organisation").orgChart({container: $("#treecanvas")});
+    });
 </script>
 
 <div id="mainContent">
     <div id="mainTopContent">
-    	<div id="featuredModule">
 			<div class="module">
 				<div class="header"><h3>New Users</h3></div>
 				<div id="newUsers">
 		
 					<div id="preziGrid">
-						<a href="javascript:openPrompt({prezi:1})"><img src="static/images/prezi1.jpg"/></a>
-						<a href="javascript:openPrompt({prezi:2})"><img src="static/images/prezi2.jpg"/></a>
-						<a href="javascript:openPrompt({prezi:3})"><img src="static/images/prezi3.jpg"/></a>
-						<a href="javascript:openPrompt({prezi:4})"><img src="static/images/prezi4.jpg"/></a>
-
+						<div id="prezi1">
+							<a href="javascript:openPrompt({prezi:1})"><img src="static/images/prezi1.jpg"/></a>
+						</div>
+						<div id="prezi2">
+							<a href="javascript:openPrompt({prezi:2})"><img src="static/images/prezi2.jpg"/></a>
+						</div>
+						<div id="prezi3">
+							<a href="javascript:openPrompt({prezi:3})"><img src="static/images/prezi3.jpg"/></a>
+						</div>
+						<div id="prezi4">
+							<a href="javascript:openPrompt({prezi:4})"><img src="static/images/prezi4.jpg"/></a>
+						</div>
 					</div>
 					
 					<div id="preziList">
-						<ul>
+						<div class="header" style="margin:7px"><h3>Wikitheoria in Words</h3></div>
+						<ol>
 							<li><a href="javascript:openPrompt({prezi:1})">This is the first prezi.</a></li>
 							<li><a href="javascript:openPrompt({prezi:2})">This is the second prezi.</a></li>
 							<li><a href="javascript:openPrompt({prezi:3})">This is the third prezi.</a></li>
@@ -94,39 +100,70 @@
 					</div><!-- end preziList -->
 					
 				</div><!-- end newUsers -->
-
-	
 			</div><!-- end module -->
-		</div><!-- end featuredModule -->
     	
-
-		
-
-		
-		
 	</div><!-- end mainTopContent -->
-	
+	<div class="clear"></div>
 	<div id="mainMiddleContent">
-		<div id="experiencedUsers">
+
+		<div class="article">
+               <div class="header"><h3>Experienced Users</h3></div> 
+               
+               <div id="experiencedUsers">
+			        <div style="display:none">
 			
-		</div><!-- end experiencedUsers -->
+			            <ul id="organisation">
+			                <li><em><a href="/">Wikitheoria</a></em>
+			                    <ul>
+			                        <li>Contribute<br/>
+			                            <ul>
+			                                <li><a href="/module/new">Contribute Module</a></li>
+			                                <li><a href="/contribute/term">Contribute Term</a></li>
+			                            </ul>
+			                        </li>
+			                        <li>Search<br/>
+			                            <ul>
+			                                <li><a href="#">Modules</a></li>
+											<li><a href="">Propositions</a></li>
+			                                <li><a href="">Terms</a></li>
+			                            </ul>
+			                        </li>
+			                        <li><a href="">Readings</a><br/>
+			                            <ul>
+			                                <li><a href="/about">About</a></li>
+			                                <li><a href="/feedback">Contract Us</a></li>
+			                            </ul>
+			                        </li>
+			                    </ul>
+			                </li>
+			            </ul>
+			        
+			        </div>
+			
+			        <div id="treecontent">        
+			            <div id="treecanvas">
+			            </div>
+			        </div>
+               </div><!-- end experiencedUsers -->
+		</div>	
 		
-		<div id="searchBox">
-			
-		</div><!-- end searchBox -->
 		
 		
 	</div><!-- end mainMiddleContent -->
-	
+	<div class="clear"></div>
 	<div id="mainBottomContent">
+			<div class="news">
+               <div class="header"><h3>Wikitheoria News</h3></div>
+               
 		<div id="newsList">
-			
+			<p>Every day we are facing Public Good Dilemmas. A Public Good is comprised of two theoretical properties that lead directly into a dilemma: a) jointness of consumption and b) non-excludability. That is to say, once a Public Good has been created (e.g. clean air and water of a community, a clean and safe park, NPR) a) every person will benefit equally (jointly) from the Good, and b) nobody can be excluded from consumption of that Good. The Dilemma arises out of a tension between individual and collective rationality: Everybody derives benefits from a good, whether he or she contributed or not. However, if nobody contributes, the Public Good will not be created and all are worse off (Free riding dilemma). Up to now theorists have been agreeing on one theoretical axiom of Public Goods: that Public Goods cannot be consumed. That is to say, everybody is “doomed to benefit” (always equally). I challenge that widely held view by proposing a new theoretical axiom: Although Public Goods provide everybody equal access (non-excludability) and equal benefits (jointness of consumption), I assume these to be only equal potentials. That is to say, the individual use (consumption) of these potentials differs widely from person to person, based on different utilities or valuations. Thus, Public Goods are subject to individual consumer choices without interfering with the two main properties outlines characterizing Public Goods. If people are not passive receivers, but active consumers of benefits they can anticipate to use, what effects will that have on individual and group behaviour regarding cooperation?</p>
 		</div><!-- end newsList -->
 		
-
+			</div>
 
 	</div><!-- end mainBottomContent -->	
 	
 	
 </div><!-- end mainContent -->
+<div class="clear"></div>
 {% endblock %}

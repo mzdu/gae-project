@@ -36,10 +36,20 @@ body {
 
 }
 
+/* fix box sizing */
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 /* =Structural
 -----------------------------------------------------------------------------*/
-.wrapper {
-	width:70em;
+#wrapper {
+	max-width: 1024px;
+	margin: 0 auto;
+
 }
 
 #base_header {
@@ -104,12 +114,16 @@ a:hover{
 #userMenu{
 	width: auto;
 	background-color:#EEEEEE;
-	float:right;
+	float: left;
 	padding: 6px;
+	padding-left:10px;
+	padding-right:10px;
 	font-weight:bold;
 	font-size:14px;
-    margin-right:300px;
+    margin-left: 30px;
     margin-top:59px;
+    
+
 }
 
 #userMenu a{
@@ -760,31 +774,155 @@ div#pimped.bubble cite.rounded {
 	background: transparent url(/static/images/tip-pimped.gif) no-repeat 15px 0;
 }
 
-/* Prezi */
 
-#preziGrid{
-	position: relative;
-	width: 60%;
-	float: left;
+
+.module{
+	height: 530px;
 	
 }
 
-#preziGrid img{
-	width: 300px;
-	padding: 10px;
+
+#newUsers{
+	position: relative;
+	
 }
 
-#preziList{
-	width: 30%;
-	float: right;
+/* Prezi */
+#preziGrid{
+	margin-left: 25px;
+	height: 435px;
+	
+}
+
+#preziGrid #prezi1,#prezi2,#prezi3,#prezi4{
+	padding: 5px;	
+}
+
+//lock the relative position of prezis
+#preziGrid #prezi1{
+	position: relative;
+}
+#preziGrid #prezi2{
+	position: relative;
+	top: -195px;
+	left: 350px;
+}
+#preziGrid #prezi3{
+	position: relative;
+	top: -180px;
+	left: 0px;
+}
+#preziGrid #prezi4{
+	position: relative;
+	top: -375px;
+	left: 350px;
+}
+
+#preziGrid img{
+	width: 280px;
+	
+}
+
+#newUsers #preziList{
+	position: absolute;
+	border: solid thin #A3BFB1;
+	top: 5px;
+	right: 0px;
+	width: 250px;
+	height: 435px;
+	background-color: rgba(245,255,250,0.8); 	
 }
 
 #preziList li{
-	font-size: 15pt;
+	font-size: 12pt;
 	padding: 5px;
 }
 
 
+#mainMiddleContent{
+	margin-top: 5px;
+}
+
+#mainMiddleContent a{
+	text-decoration:underline;
+}
+
+#mainMiddleContent .article{
+	height: 400px;
+	background-color: rgba(255,243,231,0.2);
+}
+
+#mainMiddleContent .article .header{
+	background-color:#fff3e7;
+	padding:10px;
+	margin-bottom:10px;
+	border:solid thin #A3B0BF;
+}
+
+
+
+
+#mainBottomContent{
+	margin-top: 5px;
+}
+
+.news {
+	background-color:#F5FAFF;
+	
+	border:solid thin #CEDFF2;
+	padding:10px;
+}
+
+.news .header{
+	background-color:#CEDFF2;
+	padding:10px;
+	margin-bottom:10px;
+	border:solid thin #A3B0BF;
+}
+
+
+#contentBox {
+    float:left;
+}
+
+#contentBox ul {
+    list-style:none;
+    margin:0;
+    padding:5px 0px 0px 0px;
+    
+}
+
+
+#contentBox li {
+    float:left;
+    width:100px;
+    margin:0px 5px 0px 0px;
+    padding:0;
+    text-align:center;
+    color:#FFF;
+    font-size:14px;
+    
+}
+
+#contentBox li a {
+    display:block;
+    padding:5px 10px;
+    height:100%;
+    color:#FFF;
+    font-weight:bold;
+    text-decoration:none;
+    border-right:1px solid #FFF;
+    background-color:#888888;
+}
+
+#contentBox li a:hover {
+    background-color:#00CC44;
+}
+
+#contentBox li:hover > ul{
+	display:none;
+	font-size: 50%;
+}
 
 
 /* =Misc 2
