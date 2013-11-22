@@ -461,6 +461,7 @@ class MainPageHandler(webapp2.RequestHandler):
         
 
         doRender(self, 'index.html', values)
+        
 
 class MainPageHandler2(webapp2.RequestHandler):
     def get(self):
