@@ -1,3 +1,5 @@
+# articles module will not be used after the version 150
+
 from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID, isLoggedIn
 import datamodel
 import logging

@@ -1,4 +1,3 @@
-#modules.py
 from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID
 import datamodel
 import logging
