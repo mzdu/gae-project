@@ -1,4 +1,6 @@
-# articles module will not be used after the version 150
+# articles module becomes obsolete after the version 150
+
+"""
 
 from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID, isLoggedIn
 import datamodel
@@ -164,3 +166,4 @@ app = webapp2.WSGIApplication(
                                           debug=True)
 
 
+"""

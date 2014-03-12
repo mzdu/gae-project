@@ -24,10 +24,10 @@ def getContributionCount():
         @rtype: integer
     '''
 
-    from articles import getArticleCount
+#    from articles import getArticleCount
     from modules import getModuleCount #, getModuleVersionCount
     count = 0
-    count += getArticleCount()
+#    count += getArticleCount()
     count += getModuleCount()
     #count += getModuleVersionCount()
     return count
@@ -364,7 +364,7 @@ def newWikiUser(userID, userName, email, uid):
         
 def parseMarkdown(x):
     import markdown
-
+ 
     html = markdown.markdown(x)
     if html:
         return html
@@ -425,7 +425,7 @@ class MainPageHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         from modules import getFeaturedModule
-        from articles import getFeaturedArticle
+#        from articles import getFeaturedArticle
         from google.appengine.api import memcache
         
 #        import markdown
@@ -440,11 +440,11 @@ class MainPageHandler(webapp2.RequestHandler):
         #########end Memcache featured module
         
         #########Memcache featured article
-        featuredArticle = memcache.get("featuredArticle") #@UndefinedVariable
-        if featuredArticle is None:
-            featuredArticle = getFeaturedArticle()
-            if not memcache.add("featuredArticle", featuredArticle, 60): #@UndefinedVariable
-                logging.error("Memcache set failed.")
+#         featuredArticle = memcache.get("featuredArticle") #@UndefinedVariable
+#         if featuredArticle is None:
+#             featuredArticle = getFeaturedArticle()
+#             if not memcache.add("featuredArticle", featuredArticle, 60): #@UndefinedVariable
+#                 logging.error("Memcache set failed.")
         #########end Memcache featured article
         
         if featuredModule.has_key('error'):
@@ -453,15 +453,27 @@ class MainPageHandler(webapp2.RequestHandler):
             for key in featuredModule:
                 values[key] = featuredModule[key]
                 
-        if featuredArticle.has_key('error'):
-            values['article_error'] = 'No article currently featured'
-        else:
-            for key in featuredArticle:
-                values[key] = featuredArticle[key]
+#         if featuredArticle.has_key('error'):
+#             values['article_error'] = 'No article currently featured'
+#         else:
+#             for key in featuredArticle:
+#                 values[key] = featuredArticle[key]
         
 
         doRender(self, 'index.html', values)
-        
+
+class MainPageRedirecter(webapp2.RequestHandler):
+    def get(self):
+        user = self.request.get('usr')
+        if user == 'newUser':
+            self.redirect('/#mainTopContent')
+        elif user == 'experienced':
+            self.redirect('/#mainMiddleContent')
+        else:
+            self.redirect('/')
+    
+    def post(self):
+        pass        
 
 class MainPageHandler2(webapp2.RequestHandler):
     def get(self):
@@ -478,6 +490,7 @@ app = webapp2.WSGIApplication([
                                           ('/feedback.*', FeedbackHandler),
                                           ('/contact.*', ContactHandler),
                                           ('/join.*', JoinHandler),
+                                          ('/main', MainPageRedirecter),
                                           ('/.*', MainPageHandler2)
                                           ],debug = True)
     
