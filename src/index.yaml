@@ -90,3 +90,9 @@ indexes:
   - name: version
   - name: date_submitted
     direction: desc
+
+- kind: Module
+  properties:
+  - name: published
+  - name: date_submitted
+    direction: desc

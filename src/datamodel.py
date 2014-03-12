@@ -25,27 +25,34 @@ class WikiUser(db.Model):
     join_date = db.DateProperty(auto_now_add=True)
     uid = db.IntegerProperty(required=True)
     
-class Module(db.Model):
+class Article(db.Model):
     title = db.StringProperty()
-    version = db.IntegerProperty()
-    keywords = db.StringProperty()
-    meta_theory = db.TextProperty()
-#    theoryMarkdown = db.TextProperty()
-    theoryHtml = db.TextProperty()
+    author = db.ReferenceProperty(WikiUser)
+    date_pub = db.DateTimeProperty(auto_now_add=True)
+    markdown = db.TextProperty()
+    body = db.TextProperty()
+    uid = db.IntegerProperty()
     
+class Module(db.Model):
+    meta_theory = db.TextProperty()
+    theoryMarkdown = db.TextProperty()
+    theoryHtml = db.TextProperty()
     scope = db.StringListProperty()
     propositions = db.StringListProperty()
     # no need for version150   
 #    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
     date_submitted = db.DateTimeProperty(auto_now_add=True)
     last_update = db.DateTimeProperty(auto_now=True)
-    
+    version = db.IntegerProperty()
+    title = db.StringProperty()
     contributor = db.ReferenceProperty(WikiUser)
     editors = db.ListProperty(db.Key)
     uid = db.IntegerProperty()
     published = db.BooleanProperty()
     current = db.BooleanProperty()
     
+    # extended module attributes for version 150
+    keywords = db.StringProperty()
     derivations = db.StringListProperty()
     evidence = db.StringListProperty()
     
@@ -55,21 +62,19 @@ class VersionCounter(db.Model):
     count = db.IntegerProperty()
 
 class ModuleVersion(db.Model):
-    title = db.StringProperty()
-    version = db.IntegerProperty()
-    keywords = db.StringProperty()
-    meta_theory = db.TextProperty()
-    
     module = db.ReferenceProperty(Module)
-    
+    version = db.IntegerProperty()
+    meta_theory = db.TextProperty()
     scope = db.StringListProperty()
     propositions = db.StringListProperty()
+    # no need for version 150
 #    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
     date_submitted = db.DateTimeProperty(auto_now_add=True)
-    
+    title = db.StringProperty()
     contributor = db.ReferenceProperty(WikiUser)
     
-    
+    # extended module attributes for version 150
+    keywords = db.StringProperty()
     derivations = db.StringListProperty()
     evidence = db.StringListProperty()
 
@@ -102,6 +107,13 @@ class ModuleTerm(db.Model):
     definition = db.ReferenceProperty(TermDefinition)
     abbreviation = db.StringProperty()
 
+class ArticleComment(db.Model):
+    uid = db.IntegerProperty()
+    user = db.ReferenceProperty(WikiUser)
+    article = db.ReferenceProperty(Article)
+    comment = db.TextProperty()
+    comment_date = db.DateTimeProperty(auto_now_add=True)
+
 class ModuleComment(db.Model):
     uid = db.IntegerProperty()
     user = db.ReferenceProperty(WikiUser)
@@ -112,6 +124,10 @@ class ModuleComment(db.Model):
 class NotifyFeedbackUser(db.Model):
     user = db.StringProperty()
     email = db.StringProperty()
+    
+class FeaturedArticle(db.Model):
+    article = db.ReferenceProperty(Article)
+    featured_date = db.DateTimeProperty(auto_now_add=True)
 
 class FeaturedModule(db.Model):
     module = db.ReferenceProperty(Module)
@@ -135,22 +151,3 @@ class ApiHitTimer(db.Model):
     count = db.IntegerProperty()
     timeStamp = db.TimeProperty()
     
-    # obsolete after version 150    
-# class Article(db.Model):
-#     title = db.StringProperty()
-#     author = db.ReferenceProperty(WikiUser)
-#     date_pub = db.DateTimeProperty(auto_now_add=True)
-#     markdown = db.TextProperty()
-#     body = db.TextProperty()
-#     uid = db.IntegerProperty()
-
-# class ArticleComment(db.Model):
-#     uid = db.IntegerProperty()
-#     user = db.ReferenceProperty(WikiUser)
-#     article = db.ReferenceProperty(Article)
-#     comment = db.TextProperty()
-#     comment_date = db.DateTimeProperty(auto_now_add=True)
-
-# class FeaturedArticle(db.Model):
-#     article = db.ReferenceProperty(Article)
-#     featured_date = db.DateTimeProperty(auto_now_add=True)

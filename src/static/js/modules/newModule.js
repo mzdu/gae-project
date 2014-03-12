@@ -25,6 +25,14 @@ $(document).ready(function(){
 		});
 });
 
+//limit the number of characters
+function limitText(limitField, limitCount, limitNum) {
+	if (limitField.value.length > limitNum) {
+		limitField.value = limitField.value.substring(0, limitNum);
+	} else {
+		limitCount.value = limitNum - limitField.value.length;
+	}
+}
 
 function addScope(){
 	$("#scope").append("<li><input class='scopeItem' size='100%'/> <button class='removeScope'>X</button></li>");

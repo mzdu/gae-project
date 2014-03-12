@@ -1,16 +1,6 @@
 {% extends "_base2.html" %}
 {% block bodyContent %}
 
-<script language="javascript" type="text/javascript">
-function limitText(limitField, limitCount, limitNum) {
-	if (limitField.value.length > limitNum) {
-		limitField.value = limitField.value.substring(0, limitNum);
-	} else {
-		limitCount.value = limitNum - limitField.value.length;
-	}
-}
-</script>
-
 <div class="subHead"><h1>New Module</h1></div>
 <div id="moduleForm">
 	<table>
