@@ -4,8 +4,11 @@
 <div class="subHead"><h1>New Module</h1></div>
 <div id="moduleForm">
 	<table>
-		<tr><td class="title">Title: </td><td><input name="title" id="title" type="text" value="" size="100" /></td></tr>
-		<tr><td class="title">Key Words: </td>
+		<tr>
+			<td class="title">Title: </td><td><input name="title" id="title" type="text" value="" size="100" /></td>
+		</tr>
+		<tr>
+			<td class="title">Key Words: </td>
 			<td>
 				<input id="keywords" name="keywords" type="text" value="" size="100" />
 			</td>
@@ -48,7 +51,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 		<tr><td class="title">Scope Conditions: </td>
 		<td>
 			<ol id="scope">
-				<li><input class="scopeItem" size="100px"/></li>
+				<li><input class="scopeItem" size="80px"/></li>
 			</ol>
 			<input type="button" value="Add Scope" onclick="addScope()" />
 		</td></tr>
@@ -59,7 +62,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 			<td class="title">Propositions: </td>
 			<td>
 				<ol id="proposition">
-					<li><input class="propositionItem" size="100px"/></li>
+					<li><input class="propositionItem" size="80px"/></li>
 				</ol>
 				<input type="button" value="Add Proposition" onclick="addProposition()") />
 			</td>
@@ -68,8 +71,8 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 		<tr>
 			<td class="title">Derivations: </td>
 			<td>
-				<ol id="derivations">
-					<li><input class="derivationItem" size="100px"/></li>
+				<ol id="derivation">
+					<li><input class="derivationItem" size="80px"/></li>
 				</ol>
 				<input type="button" value="Add Derivation" onclick="addDerivation()") />
 			</td>
@@ -81,14 +84,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 				<textarea cols="59" id="evidence" name="evidence" rows="10"></textarea>
 			</td>
 		</tr>		
-		
-		<!-- 
-		<tr><td>Discipline:</td><td>
-			<select name="discipline" id="discipline">
-				<option>Sociology</option><option>Psychology</option><option>Political Science</option>
-		</td></tr>
-		
-		 -->
+
 	</table>
 	<br />
 	<br />

@@ -1,0 +1,33 @@
+{% extends "_base2.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+<div id="mainContent">
+        <h1>TEST TEST Modules</h1>
+<table>
+			{% for sth in sths %}
+			     <tr>
+					<td><a href="#">{{sth.count}}</a></td>
+					<td>{{sth.name}}</td>
+
+				 </tr>
+			{% endfor %}
+</table>
+		</div>
+		<div class="clear"></div>
+		<div class="box" id="recentModules">
+			<div class="header"><h3>Module Statistics</h3></div>
+				<p>
+					<ul>
+						<li>Stats coming soon...</li>
+					</ul>
+				</p>
+		</div>
+	<div class="clear"></div>
+</div><!-- end mainContent -->
+
+{% endif %}
+{% endblock %}

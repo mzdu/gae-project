@@ -5,10 +5,10 @@ var termSearchBoxHTML = '<input type="text" name="q" id="query" autocomplete="of
 
 	
 	
-	var functionGroup = "<select name='function' id='function'><optgroup label='Function'><option>verb</option><option>pronoun</option>"
-	+"<option>adjective</option><option>adverb</option><option>preposition</option><option>conjunction</option><option>interjection</option>"
-	+"</optgroup><option disabled>——————————</option><optgroup label='Phrase'><option>nounPhrase</option><option>verbPhrase</option>"
-	+"<option>prepositionalPhrase</option><option>adjectivalPhrase</option><option>adverbialPhrase</option></select>"
+var functionGroup = "<select name='function' id='function'><optgroup label='Function'><option>verb</option><option>pronoun</option>"
++"<option>adjective</option><option>adverb</option><option>preposition</option><option>conjunction</option><option>interjection</option>"
++"</optgroup><option disabled>——————————</option><optgroup label='Phrase'><option>nounPhrase</option><option>verbPhrase</option>"
++"<option>prepositionalPhrase</option><option>adjectivalPhrase</option><option>adverbialPhrase</option></select>"
 
 
 //bind ajax for showTermSearch when documented is loaded
@@ -16,11 +16,14 @@ $(document).ready(function(){
 		showTermSearch();
 		$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
-	});
-	$(".removeProposition").bind("click", function(e){
+		});
+		$(".removeProposition").bind("click", function(e){
 			$(this).parent().remove();
 		});
 		$(".removeScope").bind("click", function(e){
+			$(this).parent().remove();
+		});
+		$(".removeDerivation").bind("click", function(e){
 			$(this).parent().remove();
 		});
 });
@@ -35,7 +38,7 @@ function limitText(limitField, limitCount, limitNum) {
 }
 
 function addScope(){
-	$("#scope").append("<li><input class='scopeItem' size='100%'/> <button class='removeScope'>X</button></li>");
+	$("#scope").append("<li><input class='scopeItem' size='80px'/> <button class='removeScope'>X</button></li>");
 	$(".removeScope").bind("click", function(e){
 			$(this).parent().remove();
 		});
@@ -43,15 +46,22 @@ function addScope(){
 }
 
 function addProposition(){
-	$("#proposition").append("<li><input class='propositionItem' size='100%'/> <button class='removeProposition'>X</button></li>");
+	$("#proposition").append("<li><input class='propositionItem' size='80px'/> <button class='removeProposition'>X</button></li>");
 	$(".removeProposition").bind("click", function(e){
 			$(this).parent().remove();
 		});
 }
 
+function addDerivation(){
+	$("#derivation").append("<li><input class='derivationItem' size='80px'/> <button class='removeDerivation'>X</button></li>");
+	$(".removeDerivation").bind("click", function(e){
+			$(this).parent().remove();
+		});
+}
+
 //adds a previously defined term to the list of terms that will be associated with this module when the user submits the module.
-function addTerm(term,def,func){
-	$("#termList").append("<li><span class='term'>"+ term +"</span> (<span class='termFunction'>" + func + "</span>) - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
+function addTerm(term,def){
+	$("#termList").append("<li><span class='term'>"+ term +"</span> - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
 	$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 	});
@@ -64,8 +74,8 @@ function addTerm(term,def,func){
 function addNewTerm(){
 	var term = $("#query").val();
 	var def = $("#defineInput").val();
-	var func = $("#function").val();
-	$("#termList").append("<li><span class='term'>"+ term +"</span> (<span class='termFunction'>" + func + "</span>) - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
+	
+	$("#termList").append("<li><span class='term'>"+ term +"</span>- <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
 	$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 	});
@@ -79,8 +89,9 @@ function addNewTerm(){
 //Adds a term with a new definition to the list
 function defineExistingTerm(term){
 	var def = $("#defineInput").val();
-	var func = $("#function").val();
-	$("#termList").append("<li><span class='term'>"+ term +"</span> (<span class='termFunction'>" + func + "</span>) - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
+	
+	$("#termList").append("<li><span class='term'>"+ term +"</span> - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
+	
 	$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 	});
@@ -164,31 +175,38 @@ function enableSubmit(){
 function submitForm(publishBool,action){
 	var scopes = [];
 	var propositions = [];
+	var derivations = [];
 	var terms = [];
 	var definitions = [];
-	var functions = [];
+	var evidence = $("#evidence").val();
+
 	var title = $("#title").val();
+	var keywords = $("#keywords").val();
+	
 	if(title == ''){
 		alert('Please include a title');
 		return;
 	}
 	$(".scopeItem").each(function() { scopes.push($(this).val()) });
 	$(".propositionItem").each(function() { propositions.push($(this).val()) });
+	$(".derivationItem").each(function() { derivations.push($(this).val()) });
+	
 	$(".term").each(function() { terms.push($(this).html()) });
 	$(".definition").each(function() { definitions.push($(this).html()) });
-	$(".termFunction").each(function() { functions.push($(this).html()) });
+	
+	
 	
 	json = {
+			"keywords" : keywords,
 			"terms" : terms,
 			"definitions" : definitions,
-			"functions" : functions,
-			"meta_theory" : $('#meta_theory').val(),
 			"markdown" : $('#wmd-input').val(),
 			"propositions" : propositions,
 			"scopes" : scopes,
+			"derivations" : derivations,
+			"evidence" : evidence,
 			"published" : publishBool,
 			"title" : title,
-			"discipline" : $("#discipline").val(),
 			"uid" : $("#uid").val()
 	}
 	$("#submitBtn").remove();

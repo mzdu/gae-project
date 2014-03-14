@@ -39,8 +39,8 @@ class Module(db.Model):
     theoryHtml = db.TextProperty()
     scope = db.StringListProperty()
     propositions = db.StringListProperty()
-    # no need for version150   
-#    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
+
+    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
     date_submitted = db.DateTimeProperty(auto_now_add=True)
     last_update = db.DateTimeProperty(auto_now=True)
     version = db.IntegerProperty()

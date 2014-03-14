@@ -252,14 +252,16 @@ def updateModule(uid, title, meta_theory, markdown, scope, propositions, discipl
         key = db.put(module)
         return key
 
-def newModule(title, meta_theory, markdown, scope, propositions, discipline, publish):
+#def newModule(title, meta_theory, markdown, scope, propositions, discipline, publish):
+def newModule(title, keywords, markdown, scope, propositions, derivations, evidence, publish):
     ''' @summary: Creates a new module entity 
-        @param title, meta_theory, scope, propositions, discipline
+        @param title, keywords, markdown, scope, propositions, derivations, evidence, publish
         @type String
         @return: Returns the uid if successful, else -1
         @rtype: integer
     '''
     from main import parseMarkdown
+    
     uid = createNewUID("modulesUID")
     if uid == 0:
         return -1
@@ -269,25 +271,27 @@ def newModule(title, meta_theory, markdown, scope, propositions, discipline, pub
         try:
             if publish == "false": 
                 module = datamodel.Module(title = title, 
-                                          discipline = discipline, 
-                                          meta_theory = meta_theory, 
+                                          keywords = keywords, 
                                           theoryMarkdown = markdown,
                                           theoryHtml = parseMarkdown(markdown),
                                           uid = uid, version = 0, 
                                           scope = scope, 
                                           contributor = user,
                                           propositions = propositions,
+                                          derivations = derivations,
+                                          evidence = evidence,
                                           published = False, current = True)
             else:
                 module = datamodel.Module(title = title, 
-                                          discipline = discipline, 
-                                          meta_theory = meta_theory, 
+                                          keywords = keywords, 
                                           theoryMarkdown = markdown,
                                           theoryHtml = parseMarkdown(markdown),
                                           uid = uid, version = 1, 
                                           scope = scope, 
                                           contributor = user,
                                           propositions = propositions,
+                                          derivations = derivations,
+                                          evidence = evidence,
                                           published = True, current = True)
                 createNewUID("modules") #increments the overall module counter once the module is published
             modKey = module.put()
@@ -312,42 +316,49 @@ class NewModuleHandler(webapp2.RequestHandler):
         values = dict()
         from users import isContributingUser
         if isContributingUser() is True:
-            values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/modules/newModule.js',
-                                    '/static/js/plugins/wmd_stackOverflow/wmd.js', '/static/js/plugins/wmd_stackOverflow/showdown.js']
-            values['css'] = ['/static/js/plugins/autocomplete/styles.css', '/static/css/modules.css', '/static/js/plugins/wmd_stackOverflow/wmd.css']
+            values['javascript'] = ['/static/js/jquery.js', 
+                                    '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', 
+                                    '/static/js/modules/newModule.js',
+                                    '/static/js/plugins/wmd_stackOverflow/wmd.js', 
+                                    '/static/js/plugins/wmd_stackOverflow/showdown.js']
+            values['css'] = ['/static/js/plugins/autocomplete/styles.css', 
+                             '/static/css/modules.css', 
+                             '/static/js/plugins/wmd_stackOverflow/wmd.css']
+            
             doRender(self, 'newModule.html',values)
+            
         else:
             doRender(self, 'join.html',values)
   
     def post(self):
         title = self.request.get("title")
-        metaTheory = self.request.get("meta_theory")
+        keywords = self.request.get("keywords")
         scopeList = self.request.get_all("scopes")
         propositionList = self.request.get_all("propositions")
+        derivationList =  self.request.get_all("derivations")
+        evidence = self.request.get("evidence")
         markdown = self.request.get("markdown")
-        discipline = self.request.get("discipline")
         publishBool = self.request.get("published")
         
-        modKey = newModule(title, metaTheory, markdown, scopeList, propositionList, discipline, publishBool)
+#        modKey = newModule(title, metaTheory, markdown, scopeList, propositionList, discipline, publishBool)
+        modKey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
         
-        #terms
+        #terms related processing
         terms = self.request.get_all("terms")
         definitions = self.request.get_all("definitions")
-        functions = self.request.get_all("functions")
         while terms:
             term = terms.pop().lower()
             definition = definitions.pop()
-            function = functions.pop()
             
             termKey = db.Query(datamodel.Term).filter('word =', term).get()
             if termKey:
                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
                 if not defKey:
                     from terms import newDefinition
-                    defKey = newDefinition(termKey.slug, function, definition)
+                    defKey = newDefinition(termKey.slug, definition)
             else:
                 from terms import newTerm
-                newTerm(term, term, function, definition)
+                newTerm(term, term, definition)
                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
             

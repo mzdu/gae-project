@@ -49,7 +49,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 			<td>
 			<ul id="termList">
 				{% for term in terms %}
-				<li><span class='term'>{{term.term.word}}</span> (<span class='termFunction'>{{term.definition.function}}</span>) - <span class='definition'>{{term.definition.definition}}</span> <button class='removeTerm'>X</button></li>
+				<li><span class='term'>{{term.term.word}}</span> - <span class='definition'>{{term.definition.definition}}</span> <button class='removeTerm'>X</button></li>
 				{% endfor %}
 			</ul>
 			</td>

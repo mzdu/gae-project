@@ -27,7 +27,7 @@ def getTerm(slug):
         values['error'] = 'Term not found.'
         return values
 
-def newDefinition(slug, function, definition):
+def newDefinition(slug, definition):
     try:
         termObject = db.Query(datamodel.Term).filter('slug =', slug).get()
     except:
@@ -38,7 +38,7 @@ def newDefinition(slug, function, definition):
         if uid == -1:
             return False
         try:
-            defKey = datamodel.TermDefinition(term = termObject, definition = definition, function = function, popularity = 0, contributor = user, uid = uid).put()
+            defKey = datamodel.TermDefinition(term = termObject, definition = definition, popularity = 0, contributor = user, uid = uid).put()
             return defKey
         except:
             logging.error('Failed to add definition. Term:' + termObject.word)
@@ -47,7 +47,7 @@ def newDefinition(slug, function, definition):
     else:
         return False
  
-def newTerm(term, slug, function, definition):
+def newTerm(term, slug, definition):
     values = dict()
     try:
         existingTerm = db.Query(datamodel.Term).filter('slug =', slug).get()
@@ -55,7 +55,7 @@ def newTerm(term, slug, function, definition):
         values['error'] = 'Could not create a new term'
         return values
     if existingTerm:
-        if not newDefinition(slug, function, definition):
+        if not newDefinition(slug, definition):
             values['error'] = 'The term already exists and failed to save the definition.'
             return values
         else:
@@ -72,7 +72,7 @@ def newTerm(term, slug, function, definition):
         except:
             values['error'] = 'Could not create a new term!'
             return values
-        if not newDefinition(slug, function, definition):
+        if not newDefinition(slug, definition):
             values['error'] = 'The term was created but failed to save the definition.'
             return values
         else:
@@ -92,7 +92,7 @@ class DefineTermHandler(webapp2.RequestHandler):
     def post(self):
         slug = self.request.get('slug').strip().lower()
         definition = self.request.get('definition').strip()
-        newDefinition(slug, self.request.get('function'), definition)
+        newDefinition(slug, definition)
         self.redirect('/terms/'+slug, False)
     
 class NewTermHandler(webapp2.RequestHandler):
@@ -102,10 +102,9 @@ class NewTermHandler(webapp2.RequestHandler):
     def post(self):
         term = self.request.get('term').strip().lower()
         definition = self.request.get('definition').strip()
-        function = self.request.get('function')
         #slug = term
         slug = term.replace(' ', '-')
-        values = newTerm(term, slug, function, definition)
+        values = newTerm(term, slug, definition)
         if not values['error'] == '':
             doRender(self, 'error.html', values)
             return None
