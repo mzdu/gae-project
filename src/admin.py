@@ -1,4 +1,4 @@
-from main import doRender
+from libmain import doRender
 import logging
 import datamodel
 

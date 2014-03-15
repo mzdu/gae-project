@@ -197,16 +197,18 @@ function submitForm(publishBool,action){
 	
 	
 	json = {
+			"title" : title,
 			"keywords" : keywords,
+			"markdown" : $('#wmd-input').val(),
 			"terms" : terms,
 			"definitions" : definitions,
-			"markdown" : $('#wmd-input').val(),
 			"propositions" : propositions,
 			"scopes" : scopes,
 			"derivations" : derivations,
 			"evidence" : evidence,
+			
 			"published" : publishBool,
-			"title" : title,
+			
 			"uid" : $("#uid").val()
 	}
 	$("#submitBtn").remove();
@@ -222,3 +224,4 @@ function submitForm(publishBool,action){
 	}
 }
 
+alert("newModule loaded");
