@@ -60,6 +60,60 @@ def isContributingUser():
             return False
     except:
         return False    
+    
+def isAdministratorUserByUID(uid):
+    ''' @summary: Returns True or False if user is an administrator
+        @param uid: String that is later typcasted to an int
+        @type user: String 
+        @return: True or False depending on user's rights
+        @rtype: Boolean
+    '''
+    try:
+        user = getUserEntity(uid)
+        user_check = db.Query(datamodel.AdministratorUser).filter('user = ', user).get()
+        if user_check:
+            return True
+        else:
+            return False
+    except:
+        return False
+
+def isContributingUserByUID(uid):
+    ''' @summary: Returns True or False if user is a contributing user
+        @param uid: String that is later typcasted to an int
+        @type user: String 
+        @return: True or False depending on user's rights
+        @rtype: Boolean
+    '''
+    try:
+        user = getUserEntity(uid)
+        user_check = db.Query(datamodel.ContributingUser).filter('user = ', user).get()
+        if user_check:
+            return True
+        else:
+            return False
+    except:
+        return False
+
+def isAdministratorUser():
+    ''' @summary: Returns True or False depending on the current users rights
+        @return: True or False if user is administrator
+        @rtype: Boolean
+    '''
+    from main import getCurrentUserInfo
+    user_info = getCurrentUserInfo()
+    user_uid = int(user_info['uid'])
+    user = getUserEntity(user_uid)
+    try:
+        user_check = db.Query(datamodel.AdministratorUser).filter('user =', user).get()
+        if user_check:
+            return True
+        else:
+            return False
+    except:
+        return False
+    
+
 ############################################################
 # loaded by doRender()
 def firstTimeLogin(user):
@@ -241,7 +295,6 @@ def newWikiUser(userID, userName, email, uid):
         newUser.put()
     if uid == 1:
         # The first user to signup is defaulted as an administrator/contributor
-        from users import newAdministratorUser
         newAdministratorUser(user)    
         
 def newAdministratorUser(user):
@@ -268,21 +321,3 @@ def newContributingUser(user):
     return contributing_user
 
 
-#handle logged in users status and information. If there is a current user, call getUserInfo()
-def buildUserMenu():
-    ''' @summary: Returns values that are used by the _base Django template relating to the user
-        @rtype: Dictionary
-    '''
-    user = getGoogleUserObject()
-    userInfo = dict()
-    
-    if user:
-        userInfo = getCurrentUserInfo()
-        #If this is the first time logging in, firtTimeLogin() is called to create a new entity
-        if userInfo['isUser'] == 'False':
-            firstTimeLogin(user)
-            userInfo = getCurrentUserInfo()
-    else:
-        userInfo['login_url'] =  getLoginUrl()
-    return userInfo
-    

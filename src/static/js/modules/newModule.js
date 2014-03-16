@@ -223,5 +223,3 @@ function submitForm(publishBool,action){
 		$.post("/module/edit",json,function(){window.location = "/modules"});
 	}
 }
-
-alert("newModule loaded");

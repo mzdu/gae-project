@@ -211,8 +211,9 @@ class MainPageHandler(webapp2.RequestHandler):
         doRender(self, 'moduleDefault.html', values)
         
 app = webapp2.WSGIApplication([
-                                ('/module/edit.*', EditModuleHandler),
+                               ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
+                               ('/module/', MainPageHandler),
                                ('/modules/?', MainPageHandler),
                                ('/modules/.*', ModuleHandler)
                                 ],debug=True)

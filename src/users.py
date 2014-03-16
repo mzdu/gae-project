@@ -1,125 +1,10 @@
-from libmain import doRender, isCurrentUser, getUserInfo,getUrlResourceList
+from libmain import doRender, getUrlResourceList
+from libuser import isCurrentUser, isContributingUser, getUserInfo, getUserEntity
 import logging
 import datamodel
 
 import webapp2
 from google.appengine.ext import db
-
-def getUserCount():
-    countObject = db.Query(datamodel.Counter).filter("name = ", "users").get()
-    if countObject:
-        return countObject.count
-    else:
-        return 0
-
-def newAdministratorUser(user):
-    ''' @summary: Adds a WikiUser to the Administrator role
-        @param user: A WikiUser Type
-        @type user: WikiUser 
-        @return: The newly created object in the AdministratorUser entity
-        @rtype: AdministratorUser
-    '''
-    admin_user = datamodel.AdministratorUser(user = user)
-    admin_user.put()
-    return admin_user
-    
-def newContributingUser(user):
-    ''' @summary: Adds a WikiUser to the Contributing role
-        @param user: A WikiUser Type
-        @type user: WikiUser 
-        @return: The newly created object in the ContributingUser entity
-        @rtype: ContributingUser
-    '''
-    contributing_user = datamodel.ContributingUser(user = user)
-    contributing_user.put()
-    return contributing_user
-
-def isAdministratorUserByUID(uid):
-    ''' @summary: Returns True or False if user is an administrator
-        @param uid: String that is later typcasted to an int
-        @type user: String 
-        @return: True or False depending on user's rights
-        @rtype: Boolean
-    '''
-    try:
-        user = getUserEntity(uid)
-        user_check = db.Query(datamodel.AdministratorUser).filter('user = ', user).get()
-        if user_check:
-            return True
-        else:
-            return False
-    except:
-        return False
-
-def isContributingUserByUID(uid):
-    ''' @summary: Returns True or False if user is a contributing user
-        @param uid: String that is later typcasted to an int
-        @type user: String 
-        @return: True or False depending on user's rights
-        @rtype: Boolean
-    '''
-    try:
-        user = getUserEntity(uid)
-        user_check = db.Query(datamodel.ContributingUser).filter('user = ', user).get()
-        if user_check:
-            return True
-        else:
-            return False
-    except:
-        return False
-
-def isAdministratorUser():
-    ''' @summary: Returns True or False depending on the current users rights
-        @return: True or False if user is administrator
-        @rtype: Boolean
-    '''
-    from main import getCurrentUserInfo
-    user_info = getCurrentUserInfo()
-    user_uid = int(user_info['uid'])
-    user = getUserEntity(user_uid)
-    try:
-        user_check = db.Query(datamodel.AdministratorUser).filter('user =', user).get()
-        if user_check:
-            return True
-        else:
-            return False
-    except:
-        return False
-    
-def isContributingUser():
-    ''' @summary: Returns True or False depending on the current users rights
-        @return: True or False if user is a contributing user
-        @rtype: Boolean
-    '''
-    from main import getCurrentUserInfo
-    user_info = getCurrentUserInfo()
-    try:
-        user_uid = int(user_info['uid'])
-        user = getUserEntity(user_uid)
-        user_check = db.Query(datamodel.ContributingUser).filter('user =', user).get()
-        if user_check:
-            return True
-        else:
-            return False
-    except:
-        return False    
-
-def getUserEntity(uid):
-    ''' @summary: Returns the User object referenced by the uid
-        @param uid: Pointer to current handler(self)
-        @type uid: String 
-        @return: A User object from the datastore
-        @rtype: User
-    '''
-    try:
-        uid = int(uid)
-    except:
-        return None
-    user = db.Query(datamodel.WikiUser).filter('uid =', uid).get()
-    if user:
-        return user
-    else: 
-        return -1
 
 
 class EditUserHandler(webapp2.RequestHandler):
@@ -218,7 +103,7 @@ class UserHandler(webapp2.RequestHandler):
 class DefaultUserHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
-        from main import getLoginUrl
+        from libuser import getLoginUrl
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
         values["login_url"] = getLoginUrl()

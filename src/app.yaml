@@ -28,6 +28,10 @@ handlers:
 - url: /module/edit.*
   script: modules.app
   login: required
+  
+- url: /module/.*
+  script: modules.app
+  login: required
 
 - url: /modules.*
   script: modules.app
