@@ -1,6 +1,6 @@
 #from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID
 from libmain import doRender, getUrlResourceList
-from libmodule import newModule, getUnpublishedModules, getModuleVersion, getModuleVersionCount
+from libmodule import newModule, getModule, updateModule, getUnpublishedModules, getModuleVersion, getModuleVersionCount
 from libuser import isContributingUser
 
 import webapp2
@@ -71,44 +71,52 @@ class NewModuleHandler(webapp2.RequestHandler):
         else:
             values = {'error' : 'Failed to create module. Please try again later.'}
             doRender(self, 'error.html', values)
-        
-# class EditModuleHandler(webapp2.RequestHandler):
-#     def get(self):
-#         from libuser import isContributingUser
-#         if isContributingUser() is True:
-#             values = dict()
-#             url = getUrlResourceList(self)
-#             values = getModule(url[2])
-#             values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/modules/newModule.js',
-#                                     '/static/js/plugins/wmd_stackOverflow/wmd.js', '/static/js/plugins/wmd_stackOverflow/showdown.js']
-#             values['css'] = ['/static/js/plugins/autocomplete/styles.css', '/static/css/modules.css', '/static/js/plugins/wmd_stackOverflow/wmd.css']
-#             doRender(self, 'editModule.html', values)
-#         else:
-#             self.redirect('/modules/')
-#              
-#     def post(self):
-#         title = self.request.get("title")
-#         metaTheory = self.request.get("meta_theory")
-#         scopeList = self.request.get_all("scopes")
-#         propositionList = self.request.get_all("propositions")
-#         markdown = self.request.get("markdown")
-#         discipline = self.request.get("discipline")
-#         publishBool = self.request.get("published")
-#         uid = int(self.request.get("uid"))
-#          
-#          
-#         modKey = updateModule(uid, title, metaTheory, markdown, scopeList, propositionList, discipline, publishBool)
-#                                
-#         #terms
+            
+# edit a selected module        
+class EditModuleHandler(webapp2.RequestHandler):
+    def get(self):
+        if isContributingUser() is True:
+            values = dict()
+            url = getUrlResourceList(self)
+            # get all values of a module
+            values = getModule(url[2])
+            values['javascript'] = ['/static/js/jquery.js', 
+                                    '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', 
+                                    '/static/js/modules/newModule.js',
+                                    '/static/js/plugins/wmd_stackOverflow/wmd.js', 
+                                    '/static/js/plugins/wmd_stackOverflow/showdown.js']
+            values['css'] = ['/static/js/plugins/autocomplete/styles.css', 
+                             '/static/css/modules.css', 
+                             '/static/js/plugins/wmd_stackOverflow/wmd.css']
+            
+            doRender(self, 'editModule.html', values)
+        else:
+            self.redirect('/modules/')
+              
+    def post(self):
+        title = self.request.get("title")
+        keywords = self.request.get("keywords")
+        scopeList = self.request.get_all("scopes")
+        propositionList = self.request.get_all("propositions")
+        derivationList =  self.request.get_all("derivations")
+        evidence = self.request.get("evidence")
+        markdown = self.request.get("markdown")
+        publishBool = self.request.get("published")
+        uid = int(self.request.get("uid"))
+          
+          
+        modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
+                                
+        #terms
 #         terms = self.request.get_all("terms")
 #         definitions = self.request.get_all("definitions")
 #         functions = self.request.get_all("functions")
-#          
+#           
 #         while terms:
 #             term = terms.pop().lower()
 #             definition = definitions.pop()
 #             function = functions.pop()
-#              
+#               
 #             termKey = db.Query(datamodel.Term).filter('word =', term).get()
 #             if termKey:
 #                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
@@ -120,17 +128,17 @@ class NewModuleHandler(webapp2.RequestHandler):
 #                 newTerm(term, term, function, definition)
 #                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
 #                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
-#              
+#               
 #             datamodel.ModuleTerm(module = modKey, term = termKey, definition = defKey).put()
-#              
-#         if modKey != -1:
-#             self.redirect("/modules", True)
-#         else:
-#             values = {'error' : 'Failed to update module. Please try again later.'}
-#             doRender(self, 'error.html', values)
+              
+        if modKey != -1:
+            self.redirect("/modules", True)
+        else:
+            values = {'error' : 'Failed to update module. Please try again later.'}
+            doRender(self, 'error.html', values)
 
 
-#display specified module 
+# display a selected module 
 class ModuleHandler(webapp2.RequestHandler):
     def get(self):
         #convert a url to a list of segmented elements like ['modules','']
@@ -203,7 +211,7 @@ class MainPageHandler(webapp2.RequestHandler):
         doRender(self, 'moduleDefault.html', values)
         
 app = webapp2.WSGIApplication([
-#                                ('/module/edit.*', EditModuleHandler),
+                                ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
                                ('/modules/?', MainPageHandler),
                                ('/modules/.*', ModuleHandler)

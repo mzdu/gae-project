@@ -1,14 +1,5 @@
 {% extends "_base2.html" %}
 {% block bodyContent %}
-<script language="javascript" type="text/javascript">
-function limitText(limitField, limitCount, limitNum) {
-	if (limitField.value.length > limitNum) {
-		limitField.value = limitField.value.substring(0, limitNum);
-	} else {
-		limitCount.value = limitNum - limitField.value.length;
-	}
-}
-</script>
 
 <div class="subHead"><h1>Edit Module: <a href="{{module_url}}" target="_self">{{module_title_general}}</a></h1></div>
 	
@@ -16,7 +7,7 @@ function limitText(limitField, limitCount, limitNum) {
 		<tr><td class="title">Title: </td><td><input name="title" id="title" type="text" value="{{module_title_general}}" size="100" /></td></tr>
 		<tr><td class="title">Key Words: </td>
 			<td>
-				<input id="keywords" name="keywords" type="text" value="" size="100" />
+				<input id="keywords" name="keywords" type="text" value="{{module_keywords_general}}" size="100" />
 			</td>
 		</tr>
 	</table>
@@ -27,7 +18,7 @@ function limitText(limitField, limitCount, limitNum) {
 			  <div id="wmd-button-bar" class="wmd-panel"></div>
 		      <br/>
 		      <textarea id="wmd-input" class="wmd-panel" name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,500);" 
-onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" rows="">{{module_meta_theory_general}}</textarea>
+				onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" rows="">{{markdown}}</textarea>
 		      <br/>
 		      Preview:
 		      <div id="wmd-preview" class="wmd-panel"></div>
@@ -85,8 +76,10 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 		<tr>
 			<td class="title">Derivations:</td>
 			<td>
-				<ol id="derivations">
-					<li><input class="derivationItem" size="100px"/></li>
+				<ol id="derivation">
+				{% for derivation in module_derivations_general %}
+					<li><input class="derivationItem" value="{{derivation}}" style="size:100px"/></li><button class='removeDerivation'>X</button></li>
+				{% endfor %}	
 				</ol>
 				<input type="button" value="Add Derivation" onclick="addDerivation()") />
 			</td>
@@ -95,7 +88,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 		<tr>
 			<td class="title">Evidence:</td>
 			<td>
-				<textarea cols="59" id="evidence" name="evidence" rows="10"></textarea>
+				<textarea cols="59" id="evidence" name="evidence" rows="10" value="{{module_evidence_general}}"></textarea>
 			</td>
 		</tr>		
 
