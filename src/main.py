@@ -5,6 +5,8 @@
 #TODO: entering items (lists) in the markdown wysiwig is broken. (and in article...slugify?)
 #TODO: use a javascript template library for module.js, terms.js, etc. (from backbone.js book)
 
+from libmain import doRender
+from libmodule import getModuleCount
 import datamodel
  
 import webapp2
@@ -25,7 +27,6 @@ def getContributionCount():
     '''
 
 #    from articles import getArticleCount
-    from modules import getModuleCount #, getModuleVersionCount
     count = 0
 #    count += getArticleCount()
     count += getModuleCount()
@@ -142,34 +143,6 @@ def buildUserMenu():
         userInfo['login_url'] =  getLoginUrl()
     return userInfo
     
-
-def doRender(handler, tname = 'index.html', values = {}):
-    ''' @summary: Renders a page using Django templates
-        @param handler: Pointer to calling handler
-        @type callingUserName:  String
-        @param tname: Template file name
-        @type callingUserName:  String
-        @param values: Variables to be passed into the Django template
-        @type values:  Dictionary
-        @return: Return True if template file exists, else false;
-        @rtype: Boolean
-    '''
-    from users import getUserCount
-#    from articles import getArticleCount
-    from modules import getModuleCount
-    temp = jinja_environment.get_template(tname)
-#    temp = os.path.join(os.path.dirname(__file__), 'templates/' + tname)
-    userMenuValues = buildUserMenu()
-    for key in userMenuValues:
-        values[key] = userMenuValues[key]
-    values["num_users"] = getUserCount()
-#    values["num_articles"] = getArticleCount()
-    values["num_modules"] = getModuleCount()
-    values["num_contributions"] = getContributionCount()
-    handler.response.out.write(temp.render(values))
-#    outstr = template.render(temp, values)
-#    handler.response.out.write(outstr)
-    return True
 
 def firstTimeLogin(user):
     ''' @summary: On the first login, create a newWikiUser entity

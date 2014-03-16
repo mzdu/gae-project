@@ -106,9 +106,9 @@ class VersionCounter(db.Model):
 #     comment = db.TextProperty()
 #     comment_date = db.DateTimeProperty(auto_now_add=True)
 # 
-# class NotifyFeedbackUser(db.Model):
-#     user = db.StringProperty()
-#     email = db.StringProperty()
+class NotifyFeedbackUser(db.Model):
+    user = db.StringProperty()
+    email = db.StringProperty()
 # 
 # class FeaturedModule(db.Model):
 #     module = db.ReferenceProperty(Module)
