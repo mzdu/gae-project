@@ -1,8 +1,8 @@
-from main import doRender, createNewUID, decrementCounter
+from libmain import doRender, createNewUID, decrementCounter
 import datamodel
 import logging
 import json
-from users import isContributingUser, isAdministratorUser
+from libuser import isContributingUser, isAdministratorUser
 import webapp2
 #from google.appengine.ext.webapp2.util import run_wsgi_app
 from google.appengine.ext import db

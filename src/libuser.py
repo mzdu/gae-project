@@ -1,8 +1,6 @@
 import datamodel
 import logging
 
-from libmain import createNewUID
-
 from google.appengine.ext import db
 from google.appengine.api import users
 
@@ -17,6 +15,8 @@ def getLogoutUrl():
         @rtype: String
     '''
     return users.create_logout_url("/")
+
+
 
 def isCurrentUser(uid):
     ''' @summary: Compare current logged in user with callingUserName; Verify user credentials
@@ -100,7 +100,7 @@ def isAdministratorUser():
         @return: True or False if user is administrator
         @rtype: Boolean
     '''
-    from main import getCurrentUserInfo
+    from libuser import getCurrentUserInfo
     user_info = getCurrentUserInfo()
     user_uid = int(user_info['uid'])
     user = getUserEntity(user_uid)
@@ -123,6 +123,7 @@ def firstTimeLogin(user):
         @return: Return True if creating a new user is successful
         @rtype: Boolean
     '''
+    from libmain import createNewUID
     uid = createNewUID('users')
         
     alias = user.nickname()
@@ -145,23 +146,6 @@ def getUserCount():
         return countObject.count
     else:
         return 0
-
-def buildUserMenu():
-    ''' @summary: Returns values that are used by the _base Django template relating to the user
-        @rtype: Dictionary
-    '''
-    user = getGoogleUserObject()
-    userInfo = dict()
-    
-    if user:
-        userInfo = getCurrentUserInfo()
-        #If this is the first time logging in, firtTimeLogin() is called to create a new entity
-        if userInfo['isUser'] == 'False':
-            firstTimeLogin(user)
-            userInfo = getCurrentUserInfo()
-    else:
-        userInfo['login_url'] =  getLoginUrl()
-    return userInfo
 
 ###################################################
 

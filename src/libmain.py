@@ -16,6 +16,11 @@ jinja_environment = jinja2.Environment(loader = jinja2.FileSystemLoader(os.path.
 
 def doRender(handler, tname = 'index.html', values = {}):
     
+    userMenuValues = buildUserMenu()
+    
+    for key in userMenuValues:
+        values[key] = userMenuValues[key]
+    
     temp = jinja_environment.get_template(tname)
     handler.response.out.write(temp.render(values))
     return True
@@ -46,26 +51,7 @@ def autoDecrement(key):
     counter.put()
     return counter.count
 
-def createNewUID(name):
-    ''' @summary: Attempts to create a uid for particular entity type. The entity type is identified by the name.
-        @param name: The name of the entity to be counted
-        @type name:  String
-        @return: Returns an integer if the transaction is successful. Returns -1 if failed
-        @rtype: integer
-    '''
-    #get the key for user counter
-    counter = db.Query(datamodel.Counter).filter('name =', name).get()
-    #If entity doesn't exist in the Counter entity group, create it.
-    if not counter:
-        counterKey = datamodel.Counter(name = name, count = 0).put()
-    else:
-        counterKey = counter.key()
-    try:
-        uid = db.run_in_transaction(autoIncrement, counterKey)
-        return uid
-    except db.TransactionFailedError:
-        logging.error('Failed to get auto increment value during transaction and retries')
-        return -1
+
 
 def decrementCounter(name):
     ''' @summary: Similar to createNewUID(); Attempts to decrement the counter for a particular entity type. The entity type is identified by the name.
@@ -118,17 +104,6 @@ def getUrlResourceList(handler):
         
     return resourceList
     
-def getLoginUrl():
-    ''' @summary: Returns URL to be used for logging in
-        @rtype: String
-    '''
-    return users.create_login_url("/")
-
-def getLogoutUrl():
-    ''' @summary: Returns URL to be used for logging out
-        @rtype: String
-    '''
-    return users.create_logout_url("/")
 
 
 ####################### Send Email ##########################################
@@ -168,3 +143,44 @@ def getContributionCount():
     count += getModuleCount()
     return count
     
+    
+def buildUserMenu():
+    ''' @summary: Returns values that are used by the _base Django template relating to the user
+        @rtype: Dictionary
+    '''
+    from libuser import getGoogleUserObject, getCurrentUserInfo, getLoginUrl, firstTimeLogin
+    user = getGoogleUserObject()
+    userInfo = dict()
+    
+    if user:
+        userInfo = getCurrentUserInfo()
+        #If this is the first time logging in, firtTimeLogin() is called to create a new entity
+        if userInfo['isUser'] == 'False':
+            firstTimeLogin(user)
+            userInfo = getCurrentUserInfo()
+    else:
+        userInfo['login_url'] =  getLoginUrl()
+    return userInfo
+
+
+
+def createNewUID(name):
+    ''' @summary: Attempts to create a uid for particular entity type. The entity type is identified by the name.
+        @param name: The name of the entity to be counted
+        @type name:  String
+        @return: Returns an integer if the transaction is successful. Returns -1 if failed
+        @rtype: integer
+    '''
+    #get the key for user counter
+    counter = db.Query(datamodel.Counter).filter('name =', name).get()
+    #If entity doesn't exist in the Counter entity group, create it.
+    if not counter:
+        counterKey = datamodel.Counter(name = name, count = 0).put()
+    else:
+        counterKey = counter.key()
+    try:
+        uid = db.run_in_transaction(autoIncrement, counterKey)
+        return uid
+    except db.TransactionFailedError:
+        logging.error('Failed to get auto increment value during transaction and retries')
+        return -1

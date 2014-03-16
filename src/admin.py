@@ -5,7 +5,7 @@ import datamodel
 import webapp2
 from google.appengine.api import users
 from google.appengine.ext import db
-from users import isContributingUser, isAdministratorUser
+from libuser import isContributingUser, isAdministratorUser
  
 class ManageUsersHandler(webapp2.RequestHandler):
     def get(self):
@@ -24,7 +24,7 @@ class ManageUsersHandler(webapp2.RequestHandler):
         else:
             self.redirect('/')
     def post(self):
-        from users import getUserEntity, newContributingUser, newAdministratorUser, isAdministratorUserByUID, isContributingUserByUID
+        from libuser import getUserEntity, newContributingUser, newAdministratorUser, isAdministratorUserByUID, isContributingUserByUID
         uid = self.request.get("auid")
         if uid is not "":
             if getUserEntity(uid) is not None and isAdministratorUserByUID(uid) is not True:
