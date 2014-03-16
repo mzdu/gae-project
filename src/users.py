@@ -99,6 +99,31 @@ class UserHandler(webapp2.RequestHandler):
         for key in userInfo:
             values[key] = userInfo[key]
         doRender(self, 'user.html', values)       
+
+class UserContributionsHandler(webapp2.RequestHandler):
+    def get(self):
+        values = dict()
+        path = getUrlResourceList(self)
+        try:
+            uid = int(path[2])
+        except:
+            values['error'] = 'Invalid character after /user/'
+            doRender(self, 'userContribution.html', values) 
+            return
+        
+        if isCurrentUser(uid):
+            values['is_current_user'] = 'True'
+            userObject = getUserEntity(uid)
+            contributedModule = db.Query(datamodel.Module).filter('contributor =', userObject).order('-last_update')
+            values['contributed_modules'] = contributedModule
+        
+        userInfo = getUserInfo(uid)
+        for key in userInfo:
+            values[key] = userInfo[key]
+            
+        doRender(self, 'userContribution.html', values) 
+
+
         
 class DefaultUserHandler(webapp2.RequestHandler):
     def get(self):
@@ -114,6 +139,7 @@ class DefaultUserHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication(
                                          [('/users/edit/.*', EditUserHandler),
                                           ('/users', DefaultUserHandler),
+                                          ('/users/contribution/.*', UserContributionsHandler),
                                           ('/users/', DefaultUserHandler),
                                           ('/users/.*', UserHandler)],
                                           debug=True)

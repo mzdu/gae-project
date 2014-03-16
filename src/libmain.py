@@ -21,6 +21,8 @@ def doRender(handler, tname = 'index.html', values = {}):
     for key in userMenuValues:
         values[key] = userMenuValues[key]
     
+    from libuser import isContributingUser
+    values['is_contributing_user'] = isContributingUser()
     temp = jinja_environment.get_template(tname)
     handler.response.out.write(temp.render(values))
     return True

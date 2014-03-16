@@ -38,8 +38,11 @@
 	        <ul id="navList">
 	  		    <li><a href="/main?usr=newUser" >New Users</a></li>
 				<li style="width:155px"><a href="/main?usr=experienced">Experienced Users</a></li>
-				
-	    	    <li><a href="/">My Work</a></li>
+				{% if is_contributing_user %}
+	    	    <li><a href="/users/contribution/{{uid}}">My Work</a></li>
+	    	    {% else %}
+	    	    <li><a href="/join">Join Us</a></li>
+	    	    {% endif %}
 	    	</ul>
 	    	
         </div>

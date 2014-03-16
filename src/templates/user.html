@@ -4,13 +4,15 @@
 	{% if error %}
 		{{error}}
 	{% else %}
+	
 	<h1>User Information</h1>
+	
 	<div class="box">
-	{% if is_current_user %}
-	<p><a href="/users/edit/{{uid}}/{{alias_slug}}">Edit Profile</a></p>
-	{% endif %}
 		<h2>{{alias_general}}</h2>
 		
+	{% if is_current_user %}
+	<a href="/users/edit/{{uid}}/{{alias_slug}}">Edit Profile</a>
+	{% endif %}
 		
 		<table>
 				{% if alias_general %}<tr><td class="title">Display Name</td><td>{{alias_general}}</td></tr>{% endif %}
@@ -28,19 +30,6 @@
 		{% endif %}
 		</div>
 		
-	
-		{% if is_current_user %}
-			<div class="box" id="contributions">
-			<h2>Your Module Contributions</h2>
-			<table>
-				{% for module in contributed_modules %}
-					<tr>
-						<td><a href="#">{{module.title}}</a></td>
-					</tr>
-				{% endfor %}
-			</table>
-			</div>
-		{% endif %}
 		
 	{% endif %}
 {% endblock %}
