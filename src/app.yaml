@@ -40,16 +40,10 @@ handlers:
   script: admin.app
   login: required
 
-- url: /article/new.*
-  script: articles.app
+- url: /article.*
+  script: main.app
   login: required
 
-- url: /article/edit.*
-  script: articles.app
-  login: required
-  
-- url: /articles.*
-  script: articles.app
  
 - url: /users.*
   script: users.app

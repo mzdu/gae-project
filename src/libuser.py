@@ -273,11 +273,6 @@ def getUserInfo(uid):
         profile['is_user_general'] = 'False'
         return profile 
     
-
-
-
-
-
 def newWikiUser(userID, userName, email, uid): 
     ''' @summary: Creates a new WikiUser entity in the datastore
         @param userID: Unique numeric string that Google provides
