@@ -22,9 +22,9 @@
 			  <br />Version: {{module_version}}
 		</div>
 					<h3 class="sectionHeader">Key Words:</h3>
-					<p>{{html}}</p>
+					<p>{{module_keywords_general}}</p>
 					<h3 class="sectionHeader">Background / Metatheory:</h3>
-					<p>{{module_meta_theory_general}}</p>
+					<p>{{html}}</p>
 					<div class="terms">
 						<h3 class="sectionHeader">Terms & Definitions:</h3>
 						<ul>
@@ -54,14 +54,14 @@
 					<div class="derivations">
 						<h3 class="sectionHeader">Derivations:</h3>
 						<ol>
-							{{deri}}
+							{% for deriv in module_derivations_general %}
+								<li>{{deriv}}</li>
+							{% endfor %}
 						</ol>
 					</div>
 					<div class="evidence">
 						<h3 class="sectionHeader">Evidence:</h3>
-						<ol>
-							{{evid}}
-						</ol>
+						<p>{{module_evidence_general}}</p>
 					</div>
 			</div><!-- end propositions -->
 				

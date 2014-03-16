@@ -1,6 +1,6 @@
 #from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID
-from libmain import doRender
-from libmodule import newModule, getUnpublishedModules
+from libmain import doRender, getUrlResourceList
+from libmodule import newModule, getUnpublishedModules, getModuleVersion, getModuleVersionCount
 from libuser import isContributingUser
 
 import webapp2
@@ -72,10 +72,9 @@ class NewModuleHandler(webapp2.RequestHandler):
             values = {'error' : 'Failed to create module. Please try again later.'}
             doRender(self, 'error.html', values)
         
-
 # class EditModuleHandler(webapp2.RequestHandler):
 #     def get(self):
-#         from users import isContributingUser
+#         from libuser import isContributingUser
 #         if isContributingUser() is True:
 #             values = dict()
 #             url = getUrlResourceList(self)
@@ -86,7 +85,7 @@ class NewModuleHandler(webapp2.RequestHandler):
 #             doRender(self, 'editModule.html', values)
 #         else:
 #             self.redirect('/modules/')
-#             
+#              
 #     def post(self):
 #         title = self.request.get("title")
 #         metaTheory = self.request.get("meta_theory")
@@ -96,20 +95,20 @@ class NewModuleHandler(webapp2.RequestHandler):
 #         discipline = self.request.get("discipline")
 #         publishBool = self.request.get("published")
 #         uid = int(self.request.get("uid"))
-#         
-#         
+#          
+#          
 #         modKey = updateModule(uid, title, metaTheory, markdown, scopeList, propositionList, discipline, publishBool)
-#                               
+#                                
 #         #terms
 #         terms = self.request.get_all("terms")
 #         definitions = self.request.get_all("definitions")
 #         functions = self.request.get_all("functions")
-#         
+#          
 #         while terms:
 #             term = terms.pop().lower()
 #             definition = definitions.pop()
 #             function = functions.pop()
-#             
+#              
 #             termKey = db.Query(datamodel.Term).filter('word =', term).get()
 #             if termKey:
 #                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
@@ -121,66 +120,77 @@ class NewModuleHandler(webapp2.RequestHandler):
 #                 newTerm(term, term, function, definition)
 #                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
 #                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
-#             
+#              
 #             datamodel.ModuleTerm(module = modKey, term = termKey, definition = defKey).put()
-#             
+#              
 #         if modKey != -1:
 #             self.redirect("/modules", True)
 #         else:
 #             values = {'error' : 'Failed to update module. Please try again later.'}
 #             doRender(self, 'error.html', values)
-# 
-# class ModuleHandler(webapp2.RequestHandler):
-#     def get(self):
-#         from users import isContributingUser
-#         pathList = getUrlResourceList(self)
-#         values = dict()
-#         if len(pathList) == 1 or pathList[1] == '':
-#             doRender(self, 'moduleDefault.html', values)
-#         elif len(pathList) == 2 or pathList[2] == '':
-#             values = getModuleVersion(pathList[1])
-#             count = getModuleVersionCount(int(pathList[1]))+1
-#             #workaround for list of versions
-#             versions = []
-#             i = 1
-#             while i < count:
-#                 versions.append(str(i))
-#                 i += 1
-#             values['versions'] = versions
-#             if isContributingUser() is True:
-#                 values["contributing_user"] = "True"
-#             doRender(self, 'module.html', values)
-#         else:
-#             try:
-#             #check to see if the version is a slug or a version number.
-#                 uid = int(pathList[1])
-#             except:
-#                 values['error'] = 'Module id\'s and version numbers are numeric. Please check the URL. Example wikitheoria.appspot.com/1 or wikitheoria.appspot.com/1/2'
-#                 doRender(self, 'module.html', values)
-#                 return
-#             values = getModuleVersion(uid, pathList[2])
-#             count = getModuleVersionCount(uid)+1
-#             #workaround for list of versions
-#             versions = []
-#             i = 1
-#             while i < count:
-#                 versions.append(str(i))
-#                 i += 1
-#             values['versions'] = versions
-#             if isContributingUser() is True:
-#                 values["contributing_user"] = "True"
-#             doRender(self, 'module.html', values)
-#     def post(self):
-#         version = self.request.get("version")
-#         uid = self.request.get("module_version_uid")
-#         self.redirect('/modules/' + uid + '/' + version)
-#
+
+
+#display specified module 
+class ModuleHandler(webapp2.RequestHandler):
+    def get(self):
+        #convert a url to a list of segmented elements like ['modules','']
+        pathList = getUrlResourceList(self)
+        
+        values = dict()
+        
+        if len(pathList) == 1:
+            values['error'] = "url does not contain any module number"
+            doRender(self, 'moduleDefault.html', values)
+        
+        # case ['modules','10'], which indicates the newest version   
+        elif len(pathList) == 2:
+            
+            # get module info from datastore and stack them into values dictionary
+            values = getModuleVersion(pathList[1])
+            
+            # get the count of version of a module
+            count = getModuleVersionCount(int(pathList[1]))+1
+            
+            #workaround for list of versions
+            versions = []
+            i = 1
+            while i < count:
+                versions.append(str(i))
+                i += 1
+            values['versions'] = versions
+            if isContributingUser() is True:
+                values["contributing_user"] = "True"
+            doRender(self, 'module.html', values)
+        else:
+            try:
+            #check to see if the version is a slug or a version number.
+                uid = int(pathList[1])
+            except:
+                values['error'] = 'Module id\'s and version numbers are numeric. Please check the URL. Example wikitheoria.appspot.com/1 or wikitheoria.appspot.com/1/2'
+                doRender(self, 'module.html', values)
+                return
+            values = getModuleVersion(uid, pathList[2])
+            count = getModuleVersionCount(uid)+1
+            #workaround for list of versions
+            versions = []
+            i = 1
+            while i < count:
+                versions.append(str(i))
+                i += 1
+            values['versions'] = versions
+            if isContributingUser() is True:
+                values["contributing_user"] = "True"
+            doRender(self, 'module.html', values)
+    def post(self):
+        version = self.request.get("version")
+        uid = self.request.get("module_version_uid")
+        self.redirect('/modules/' + uid + '/' + version)
+
 
 #display the list of modules         
 class MainPageHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
-        from libuser import isContributingUser
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
             unpublishedModules = getUnpublishedModules()
@@ -194,8 +204,8 @@ class MainPageHandler(webapp2.RequestHandler):
         
 app = webapp2.WSGIApplication([
 #                                ('/module/edit.*', EditModuleHandler),
-                                          ('/module/new.*', NewModuleHandler),
-                                        ('/modules/?', MainPageHandler)
-#                                           ('/modules/.*', ModuleHandler)
+                               ('/module/new.*', NewModuleHandler),
+                               ('/modules/?', MainPageHandler),
+                               ('/modules/.*', ModuleHandler)
                                 ],debug=True)
 

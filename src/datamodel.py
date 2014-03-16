@@ -48,11 +48,11 @@ class Module(db.Model):
     current = db.BooleanProperty()
     
     
-# 
-# class VersionCounter(db.Model):
-#     module = db.IntegerProperty()
-#     count = db.IntegerProperty()
-# 
+ 
+class VersionCounter(db.Model):
+    module = db.IntegerProperty()
+    count = db.IntegerProperty()
+ 
 # class ModuleVersion(db.Model):
 #     module = db.ReferenceProperty(Module)
 #     version = db.IntegerProperty()
