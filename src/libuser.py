@@ -18,6 +18,31 @@ def getLogoutUrl():
     '''
     return users.create_logout_url("/")
 
+def isCurrentUser(uid):
+    ''' @summary: Compare current logged in user with callingUserName; Verify user credentials
+        @param callingUserName: UserName to compare against
+        @type callingUserName:  String
+        @return: Return True if the current logged in user is equal to callingUserName
+        @rtype: Boolean
+    '''
+    userInfo = getCurrentUserInfo()
+    if userInfo['isUser'] == 'True':
+        if userInfo['uid'] == uid:
+            return True
+    else:
+        return False
+    
+def isLoggedIn():
+    ''' @summary: Checks for an authenticated user bases on the Google User API
+        @return: Return True if there is a current authenticated user
+        @rtype: Boolean
+    '''
+    if getGoogleUserObject():
+        return True
+    else:
+        return False
+
+
 def isContributingUser():
     ''' @summary: Returns True or False depending on the current users rights
         @return: True or False if user is a contributing user
@@ -161,6 +186,43 @@ def getCurrentUserInfo():
         currentUserDict['isUser'] = 'False'
         return currentUserDict    
 
+def getUserInfo(uid):
+    ''' @summary: Returns a dictionary of public values that are used to populate a user profile
+        @param uid: Unique identifier in datastore for User object
+        @type uid: String 
+        @return: A dictionary of values related to the user entity
+        @rtype: list
+    '''
+    profile = dict();
+    
+    que = db.Query(datamodel.WikiUser)
+    que = que.filter('uid =', int(uid))
+    userInfo = que.get()
+    
+    #If user is found in datastore return info, else create new user
+    if userInfo:
+        profile['alias_general'] = userInfo.alias
+        profile['real_name_general'] = userInfo.real_name
+        profile['user_id_general'] = userInfo.user_id
+        if userInfo.birthday:
+            profile['birthday_general'] = userInfo.birthday.strftime('%m/%d/%Y')
+        profile['email_general'] = userInfo.email
+        profile['join_date_general'] = userInfo.join_date
+        profile['location_general'] = userInfo.location
+        profile['organization_general'] = userInfo.organization
+        profile['user_name_general'] = userInfo.user_name
+        profile['about_general'] = userInfo.about
+        profile['is_user_general'] = 'True'
+        return profile
+    else:
+        profile['error'] = str(uid) + ' is not a user'
+        profile['is_user_general'] = 'False'
+        return profile 
+    
+
+
+
+
 
 def newWikiUser(userID, userName, email, uid): 
     ''' @summary: Creates a new WikiUser entity in the datastore
@@ -204,3 +266,23 @@ def newContributingUser(user):
     contributing_user = datamodel.ContributingUser(user = user)
     contributing_user.put()
     return contributing_user
+
+
+#handle logged in users status and information. If there is a current user, call getUserInfo()
+def buildUserMenu():
+    ''' @summary: Returns values that are used by the _base Django template relating to the user
+        @rtype: Dictionary
+    '''
+    user = getGoogleUserObject()
+    userInfo = dict()
+    
+    if user:
+        userInfo = getCurrentUserInfo()
+        #If this is the first time logging in, firtTimeLogin() is called to create a new entity
+        if userInfo['isUser'] == 'False':
+            firstTimeLogin(user)
+            userInfo = getCurrentUserInfo()
+    else:
+        userInfo['login_url'] =  getLoginUrl()
+    return userInfo
+    

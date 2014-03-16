@@ -278,7 +278,7 @@ def versionIncrement(uid):
     else:
         counterKey = counter.key()
     try:
-        from main import autoIncrement
+        from libmain import autoIncrement
         uid = db.run_in_transaction(autoIncrement, counterKey)
         return uid
     except db.TransactionFailedError:

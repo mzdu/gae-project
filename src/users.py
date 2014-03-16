@@ -1,4 +1,4 @@
-from main import doRender, isCurrentUser, getUserInfo,getUrlResourceList
+from libmain import doRender, isCurrentUser, getUserInfo,getUrlResourceList
 import logging
 import datamodel
 
