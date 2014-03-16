@@ -1,1 +1,6 @@
 1. display the list of module with ajax
+2. /help replace the dumb content
+3. /about replace the dumb content
+4. /contribute needs to be closed after the final test
+5. improve feedback interface (low)
+6. 

@@ -96,7 +96,6 @@ class MainPageHandler(webapp2.RequestHandler):
 #             for key in featuredArticle:
 #                 values[key] = featuredArticle[key]
         
-
         doRender(self, 'index.html', values)
 
 class MainPageRedirecter(webapp2.RequestHandler):
