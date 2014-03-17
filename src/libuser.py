@@ -16,8 +16,6 @@ def getLogoutUrl():
     '''
     return users.create_logout_url("/")
 
-
-
 def isCurrentUser(uid):
     ''' @summary: Compare current logged in user with callingUserName; Verify user credentials
         @param callingUserName: UserName to compare against
@@ -100,7 +98,6 @@ def isAdministratorUser():
         @return: True or False if user is administrator
         @rtype: Boolean
     '''
-    from libuser import getCurrentUserInfo
     user_info = getCurrentUserInfo()
     user_uid = int(user_info['uid'])
     user = getUserEntity(user_uid)

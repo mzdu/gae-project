@@ -23,25 +23,33 @@
 		<div id="searchResult"></div>
 	</div>
 	<div class="twoColumnYellow" style="margin-top:10px;">
-	    <div class="header"><h3>Recent Terms</h3></div>
-	        {% if ten_newest_terms %}
+	    <div class="header"><h3>List of Terms</h3></div>
+	        {% if terms_general %}
 	        <table>
 		        <tr>
 		             <th>Name</th>
 		             <th>Date Submitted</th>
 		        </tr>
-	            {% for term in ten_newest_terms %}
+	            {% for term in terms_general %}
 	            <tr>
 	                <td><a href="/terms/{{term.slug}}">{{term.word}}</a></td> 
 	                <td>{{term.date_submitted.month}}/{{term.date_submitted.day}}/{{term.date_submitted.year}}</td>
 	            </tr>
 	            {% endfor %}
+	            
+	            <tr>
+				<td colspan="4" style="text-align:right">Page:
+				{% for pageN in terms_page %}
+					<a href="/terms/page/{{pageN}}">{{pageN}}</a>
+				{% endfor %}
+				</td>
+			<tr>
 	        </table>
 	       	{% endif %}
 	</div>
 	<div class="twoColumnRed" style="margin-top:10px;">
 				<div class="header"><h3>Term Statistics</h3></div>
-				Insert statistics here!
+				Currently, we have {{terms_count}} terms!
 			</div>
 	<div class="clear"></div>
 </div><!-- end mainContent -->

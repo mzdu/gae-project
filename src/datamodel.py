@@ -47,50 +47,29 @@ class Module(db.Model):
     published = db.BooleanProperty()
     current = db.BooleanProperty()
     
-    
- 
 class VersionCounter(db.Model):
     module = db.IntegerProperty()
     count = db.IntegerProperty()
  
-# class ModuleVersion(db.Model):
-#     module = db.ReferenceProperty(Module)
-#     version = db.IntegerProperty()
-#     meta_theory = db.TextProperty()
-#     scope = db.StringListProperty()
-#     propositions = db.StringListProperty()
-#     # no need for version 150
-# #    discipline = db.StringProperty(choices = ('Sociology', 'Psychology', 'Political Science'))
-#     date_submitted = db.DateTimeProperty(auto_now_add=True)
-#     title = db.StringProperty()
-#     contributor = db.ReferenceProperty(WikiUser)
-#     
-#     # extended module attributes for version 150
-#     keywords = db.StringProperty()
-#     derivations = db.StringListProperty()
-#     evidence = db.StringListProperty()
-# 
 # #One Term to many TermDefinitions
-# class Term(db.Model):
-#     word = db.StringProperty(required=True)
-#     slug = db.StringProperty(required=True)
-#     popularity = db.IntegerProperty()
-#     date_submitted = db.DateTimeProperty(auto_now_add=True)
-#     contributor = db.ReferenceProperty(WikiUser)
-#     uid = db.IntegerProperty()
-#     
-# #Many TermDefinitions to one Term
-# class TermDefinition(db.Model):
-#     term = db.ReferenceProperty(Term)
-#     definition = db.StringProperty()
-#     
-#     # no need for version150
-# #    function = db.StringProperty(choices = ('noun', 'verb', 'pronoun', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection', 'nounPhrase', 'verbPhrase', 'prepositionalPhase', 'adjectivalPhrase', 'adverbialPhrase'))
-#     popularity = db.IntegerProperty()
-#     discipline = db.StringProperty()
-#     date_defined = db.DateTimeProperty(auto_now_add=True)
-#     contributor = db.ReferenceProperty(WikiUser)
-#     uid = db.IntegerProperty()
+class Term(db.Model):
+    word = db.StringProperty(required=True)
+    slug = db.StringProperty(required=True)
+    popularity = db.IntegerProperty()
+    date_submitted = db.DateTimeProperty(auto_now_add=True)
+    contributor = db.ReferenceProperty(WikiUser)
+    uid = db.IntegerProperty()
+
+     
+#Many TermDefinitions to one Term
+class TermDefinition(db.Model):
+    term = db.ReferenceProperty(Term)
+    definition = db.StringProperty()
+    popularity = db.IntegerProperty()
+    discipline = db.StringProperty()
+    date_defined = db.DateTimeProperty(auto_now_add=True)
+    contributor = db.ReferenceProperty(WikiUser)
+    uid = db.IntegerProperty()
 #     
 # #Describes the terms for particular modules
 # class ModuleTerm(db.Model):
