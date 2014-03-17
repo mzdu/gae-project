@@ -199,13 +199,36 @@ class ModuleHandler(webapp2.RequestHandler):
 class MainPageHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
+        
+        from libmain import RepresentsInt
+        urlList = getUrlResourceList(self)
+        urlList.append('')
+        urlList.append('')
+        
+        pageLimit = 10 
+        pageNumber = urlList[2]
+        if pageNumber == '' or pageNumber == '1':
+            pageNumber = 1
+             
+        elif RepresentsInt(pageNumber):
+            pageNumber = int(pageNumber)
+         
+        else:
+            pageNumber = 1
+        
+        
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
             unpublishedModules = getUnpublishedModules()
             values['unpublished_modules'] = unpublishedModules
-        modules = db.Query(datamodel.Module).filter('current =', True).filter('published =', True).order('-date_submitted').fetch(10)
+        else:
+            pass
+        
+        
+        
+        modules = db.Query(datamodel.Module).filter('current =', True).filter('published =', True).order('-date_submitted').fetch(limit=pageLimit, offset=((pageNumber-1)*pageLimit))
         values["ten_newest_modules"] = modules
-
+        
         values['javascript'] = ['/static/js/jquery.js', '/static/js/modules/moduleDefault.js']
              
         doRender(self, 'moduleDefault.html', values)
@@ -213,8 +236,8 @@ class MainPageHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
                                ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
-                               ('/module/', MainPageHandler),
-                               ('/modules/?', MainPageHandler),
+                               ('/modules/page.*', MainPageHandler),
+                               ('/modules/', MainPageHandler),
                                ('/modules/.*', ModuleHandler)
                                 ],debug=True)
 

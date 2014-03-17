@@ -186,3 +186,21 @@ def createNewUID(name):
     except db.TransactionFailedError:
         logging.error('Failed to get auto increment value during transaction and retries')
         return -1
+    
+    
+    
+    ################################# Some Toolkit ########################
+def RepresentsInt(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
+    
+    
+    
+    
+    
+    
+    
+        
