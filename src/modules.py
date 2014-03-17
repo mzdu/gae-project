@@ -4,7 +4,7 @@ from libmodule import newModule, getModule, updateModule, getUnpublishedModules,
 from libuser import isContributingUser
 
 import webapp2
-
+import math
 import datamodel
 import logging
 from google.appengine.ext import db
@@ -201,21 +201,33 @@ class MainPageHandler(webapp2.RequestHandler):
         values = dict()
         
         from libmain import RepresentsInt
+        from libmodule import getModuleCount
+         
+        moduleCount = float(getModuleCount()) 
+         
         urlList = getUrlResourceList(self)
         urlList.append('')
         urlList.append('')
         
-        pageLimit = 10 
+        #setup pageLimit here 
+        pageLimit = 15 
         pageNumber = urlList[2]
+         
+        pageMax = math.ceil(moduleCount/pageLimit)
+        pageMax = int(pageMax) 
         if pageNumber == '' or pageNumber == '1':
             pageNumber = 1
-             
+              
         elif RepresentsInt(pageNumber):
             pageNumber = int(pageNumber)
-         
+            if pageNumber > pageMax:
+                pageNumber = 1
+            else:
+                pass
+          
         else:
             pageNumber = 1
-        
+            
         
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
@@ -224,11 +236,16 @@ class MainPageHandler(webapp2.RequestHandler):
         else:
             pass
         
-        
+        pageList = []
+        for pageN in range(pageMax):
+            pageList.append(str(pageN+1))
+            
+        logging.error(pageList)
         
         modules = db.Query(datamodel.Module).filter('current =', True).filter('published =', True).order('-date_submitted').fetch(limit=pageLimit, offset=((pageNumber-1)*pageLimit))
-        values["ten_newest_modules"] = modules
-        
+        values['modules_general'] = modules
+        values['modules_page'] = pageList
+        values['modules_count'] = int(moduleCount)
         values['javascript'] = ['/static/js/jquery.js', '/static/js/modules/moduleDefault.js']
              
         doRender(self, 'moduleDefault.html', values)
@@ -237,7 +254,7 @@ app = webapp2.WSGIApplication([
                                ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
                                ('/modules/page.*', MainPageHandler),
-                               ('/modules/', MainPageHandler),
+                               ('/modules/?', MainPageHandler),
                                ('/modules/.*', ModuleHandler)
                                 ],debug=True)
 
