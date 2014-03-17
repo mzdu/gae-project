@@ -55,22 +55,18 @@ class VersionCounter(db.Model):
 class Term(db.Model):
     word = db.StringProperty(required=True)
     slug = db.StringProperty(required=True)
-    popularity = db.IntegerProperty()
     date_submitted = db.DateTimeProperty(auto_now_add=True)
     contributor = db.ReferenceProperty(WikiUser)
     uid = db.IntegerProperty()
 
-     
 #Many TermDefinitions to one Term
 class TermDefinition(db.Model):
     term = db.ReferenceProperty(Term)
     definition = db.StringProperty()
-    popularity = db.IntegerProperty()
-    discipline = db.StringProperty()
     date_defined = db.DateTimeProperty(auto_now_add=True)
     contributor = db.ReferenceProperty(WikiUser)
     uid = db.IntegerProperty()
-#     
+     
 # #Describes the terms for particular modules
 # class ModuleTerm(db.Model):
 #     module = db.ReferenceProperty(Module)
