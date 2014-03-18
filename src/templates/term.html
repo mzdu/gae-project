@@ -7,9 +7,8 @@
 
 <div class="term">
 
-	<h2>{{term}} </h2>
-	
-	<h3></h3>
+	<h2>{{term}}</h2>
+	<div id="myslug" name="myslug" hidden>{{slug}}</div>
 		<ol>
 			{% for def in definitions %}
 				<li>{{def}}</li>
@@ -17,12 +16,10 @@
 		</ol>
 		
 	{% if contributing_user %}	
-	<form method="post">
-	<input type="text" name="definition" size="50"/> <br/>
-	<input type="submit" value="Add definition">
-	</form>
+	<input type="text" name="newdef" id="newdef" size="50"/> <br/>
+	<button name="defBtn" id="defBtn" onclick="submitForm()">Add New Definition</button>
 	{% else %}
-	<p><a href="/join">Join us and define your own term.</a></p>
+	<p><a href="/join">Join us and define your {{term}}.</a></p>
 	{% endif %}
 </div><!-- end term -->
 

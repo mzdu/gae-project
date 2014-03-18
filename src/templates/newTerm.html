@@ -4,11 +4,11 @@
 	{% if message %}
 		<p>{{message}}</p>
 	{% endif %}
+	
+	{% if is_contributing_user %}
 	<h2>Define a new term</h2>
 	<form method="post" action="">
-	
 	<!-- New term added here -->
-	
 	<table>
 		<tr>
 			<td>Term:</td><td><input name="term" type="text" value=""  /></td>
@@ -21,7 +21,11 @@
 	</table>
 	<input name="Submit1" type="submit" value="Submit" />
 </form>
-
+	{% else %}
+	<script type="text/javascript">
+    	window.location.href = "/join"
+    </script>	
+	{% endif %}
 </div><!-- end term -->
 
 {% endblock %}
