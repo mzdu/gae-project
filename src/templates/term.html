@@ -17,7 +17,10 @@
 		</ol>
 		
 	{% if contributing_user %}	
-	<p><a href="/contribute/definition/{{slug}}">Add a new definition for this term</a></p>
+	<form method="post">
+	<input type="text" name="definition" size="50"/> <br/>
+	<input type="submit" value="Add definition">
+	</form>
 	{% else %}
 	<p><a href="/join">Join us and define your own term.</a></p>
 	{% endif %}

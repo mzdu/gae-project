@@ -56,7 +56,14 @@ class GetTermHandler(webapp2.RequestHandler):
         doRender(self, 'term.html', values)
     
     def post(self):
-        pass
+        newDefinition = self.request.get('definition')
+        pathList = getUrlResourceList(self)
+        slug = pathList[1]
+        term = slug.replace('-', ' ')
+        from libterm import newTerm
+        newTerm(term, slug, newDefinition)
+        
+        self.redirect('/terms/' + slug)
         
 # class TermHandler(webapp2.RequestHandler):
 #     def get(self):
