@@ -295,3 +295,8 @@ def newContributingUser(user):
     return contributing_user
 
 
+# def getUserGoogleID(user):
+#     """ returns the user id from Google 
+#     """
+#     return users.user_id()
+    
