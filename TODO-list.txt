@@ -3,4 +3,4 @@
 3. /about replace the dumb content
 4. /contribute needs to be closed after the final test
 5. improve feedback interface (low)
-6. 
+6. in order to retrieve the avatar of a user, we need to activate Google+ API
