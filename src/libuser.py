@@ -182,8 +182,6 @@ def getCurrentUserEntity():
     que = que.filter('user_id =', user.user_id())
     userEntity = que.get()
     
-    logging.info("userEntity is", userEntity)
-    
     return userEntity
 
 def getCurrentUserInfo():

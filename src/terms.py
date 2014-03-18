@@ -31,7 +31,6 @@ class NewTermHandler(webapp2.RequestHandler):
         doRender(self, 'newTerm.html')
     
     def post(self):
-        values = dict()
         term = self.request.get('term').strip().lower()
         term = str(term)
         definition = self.request.get('definition').strip()
@@ -41,11 +40,8 @@ class NewTermHandler(webapp2.RequestHandler):
         from libterm import newTerm
         newTerm(term, slug, definition)
         
-        if not values['error'] == '':
-            doRender(self, 'error.html', values)
-            return None
-        else:
-            self.redirect('/terms/'+slug, False)
+
+        self.redirect('/terms/'+slug, False)
         
 # class TermHandler(webapp2.RequestHandler):
 #     def get(self):

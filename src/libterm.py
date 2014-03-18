@@ -8,23 +8,23 @@ from google.appengine.ext import db
 def newTerm(term, slug, definition):
     values = dict()
     user = getCurrentUserEntity()   
-    # check if a term had been pre-defined
+    # check if a term is pre-defined
     termList = db.Query(datamodel.Term).filter('slug =', slug).fetch(limit=None)
     listLen = len(termList)
-    logging.error(listLen)
     
     if listLen == 0:
         termid = createNewUID("terms")
         termkey = datamodel.Term(word = term, slug = slug, contributor = user, uid = termid).put()
     elif listLen == 1:
         termkey = db.Query(datamodel.Term).filter('slug =', slug).get()
-        logging.error(termkey)
     else:
         values['error'] = 'there are duplicate entities in Term table'
         return values
     
     definitionid = createNewUID("definitions")
     datamodel.TermDefinition(term = termkey, definition = definition, contributor = user, uid = definitionid).put()
+    
+    return values
 
 # def getTerm(slug):
 #     values = dict()    
