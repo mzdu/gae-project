@@ -5,22 +5,22 @@ from libmain import doRender, getUrlResourceList
 import webapp2
     
 from google.appengine.ext import db
-   
+
 # class DefineTermHandler(webapp2.RequestHandler):
 #     def get(self):
-#         path = getUrlResourceList(self)
+#         urlList = getUrlResourceList(self)
 #         try:
 #             slug = str(path[2])
+#             logging.error(slug)
 #         except:
 #             doRender(self, 'error.html', {'error' : 'Not a valid term to define'})
 #             return None
-#         values = {'slug' : slug, 'term' : slug.replace('-', ' ')}
+#         
+#         values = {'slug' : slug, 'term' : slug.replace('-',' ')}
 #         doRender(self, 'newDefinition.html', values)
-#         
+         
 #     def post(self):
-#         
 #         from libterm import newDefinition
-#         
 #         slug = self.request.get('slug').strip().lower()
 #         definition = self.request.get('definition').strip()
 #         newDefinition(slug, definition)
@@ -42,6 +42,21 @@ class NewTermHandler(webapp2.RequestHandler):
         
 
         self.redirect('/terms/'+slug, False)
+
+class GetTermHandler(webapp2.RequestHandler):
+    def get(self):
+        pathList = getUrlResourceList(self)
+        slug = pathList[1]
+         
+        from libterm import getTerm, getTermCount
+        from libuser import isContributingUser
+        values = getTerm(slug)
+        values['terms_count'] = getTermCount()
+        values['contributing_user'] = isContributingUser()
+        doRender(self, 'term.html', values)
+    
+    def post(self):
+        pass
         
 # class TermHandler(webapp2.RequestHandler):
 #     def get(self):
@@ -105,8 +120,9 @@ class NewTermHandler(webapp2.RequestHandler):
 #             doRender(self, 'term.html', values)
 
 app = webapp2.WSGIApplication([
-                               ('/contribute/term.*', NewTermHandler)
+                               ('/contribute/term.*', NewTermHandler),
 #                                ('/contribute/definition.*', DefineTermHandler),
+                               ('/terms/.*', GetTermHandler)
 #                                ('/terms/page.*', TermHandler),
 #                                ('/.*', TermHandler)
                                ],debug = True)

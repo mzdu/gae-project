@@ -26,33 +26,36 @@ def newTerm(term, slug, definition):
     
     return values
 
-# def getTerm(slug):
-#     values = dict()    
-#     try:
-#         slug = str(slug)
-#     except:
-#         values['error'] = 'Not a valid term. Please check the term in the URL.'
-#         return values
-#     term = db.Query(datamodel.Term).filter('slug =', slug).get()
-#     if term:
-#         values['slug'] = slug
-#         values['term'] = term.word
-#         defList = list()
-#         for item in term.termdefinition_set:
-#             defList.append(item.definition)
-#         values['definitions'] = defList
-#         return values
-#     else:
-#         values['error'] = 'Term not found.'
-#         return values
-# 
-# def getTermCount():
-#     countObject = db.Query(datamodel.Counter).filter("name = ", "terms").get()
-#     if countObject:
-#         return countObject.count
-#     else:
-#         return 0
-# 
+def getTerm(slug):
+    values = dict()    
+    try:
+        slug = str(slug)
+    except:
+        values['error'] = 'Not a valid term. Please check the term in the URL.'
+        return values
+    term = db.Query(datamodel.Term).filter('slug =', slug).get()
+    if term:
+        values['slug'] = slug
+        values['term'] = term.word
+        defList = list()
+        for item in term.termdefinition_set:
+            defList.append(item.definition)
+        values['definitions'] = defList
+        return values
+    else:
+        values['error'] = 'Term not found.'
+        return values
+ 
+
+def getTermCount():
+    """ returns the count of terms
+    """
+    countObject = db.Query(datamodel.Counter).filter("name = ", "terms").get()
+    if countObject:
+        return countObject.count
+    else:
+        return 0
+ 
 
 
  

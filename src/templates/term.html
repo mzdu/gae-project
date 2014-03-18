@@ -15,11 +15,16 @@
 				<li>{{def}}</li>
 			{% endfor %}
 		</ol>
+		
+	{% if contributing_user %}	
 	<p><a href="/contribute/definition/{{slug}}">Add a new definition for this term</a></p>
+	{% else %}
+	<p><a href="/join">Join us and define your own term.</a></p>
+	{% endif %}
 </div><!-- end term -->
 
 <div class="statistics">
-No statistics
+Currently, We have {{terms_count}} terms.
 </div><!-- end statistics -->
 {% endif %}
 
