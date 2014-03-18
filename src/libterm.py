@@ -38,9 +38,15 @@ def getTerm(slug):
         values['slug'] = slug
         values['term'] = term.word
         defList = list()
+        
         for item in term.termdefinition_set:
-            defList.append(item.definition)
-        values['definitions'] = defList
+            defList.append((item.definition, item.date_defined))
+        
+        defList.sort(key=lambda item: item[1])
+        
+        outputList = [x[0] for x in defList]
+            
+        values['definitions'] = outputList
         return values
     else:
         values['error'] = 'Term not found.'
@@ -55,7 +61,3 @@ def getTermCount():
         return countObject.count
     else:
         return 0
- 
-
-
- 
