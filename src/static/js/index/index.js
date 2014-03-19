@@ -56,8 +56,3 @@
 		
 
 	}
-	
-
-	
-
-alert('index.js loaded');
