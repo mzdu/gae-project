@@ -25,6 +25,7 @@ from google.appengine.ext import db
 #         definition = self.request.get('definition').strip()
 #         newDefinition(slug, definition)
 #         self.redirect('/terms/'+slug, False)
+
     
 class NewTermHandler(webapp2.RequestHandler):
     def get(self):
@@ -36,15 +37,20 @@ class NewTermHandler(webapp2.RequestHandler):
         definition = self.request.get('definition').strip()
         definition = str(definition)
         slug = term.replace(' ', '-')
-        
         from libterm import newTerm
-        newTerm(term, slug, definition)
-
-        self.redirect('/terms/'+slug, False)
-
+        try:
+            termKey = newTerm(term, slug, definition)
+        except:
+            logging.error('termKey error')
+        
+        if not termKey:
+            self.redirect('/terms/'+slug)
+        else:
+            self.redirect('/')
+            
+            
 class GetTermHandler(webapp2.RequestHandler):
     def get(self):
-        values = dict()
         pathList = getUrlResourceList(self)
         slug = pathList[1]
          
@@ -60,65 +66,67 @@ class GetTermHandler(webapp2.RequestHandler):
         newDefinition = self.request.get('definition')
         slug = self.request.get('slug')
         term = slug.replace('-', ' ')
-        from libterm import newTerm
+        from libterm import newTerm, getTerm
         newTerm(term, slug, newDefinition)
         
-        self.redirect('/contribute/term', permanent=True)
-#         
+        if getTerm(slug):
+            self.redirect('/contribute/term', permanent=False)
+# 
+# # display the list of terms         
 # class TermHandler(webapp2.RequestHandler):
 #     def get(self):
 #         values = dict()
 #         urlList = getUrlResourceList(self)
 #         urlList.append('')
 #         urlList.append('')
-#          
+#           
 #         from libmain import RepresentsInt
 #         from libterm import getTermCount
-#          
+#           
 #         termCount = float(getTermCount())
-#          
+#           
 #         pageLimit = 15
 #         pageNumber = urlList[2]
-#          
+#           
 #         pageMax = math.ceil(termCount/pageLimit)
 #         pageMax = int(pageMax) 
 #         if pageNumber == '' or pageNumber == '1':
 #             pageNumber = 1
-#                
+#                 
 #         elif RepresentsInt(pageNumber):
 #             pageNumber = int(pageNumber)
 #             if pageNumber > pageMax:
 #                 pageNumber = 1
 #             else:
 #                 pass
-#            
+#             
 #         else:
 #             pageNumber = 1        
-#  
+#   
 #         pageList = []
 #         for pageN in range(pageMax):
 #             pageList.append(str(pageN+1))
-#              
+#               
 #         logging.error(pageList)        
-#          
-#          
+#           
+#           
 #         from libuser import isContributingUser
 #         if isContributingUser() is True:
 #             values['can_contribute'] = 'True'
-#              
+#               
 #         terms = db.Query(datamodel.Term).order('-date_submitted').fetch(limit=pageLimit, offset=((pageNumber-1)*pageLimit)
 #         values['terms_general'] = terms
 #         values['terms_page'] = pageList
 #         values['terms_count'] = int(termCount)
-#          
+#           
 #         if len(pathList) == 1 or pathList[1] == '':
 #             values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/terms/termDefaultPage.js']
 #             values['css'] = ['/static/js/plugins/autocomplete/styles.css']
 #             doRender(self, 'termDefault.html', values)
-#          
+#           
 #         else:
 #             slug = pathList[1]
-#              
+#               
 #             from libterm import getTerm
 #             values = getTerm(slug)
 #             doRender(self, 'term.html', values)
@@ -128,6 +136,6 @@ app = webapp2.WSGIApplication([
 #                                ('/contribute/definition.*', DefineTermHandler),
                                ('/terms/.*', GetTermHandler)
 #                                ('/terms/page.*', TermHandler),
-#                                ('/.*', TermHandler)
+#                                 ('/.*', TermHandler)
                                ],debug = True)
     

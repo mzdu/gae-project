@@ -12,9 +12,9 @@ function submitForm()
 				"slug" : myslug,
 				"definition" : newdef
 				}
-		$("#defBtn").remove();
 		$("#buttons").html("Definition is being submitted. If you are not redirected within 10 seconds <a href='/terms'>click here</a>.");
-		$.post(postUrl, json, function(){window.location = postUrl});
+		$('ol').append('<li>' + newdef + '</li>')
+		$.post(postUrl, json, function(){});
 		
 	}
 }
