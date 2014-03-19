@@ -18,7 +18,8 @@
 	{% if contributing_user %}	
 	<input type="text" name="newdef" id="newdef" size="50"/> 
 	<button name="defBtn" id="defBtn" onclick="submitForm()">Add New Definition</button><br/>
-	<a href="/contribute/term">Contribute New Term</a>
+	<a href="/contribute/term">Contribute New Term</a><br />
+	<a href="/terms">Back to the list of terms</a><br />
 	{% else %}
 	<p><a href="/join">Join us and define your "{{term}}".</a></p>
 	{% endif %}

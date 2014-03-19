@@ -44,7 +44,7 @@ class NewTermHandler(webapp2.RequestHandler):
             logging.error('termKey error')
         
         if not termKey:
-            self.redirect('/terms/'+slug)
+            self.redirect('/terms')
         else:
             self.redirect('/')
             
@@ -52,6 +52,8 @@ class NewTermHandler(webapp2.RequestHandler):
 class GetTermHandler(webapp2.RequestHandler):
     def get(self):
         pathList = getUrlResourceList(self)
+        pathList.append('')
+        pathList.append('')
         slug = pathList[1]
          
         from libterm import getTerm, getTermCount
@@ -71,71 +73,63 @@ class GetTermHandler(webapp2.RequestHandler):
         
         if getTerm(slug):
             self.redirect('/contribute/term', permanent=False)
-# 
-# # display the list of terms         
-# class TermHandler(webapp2.RequestHandler):
-#     def get(self):
-#         values = dict()
-#         urlList = getUrlResourceList(self)
-#         urlList.append('')
-#         urlList.append('')
-#           
-#         from libmain import RepresentsInt
-#         from libterm import getTermCount
-#           
-#         termCount = float(getTermCount())
-#           
-#         pageLimit = 15
-#         pageNumber = urlList[2]
-#           
-#         pageMax = math.ceil(termCount/pageLimit)
-#         pageMax = int(pageMax) 
-#         if pageNumber == '' or pageNumber == '1':
-#             pageNumber = 1
-#                 
-#         elif RepresentsInt(pageNumber):
-#             pageNumber = int(pageNumber)
-#             if pageNumber > pageMax:
-#                 pageNumber = 1
-#             else:
-#                 pass
-#             
-#         else:
-#             pageNumber = 1        
-#   
-#         pageList = []
-#         for pageN in range(pageMax):
-#             pageList.append(str(pageN+1))
-#               
-#         logging.error(pageList)        
-#           
-#           
-#         from libuser import isContributingUser
-#         if isContributingUser() is True:
-#             values['can_contribute'] = 'True'
-#               
-#         terms = db.Query(datamodel.Term).order('-date_submitted').fetch(limit=pageLimit, offset=((pageNumber-1)*pageLimit)
-#         values['terms_general'] = terms
-#         values['terms_page'] = pageList
-#         values['terms_count'] = int(termCount)
-#           
-#         if len(pathList) == 1 or pathList[1] == '':
-#             values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/terms/termDefaultPage.js']
-#             values['css'] = ['/static/js/plugins/autocomplete/styles.css']
-#             doRender(self, 'termDefault.html', values)
-#           
-#         else:
-#             slug = pathList[1]
-#               
-#             from libterm import getTerm
-#             values = getTerm(slug)
-#             doRender(self, 'term.html', values)
+ 
+# display the list of terms         
+class TermHandler(webapp2.RequestHandler):
+    def get(self):
+        values = dict()
+        urlList = getUrlResourceList(self)
+        urlList.append('')
+        urlList.append('')
+        
+        from libmain import RepresentsInt
+        from libterm import getTermCount
+           
+        termCount = float(getTermCount())
+ 
+        pageLimit = 10
+        pageNumber = urlList[2]
+        pageMax = math.ceil(termCount/pageLimit)
+        pageMax = int(pageMax) 
+        
+        
+        
+        if pageNumber == '' or pageNumber == '1':
+            pageNumber = 1
+                 
+        elif RepresentsInt(pageNumber):
+            pageNumber = int(pageNumber)
+            if pageNumber > pageMax:
+                pageNumber = 1
+            else:
+                pass
+             
+        else:
+            pageNumber = 1        
+   
+        pageList = []
+        for pageN in range(pageMax):
+            pageList.append(str(pageN+1))
+               
+        from libuser import isContributingUser
+        if isContributingUser() is True:
+            values['can_contribute'] = 'True'
+               
+        terms = db.Query(datamodel.Term).order('-date_submitted').fetch(limit=pageLimit, offset=(pageNumber-1)*pageLimit)
+        values['terms_general'] = terms
+        values['terms_page'] = pageList
+        values['terms_count'] = int(termCount)
+           
+        values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/terms/termDefaultPage.js']
+        values['css'] = ['/static/js/plugins/autocomplete/styles.css']
+        doRender(self, 'termDefault.html', values)
 
 app = webapp2.WSGIApplication([
                                 ('/contribute/term.*', NewTermHandler),
 #                                ('/contribute/definition.*', DefineTermHandler),
-                               ('/terms/.*', GetTermHandler)
-#                                ('/terms/page.*', TermHandler),
-#                                 ('/.*', TermHandler)
+                                ('/terms/page/.*', TermHandler),
+                                ('/terms/', TermHandler),
+                                ('/terms/.*', GetTermHandler),
+                                ('/.*', TermHandler)
                                ],debug = True)
     
