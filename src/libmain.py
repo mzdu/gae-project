@@ -134,17 +134,8 @@ def sendFeedbackEmail(aSender, aSubject, aBody):
         num = -1
     return num
 
-##################### Count Contribution ###################################
-def getContributionCount():
-    ''' @summary: Returns the count of articles, modules, and module versions
-        @return: an integer representing total contributions to wikitheoria
-        @rtype: integer
-    '''
-    from libmodule import getModuleCount
-    count = 0
-    count += getModuleCount()
-    return count
-    
+#################################################################################
+
     
 def buildUserMenu():
     ''' @summary: Returns values that are used by the _base Django template relating to the user
