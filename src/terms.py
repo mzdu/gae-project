@@ -5,27 +5,6 @@ from libmain import doRender, getUrlResourceList
 import webapp2
     
 from google.appengine.ext import db
-
-# class DefineTermHandler(webapp2.RequestHandler):
-#     def get(self):
-#         urlList = getUrlResourceList(self)
-#         try:
-#             slug = str(path[2])
-#             logging.error(slug)
-#         except:
-#             doRender(self, 'error.html', {'error' : 'Not a valid term to define'})
-#             return None
-#         
-#         values = {'slug' : slug, 'term' : slug.replace('-',' ')}
-#         doRender(self, 'newDefinition.html', values)
-         
-#     def post(self):
-#         from libterm import newDefinition
-#         slug = self.request.get('slug').strip().lower()
-#         definition = self.request.get('definition').strip()
-#         newDefinition(slug, definition)
-#         self.redirect('/terms/'+slug, False)
-
     
 class NewTermHandler(webapp2.RequestHandler):
     def get(self):
@@ -92,8 +71,6 @@ class TermHandler(webapp2.RequestHandler):
         pageMax = math.ceil(termCount/pageLimit)
         pageMax = int(pageMax) 
         
-        
-        
         if pageNumber == '' or pageNumber == '1':
             pageNumber = 1
                  
@@ -126,7 +103,6 @@ class TermHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
                                 ('/contribute/term.*', NewTermHandler),
-#                                ('/contribute/definition.*', DefineTermHandler),
                                 ('/terms/page/.*', TermHandler),
                                 ('/terms/', TermHandler),
                                 ('/terms/.*', GetTermHandler),
