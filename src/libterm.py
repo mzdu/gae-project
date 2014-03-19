@@ -56,8 +56,9 @@ def getTerm(slug):
 def getTermCount():
     """ returns the count of terms
     """
-    countObject = db.Query(datamodel.Counter).filter("name = ", "terms").get()
-    if countObject:
-        return countObject.count
+    termSet = db.Query(datamodel.Term).fetch(limit=None)
+    
+    if termSet:
+        return len(termSet)
     else:
         return 0
