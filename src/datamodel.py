@@ -40,7 +40,6 @@ class Module(db.Model):
     date_submitted = db.DateTimeProperty(auto_now_add=True)
     last_update = db.DateTimeProperty(auto_now=True)
     
-    
     contributor = db.ReferenceProperty(WikiUser)
     editors = db.ListProperty(db.Key)
     
@@ -67,13 +66,12 @@ class TermDefinition(db.Model):
     contributor = db.ReferenceProperty(WikiUser)
     uid = db.IntegerProperty()
      
-# #Describes the terms for particular modules
-# class ModuleTerm(db.Model):
-#     module = db.ReferenceProperty(Module)
-#     term = db.ReferenceProperty(Term)
-#     definition = db.ReferenceProperty(TermDefinition)
-#     abbreviation = db.StringProperty()
-# 
+#Describes the relation of module and terms
+class ModuleTerm(db.Model):
+    module = db.ReferenceProperty(Module)
+    term = db.ReferenceProperty(Term)
+    definition = db.ReferenceProperty(TermDefinition)
+ 
 # class ModuleComment(db.Model):
 #     uid = db.IntegerProperty()
 #     user = db.ReferenceProperty(WikiUser)
