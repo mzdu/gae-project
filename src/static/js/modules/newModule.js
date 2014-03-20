@@ -1,19 +1,27 @@
-//Provides all Javascript functionality for creating a new module.
-
-//HTML constants
-var termSearchBoxHTML = '<input type="text" name="q" id="query" autocomplete="off"/> <input id="search" name="searchBtn" type="button" value="Add" onclick="searchBtnClicked()" /> <img src="/static/images/ajax-loader.gif" id="loading" /><br />'
-
-	
-	
-var functionGroup = "<select name='function' id='function'><optgroup label='Function'><option>verb</option><option>pronoun</option>"
-+"<option>adjective</option><option>adverb</option><option>preposition</option><option>conjunction</option><option>interjection</option>"
-+"</optgroup><option disabled>——————————</option><optgroup label='Phrase'><option>nounPhrase</option><option>verbPhrase</option>"
-+"<option>prepositionalPhrase</option><option>adjectivalPhrase</option><option>adverbialPhrase</option></select>"
-
-
 //bind ajax for showTermSearch when documented is loaded
 $(document).ready(function(){
-		showTermSearch();
+	
+		$.ajax({
+			url: '/terms/get',
+			type:"get",
+			dataType: 'json',
+			success: function(data){
+				$.each(data, function(key, value){
+				    $( "#termlist" ).autocomplete({
+				        source: value,
+				        select: function(e, ui){getDefinition(e, ui);},
+				    	response: function(){showHint();}
+				      });
+				});
+			},
+			
+			statusCode: {
+				405: function(){
+					alert('termlist not found');
+				}
+			}
+		});
+	
 		$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 		});
@@ -28,14 +36,6 @@ $(document).ready(function(){
 		});
 });
 
-//limit the number of characters
-function limitText(limitField, limitCount, limitNum) {
-	if (limitField.value.length > limitNum) {
-		limitField.value = limitField.value.substring(0, limitNum);
-	} else {
-		limitCount.value = limitNum - limitField.value.length;
-	}
-}
 
 function addScope(){
 	$("#scope").append("<li><input class='scopeItem' size='80px'/> <button class='removeScope'>X</button></li>");
@@ -70,99 +70,70 @@ function addTerm(term,def){
 	$("#query").val('');
 }
 
-//Adds a previously undefined term and its new definition to the module list
-function addNewTerm(){
-	var term = $("#query").val();
-	var def = $("#defineInput").val();
-	
-	$("#termList").append("<li><span class='term'>"+ term +"</span>- <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
+function getDefinition(e,ui){
+	selectedValue = ui.item.value;
+	console.log = selectedValue;
+	$.ajax({
+		url: '/api?method=getTermDefinitions&term=' + selectedValue,
+		type: 'get',
+		dataType: 'json',
+		success: function(json){
+			if(json.stat == 'fail'){
+				alert('json stat error');
+			}
+			else{
+				slug = json.term.replace(' ', '-');
+  				var tempHTML = '';
+  				for(var i = 0; i < json.definitions.length; i++){
+  					tempHTML += '<li><button type="button" onclick="addTerm(\''+ json.term  +'\',\''+ json.definitions[i].definition + '\')">-></button>' + json.definitions[i].definition + '</li>';
+  				}
+  				$("#termResults").html('<p>Choose an existing definition or add a new definition.</p><ul>' + tempHTML + '</ul><input id="defineInput" type="text" size="80"/>'+'<button type="button" onclick="defineExistingTerm(\''+ json.term +'\')">Add and Use This New Definition</button>');
+			}
+		}
+	});
+
+}
+
+function addTerm(term,def){
+	$("#termList").append("<li><span class='term'>"+ term +"</span> - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
 	$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 	});
-	
+
 	$("#termResults").html('');
-	$("#query").val('');
-	$("#termBuilder").html('');
-	showTermSearch();
+	$("#termlist").val('');
+}
+
+
+function showHint(){
+	$("#hint").html('Choose a predefined term from the drop-down list or <a href="javascript: void(0)" onclick="showDef()">ADD A NEW TERM</a>')
 }
 
 //Adds a term with a new definition to the list
 function defineExistingTerm(term){
 	var def = $("#defineInput").val();
-	
 	$("#termList").append("<li><span class='term'>"+ term +"</span> - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
-	
 	$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 	});
 	
 	$("#termResults").html('');
-	$("#query").val('');
+	$("#termlist").val('');
 	$("#termBuilder").html('');
 	showTermSearch();
 }
 
-
- 
-//***********************************************************************START TERM FUNCTIONS
-
-//Called when the 'add' button is clicked in the Term section
-function searchBtnClicked(){
-	termBuilder($('#query').val());
-}
- 
-function showTermSearch(){
-	$('#termBuilder').html(termSearchBoxHTML);
-    $('#query').autocomplete({ serviceUrl:'/api?method=getSuggestions',
-   							   deferRequestBy: 400,  
-   							   width:200,
-   							   onSelect: function(value, data){termBuilder(value) 
-   								   }
-   	});
-    
-	$("#loading").ajaxStart(function(){
-		$(this).show();
- 	});
- 	$("#loading").ajaxStop(function(){
-		$(this).hide();
- 	});
-   	 $("#loading").hide();
-   	 
-   	 $('#query').keypress(function(e) {
-        if(e.which == 13) {
-            $('#search').focus().click();
-     	}
-     });
+function showDef(){
+	$("#termResults").html('Definition: <input type="text" id="termDefinition" /> <button type="button" onclick="addNewTerm()">Add</button>');
 }
 
-//Called when the user attempts to add a term to the list.
-
-//New term cannot be added.termBuilder can be triggered. Function JSON failed to run.
-
-function termBuilder(value){
-	$.getJSON("/api?method=getTermDefinitions&term="+value,
-			function(json){
-				if(json.stat == 'fail'){
-					var newTerm = $("#query").val();
-					
-				    $("#termBuilder").html('<h2>"'+newTerm+'"</h2><input type="hidden" id="query" value = "'+newTerm+'" />Term not defined. Please define this term to begin using it.'+
-				    						'<br /> <input id="defineInput" type="text" size="100"/>'+functionGroup+'<button type="button" onclick="addNewTerm()">Define</button><button type="button" onclick="showTermSearch()">Cancel</button>');
-					$("#termResults").html('');
-				}
-				//If the search is successful show the defintion options for the searched term.
-				else{
-					slug = json.term.replace(' ', '-');
-	  				var tempHTML = '';
-	  				for(var i = 0; i < json.definitions.length; i++){
-	  					tempHTML += '<li><button type="button" onclick="addTerm(\''+ json.term  +'\',\''+ json.definitions[i].definition +'\',\''+ json.definitions[i].func +'\')">-></button>' + json.definitions[i].definition + ' (' + json.definitions[i].func + ') </li>';
-	  				}
-	  				$("#termResults").html('<p>Choose an existing definition or add a new definition.</p><ul>' + tempHTML + '</ul><input id="defineInput" type="text" size="100"/>'+functionGroup+'<button type="button" onclick="defineExistingTerm(\''+ json.term +'\')">Define</button>')
-	  				
-	  			}			  	 
-			}
-	  	);
+function addNewTerm(){
+	term = $("#termlist").val();
+	def = $('#termDefinition').val();
+	addTerm(term, def);
+	
 }
-//**************************************************************************END TERM FUNCTIONS
+
 
 //Enables the submit button after the user clicks 'Ready?'
 function enableSubmit(){
@@ -221,5 +192,14 @@ function submitForm(publishBool,action){
 	else
 	{
 		$.post("/module/edit",json,function(){window.location = "/modules"});
+	}
+}
+
+//limit the number of characters at metatheory
+function limitText(limitField, limitCount, limitNum) {
+	if (limitField.value.length > limitNum) {
+		limitField.value = limitField.value.substring(0, limitNum);
+	} else {
+		limitCount.value = limitNum - limitField.value.length;
 	}
 }
