@@ -1,6 +1,26 @@
 {% extends "_base2.html" %}
 {% block bodyContent %}
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<style>
+.ui-autocomplete {
+  max-height: 200px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+  height: 100px;
+}
+</style>
+
+
+
 <div class="subHead"><h1>New Module</h1></div>
 <div id="moduleForm">
 	<table>
@@ -29,10 +49,12 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 		</form>      
 	<p class="title">Terms & Definitions: </p>	
 	<table id="terms_new_module">	
-		<tr><td>Note: Adding a term is a multi-step process. Add only the term then click add then choose or add a definition. We are working on making this process clearer.</td></tr>
 		<tr>
-			<td id="termBuilder">
+		
+			<td>Term:<input type="text" name="termlist" id="termlist"/>
+				<span id="hint"></span>
 			</td>
+			
 		</tr>
 		<tr>
 			<td id="termResults">

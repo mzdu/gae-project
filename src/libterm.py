@@ -62,3 +62,15 @@ def getTermCount():
         return len(termSet)
     else:
         return 0
+    
+    
+def getAllTerm():
+    """returns the list of terms in json format"""
+    termSet = db.Query(datamodel.Term).fetch(limit=None)
+    termList = []
+    if termSet:
+        for termObj in termSet:
+            termList.append(termObj.word)
+            return termList
+    else:
+        return ['']

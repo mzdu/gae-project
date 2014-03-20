@@ -13,10 +13,11 @@ from google.appengine.ext import db
 # create a new module
 class NewModuleHandler(webapp2.RequestHandler):
     def get(self):
-
+        
         values = dict()
         # test if the currentUser is a contributing user.
         if isContributingUser() is True:
+            
             values['javascript'] = ['/static/js/jquery.js', 
                                     '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', 
                                     '/static/js/modules/newModule.js',
@@ -25,7 +26,7 @@ class NewModuleHandler(webapp2.RequestHandler):
             values['css'] = ['/static/js/plugins/autocomplete/styles.css', 
                              '/static/css/modules.css', 
                              '/static/js/plugins/wmd_stackOverflow/wmd.css']
-             
+            
             doRender(self, 'newModule.html',values)
              
         else:
@@ -40,38 +41,36 @@ class NewModuleHandler(webapp2.RequestHandler):
         evidence = self.request.get("evidence")
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
+        
+        logging.error(scopeList)
          
         #using newModule in libmodule.py
         modKey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
          
+##################################################################         
         #terms related processing
-#         terms = self.request.get_all("terms")
-#         definitions = self.request.get_all("definitions")
-#          
+        terms = self.request.get_all("terms")
+        definitions = self.request.get_all("definitions")
+#       
+        logging.error(terms)    
 #         while terms:
 #             term = terms.pop().lower()
 #             definition = definitions.pop()
-#              
-#             termKey = db.Query(datamodel.Term).filter('word =', term).get()
-#             if termKey:
-#                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
-#                 if not defKey:
-#                     from terms import newDefinition
-#                     defKey = newDefinition(termKey.slug, definition)
-#             else:
-#                 from terms import newTerm
-#                 newTerm(term, term, definition)
-#                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
-#                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
-#              
-#             datamodel.ModuleTerm(module = modKey, term = termKey, definition = defKey).put()
-        
+#             slug = term.replace(' ', '-')
+#               
+#             from libterm import newTerm
+#             newTerm(term, slug, definition)
+#         
+
+
         if modKey != -1:
-            self.redirect("/modules/", True)
+            self.redirect("/modules", True)
         else:
-            values = {'error' : 'Failed to create module. Please try again later.'}
-            doRender(self, 'error.html', values)
-            
+            values = {'error' : 'Failed to update module. Please try again later.'}
+            doRender(self, 'error.html', values)        
+
+
+
 # edit a selected module        
 class EditModuleHandler(webapp2.RequestHandler):
     def get(self):
@@ -104,13 +103,17 @@ class EditModuleHandler(webapp2.RequestHandler):
         publishBool = self.request.get("published")
         uid = int(self.request.get("uid"))
           
+        
+        logging.error(len(scopeList))
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
                                 
         #terms
-#         terms = self.request.get_all("terms")
-#         definitions = self.request.get_all("definitions")
-#         functions = self.request.get_all("functions")
+        terms = self.request.get_all("terms")
+        definitions = self.request.get_all("definitions")
+        
+            
+
 #           
 #         while terms:
 #             term = terms.pop().lower()
@@ -145,10 +148,10 @@ class ModuleHandler(webapp2.RequestHandler):
         pathList = getUrlResourceList(self)
         
         values = dict()
+        from libmain import RepresentsInt
         
-        if len(pathList) == 1:
-            values['error'] = "url does not contain any module number"
-            doRender(self, 'moduleDefault.html', values)
+        if len(pathList) == 1 or not RepresentsInt(pathList[1]):
+            self.redirect('/modules/')
         
         # case ['modules','10'], which indicates the newest version   
         elif len(pathList) == 2:
@@ -240,8 +243,6 @@ class MainPageHandler(webapp2.RequestHandler):
         for pageN in range(pageMax):
             pageList.append(str(pageN+1))
             
-        logging.error(pageList)
-        
         modules = db.Query(datamodel.Module).filter('current =', True).filter('published =', True).order('-date_submitted').fetch(limit=pageLimit, offset=((pageNumber-1)*pageLimit))
         values['modules_general'] = modules
         values['modules_page'] = pageList

@@ -165,8 +165,6 @@ function submitForm(publishBool,action){
 	$(".term").each(function() { terms.push($(this).html()) });
 	$(".definition").each(function() { definitions.push($(this).html()) });
 	
-	
-	
 	json = {
 			"title" : title,
 			"keywords" : keywords,
@@ -193,6 +191,8 @@ function submitForm(publishBool,action){
 	{
 		$.post("/module/edit",json,function(){window.location = "/modules"});
 	}
+	
+	
 }
 
 //limit the number of characters at metatheory

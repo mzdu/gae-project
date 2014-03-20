@@ -25,8 +25,7 @@ class NewTermHandler(webapp2.RequestHandler):
         if not termKey:
             self.redirect('/terms')
         else:
-            self.redirect('/')
-            
+            self.redirect('/')           
             
 class GetTermHandler(webapp2.RequestHandler):
     def get(self):
@@ -52,6 +51,24 @@ class GetTermHandler(webapp2.RequestHandler):
         
         if getTerm(slug):
             self.redirect('/contribute/term', permanent=False)
+
+class GetTermListHandler(webapp2.RequestHandler):
+    def get(self):
+        termSet = db.Query(datamodel.Term).fetch(limit=None)
+        termList = []
+        if termSet:
+            for termObj in termSet:
+                termList.append(termObj.word)
+            
+        termdict = {"termlist": termList}
+        import json
+        jsonObj = json.dumps(termdict)    
+            
+        self.response.out.write(jsonObj)
+        
+    
+    def post(self):
+        pass
  
 # display the list of terms         
 class TermHandler(webapp2.RequestHandler):
@@ -105,6 +122,7 @@ app = webapp2.WSGIApplication([
                                 ('/contribute/term.*', NewTermHandler),
                                 ('/terms/page/.*', TermHandler),
                                 ('/terms/', TermHandler),
+                                ('/terms/get', GetTermListHandler),
                                 ('/terms/.*', GetTermHandler),
                                 ('/.*', TermHandler)
                                ],debug = True)
