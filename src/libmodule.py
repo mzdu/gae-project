@@ -246,7 +246,7 @@ def getModuleVersion(uid, version=0):
         values['module_version'] = moduleObject.version
         values['markdown'] = moduleObject.theoryMarkdown
         values['html'] = moduleObject.theoryHtml
-#         values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)
+        values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)
         
         if moduleObject.current is True:
             values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + moduleObject.title

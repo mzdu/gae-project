@@ -22,9 +22,9 @@ def newTerm(term, slug, definition):
         return values
     
     definitionid = createNewUID("definitions")
-    datamodel.TermDefinition(term = termkey, definition = definition, contributor = user, uid = definitionid).put()
+    defkey = datamodel.TermDefinition(term = termkey, definition = definition, contributor = user, uid = definitionid).put()
     
-    return values
+    return termkey, defkey
 
 def getTerm(slug):
     values = dict()    

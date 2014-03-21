@@ -18,12 +18,12 @@ class NewModuleHandler(webapp2.RequestHandler):
         # test if the currentUser is a contributing user.
         if isContributingUser() is True:
             
-            values['javascript'] = ['/static/js/jquery.js', 
-                                    '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', 
+            values['javascript'] = ['/static/js/jquery-1.9.1.js',
+                                    '/static/js/jquery-ui.js',
                                     '/static/js/modules/newModule.js',
                                     '/static/js/plugins/wmd_stackOverflow/wmd.js', 
                                     '/static/js/plugins/wmd_stackOverflow/showdown.js']
-            values['css'] = ['/static/js/plugins/autocomplete/styles.css', 
+            values['css'] = ['/static/js/jquery-ui.css',
                              '/static/css/modules.css', 
                              '/static/js/plugins/wmd_stackOverflow/wmd.css']
             
@@ -35,40 +35,44 @@ class NewModuleHandler(webapp2.RequestHandler):
     def post(self):
         title = self.request.get("title")
         keywords = self.request.get("keywords")
-        scopeList = self.request.get_all("scopes")
-        propositionList = self.request.get_all("propositions")
-        derivationList =  self.request.get_all("derivations")
+        scopes = self.request.get_all("scopes[]")
+        propositions = self.request.get_all("propositions[]")
+        derivations =  self.request.get_all("derivations[]")
         evidence = self.request.get("evidence")
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
         
-        logging.error(scopeList)
+        scopeList = [str(scope) for scope in scopes]
+        propositionList = [str(prop) for prop in propositions]
+        derivationList = [str(drv) for drv in derivations]
+        
+        logging.error(scopes)
          
         #using newModule in libmodule.py
         modKey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
          
 ##################################################################         
         #terms related processing
-        terms = self.request.get_all("terms")
-        definitions = self.request.get_all("definitions")
-#       
-        logging.error(terms)    
-#         while terms:
-#             term = terms.pop().lower()
-#             definition = definitions.pop()
-#             slug = term.replace(' ', '-')
-#               
-#             from libterm import newTerm
-#             newTerm(term, slug, definition)
-#         
-
+        terms = self.request.get_all("terms[]")
+        definitions = self.request.get_all("definitions[]")
+        termList = [str(term) for term in terms]
+        definitionList = [str(definition) for definition in definitions]
+       
+        while termList:
+            term = termList.pop().lower()
+            definition = definitionList.pop()
+            slug = term.replace(' ', '-')
+               
+            from libterm import newTerm
+            keys = newTerm(term, slug, definition)
+         
+            datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
 
         if modKey != -1:
             self.redirect("/modules", True)
         else:
             values = {'error' : 'Failed to update module. Please try again later.'}
             doRender(self, 'error.html', values)        
-
 
 
 # edit a selected module        
@@ -79,8 +83,7 @@ class EditModuleHandler(webapp2.RequestHandler):
             url = getUrlResourceList(self)
             # get all values of a module
             values = getModule(url[2])
-            values['javascript'] = ['/static/js/jquery.js', 
-                                    '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', 
+            values['javascript'] = ['/static/js/jquery-1.9.1.js', 
                                     '/static/js/modules/newModule.js',
                                     '/static/js/plugins/wmd_stackOverflow/wmd.js', 
                                     '/static/js/plugins/wmd_stackOverflow/showdown.js']
@@ -104,13 +107,13 @@ class EditModuleHandler(webapp2.RequestHandler):
         uid = int(self.request.get("uid"))
           
         
-        logging.error(len(scopeList))
+        logging.error('hello')
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
                                 
         #terms
-        terms = self.request.get_all("terms")
-        definitions = self.request.get_all("definitions")
+#         terms = self.request.get_all("terms")
+#         definitions = self.request.get_all("definitions")
         
             
 
@@ -192,6 +195,8 @@ class ModuleHandler(webapp2.RequestHandler):
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
             doRender(self, 'module.html', values)
+            
+            
     def post(self):
         version = self.request.get("version")
         uid = self.request.get("module_version_uid")
