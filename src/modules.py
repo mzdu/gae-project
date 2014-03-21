@@ -46,8 +46,6 @@ class NewModuleHandler(webapp2.RequestHandler):
         propositionList = [str(prop) for prop in propositions]
         derivationList = [str(drv) for drv in derivations]
         
-        logging.error(scopes)
-         
         #using newModule in libmodule.py
         modKey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
          
@@ -84,58 +82,50 @@ class EditModuleHandler(webapp2.RequestHandler):
             # get all values of a module
             values = getModule(url[2])
             values['javascript'] = ['/static/js/jquery-1.9.1.js', 
+                                    '/static/js/jquery-ui.js',
                                     '/static/js/modules/newModule.js',
                                     '/static/js/plugins/wmd_stackOverflow/wmd.js', 
                                     '/static/js/plugins/wmd_stackOverflow/showdown.js']
-            values['css'] = ['/static/js/plugins/autocomplete/styles.css', 
+            values['css'] = ['/static/js/jquery-ui.css',
                              '/static/css/modules.css', 
                              '/static/js/plugins/wmd_stackOverflow/wmd.css']
             
             doRender(self, 'editModule.html', values)
         else:
-            self.redirect('/modules/')
+            self.redirect('/modules')
               
     def post(self):
         title = self.request.get("title")
         keywords = self.request.get("keywords")
-        scopeList = self.request.get_all("scopes")
-        propositionList = self.request.get_all("propositions")
-        derivationList =  self.request.get_all("derivations")
+        scopes = self.request.get_all("scopes[]")
+        propositions = self.request.get_all("propositions[]")
+        derivations =  self.request.get_all("derivations[]")
         evidence = self.request.get("evidence")
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
         uid = int(self.request.get("uid"))
-          
-        
-        logging.error('hello')
+
+        scopeList = [str(scope) for scope in scopes]
+        propositionList = [str(prop) for prop in propositions]
+        derivationList = [str(drv) for drv in derivations]
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
                                 
         #terms
-#         terms = self.request.get_all("terms")
-#         definitions = self.request.get_all("definitions")
-        
-            
-
-#           
-#         while terms:
-#             term = terms.pop().lower()
-#             definition = definitions.pop()
-#             function = functions.pop()
-#               
-#             termKey = db.Query(datamodel.Term).filter('word =', term).get()
-#             if termKey:
-#                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
-#                 if not defKey:
-#                     from terms import newDefinition
-#                     defKey = newDefinition(termKey.slug, function, definition)
-#             else:
-#                 from terms import newTerm
-#                 newTerm(term, term, function, definition)
-#                 termKey = db.Query(datamodel.Term).filter('word =', term).get()
-#                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
-#               
-#             datamodel.ModuleTerm(module = modKey, term = termKey, definition = defKey).put()
+        terms = self.request.get_all("terms[]")
+        definitions = self.request.get_all("definitions[]")
+        termList = [str(term) for term in terms]
+        definitionList = [str(definition) for definition in definitions]
+       
+        while termList:
+            term = termList.pop().lower()
+            definition = definitionList.pop()
+            slug = term.replace(' ', '-')
+               
+            from libterm import newTerm
+            keys = newTerm(term, slug, definition)
+         
+            datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()      
               
         if modKey != -1:
             self.redirect("/modules", True)

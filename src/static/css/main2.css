@@ -186,10 +186,6 @@ a:hover{
 /* =Tally
 -----------------------------------------------------------------------------*/
 
-#tally{
-	padding-left: 30px;
-}
-
 
 /* =Main Content
 -----------------------------------------------------------------------------*/
@@ -774,14 +770,6 @@ div#pimped.bubble cite.rounded {
 	background: transparent url(/static/images/tip-pimped.gif) no-repeat 15px 0;
 }
 
-
-
-.module{
-	height: 530px;
-	
-}
-
-
 #newUsers{
 	position: relative;
 	
@@ -924,6 +912,3 @@ div#pimped.bubble cite.rounded {
 	font-size: 50%;
 }
 
-
-/* =Misc 2
------------------------------------------------------------------------------*/

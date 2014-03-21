@@ -1,8 +1,6 @@
 {% extends "_base2.html" %}
 {% block bodyContent %}
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
 <style>
 .ui-autocomplete {
   max-height: 200px;
@@ -46,7 +44,7 @@
 	<p class="title">Terms & Definitions: </p>	
 	<table id="terms_new_module">	
 		<tr>
-			<td>Term:<input type="text" name="termlist" id="termlist"/>
+			<td><strong>Term:</strong><input type="text" name="termlist" id="termlist"/>
 				<span id="hint"></span>
 			</td>
 		</tr>
@@ -71,10 +69,10 @@
 		<td>
 			<ol id="scope">
 				{% for scope in module_scope_general %}
-				<li><input class="scopeItem" value="{{scope}}" style="size: 100px;" /><button class='removeScope'>X</button></li>
+				<li><input class="scopeItem" value="{{scope}}" size="80px" /><button class='removeScope'>X</button></li>
 				{% endfor %}
 			</ol>
-			<input type="button" value="Add Scope" onclick="addScope()" />
+			<input type="button" value="Add More Scope" onclick="addScope()" />
 		</td></tr>
 	</table>
 
@@ -84,10 +82,10 @@
 			<td>
 				<ol id="proposition">
 				{% for proposition in module_propositions_general %}
-					<li><input class="propositionItem" value="{{proposition}}" style="size: 100px"/><button class='removeProposition'>X</button></li>
+					<li><input class="propositionItem" value="{{proposition}}" size="80px"/><button class='removeProposition'>X</button></li>
 				{% endfor %}				
 				</ol>
-				<input type="button" value="Add Proposition" onclick="addProposition()") />
+				<input type="button" value="Add More Proposition" onclick="addProposition()") />
 			</td>
 		</tr>
 		<!-- Not ready -->
@@ -96,17 +94,17 @@
 			<td>
 				<ol id="derivation">
 				{% for derivation in module_derivations_general %}
-					<li><input class="derivationItem" value="{{derivation}}" style="size:100px"/></li><button class='removeDerivation'>X</button></li>
+					<li><input class="derivationItem" value="{{derivation}}" size="80px"/><button class='removeDerivation'>X</button></li>
 				{% endfor %}	
 				</ol>
-				<input type="button" value="Add Derivation" onclick="addDerivation()") />
+				<input type="button" value="Add More Derivation" onclick="addDerivation()") />
 			</td>
 		</tr>
 				
 		<tr>
 			<td class="title">Evidence:</td>
 			<td>
-				<textarea cols="59" id="evidence" name="evidence" rows="10">{{module_evidence_general}}</textarea>
+				<textarea cols="59" id="evidence" name="evidence" rows="5">{{module_evidence_general}}</textarea>
 			</td>
 		</tr>		
 
