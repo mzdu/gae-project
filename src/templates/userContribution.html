@@ -4,14 +4,12 @@
 	{% if error %}
 		{{error}}
 	{% else %}
-	<h1>Your Module Contributions</h1>
-		
-	
+
 	{% if is_current_user %}
 		<div class="box" id="contributions">
 		<table>
 			<tr>
-				<th>Title</th>
+				<th class="boxtitle">Title</th>
 				<th></th>
 				<th>Version</th>
 				<th>Update</th>
@@ -19,7 +17,7 @@
 			{% for module in contributed_modules %}
 			
 			<tr>
-				<td><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
+				<td class="boxtitle"><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
 				<td></td>
 				<td>{{module.version}}</td>
 				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>

@@ -340,6 +340,27 @@ a:hover{
 	padding:10px;
 	margin:10px;
 	min-height:100px;
+	width: 70%;
+	background-color: #F5FFFA;
+}
+
+.box table{
+	width: 70%;
+	margin: auto;
+	
+}
+
+.box table th, td{
+	text-align: center;
+}
+
+.box table th{
+	font-size: 12pt;
+}
+
+table .boxtitle{
+	text-align: left;
+	
 }
 
 #browse{
@@ -911,4 +932,3 @@ div#pimped.bubble cite.rounded {
 	display:none;
 	font-size: 50%;
 }
-
