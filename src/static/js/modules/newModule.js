@@ -21,7 +21,7 @@ $(document).ready(function(){
 				}
 			}
 		});
-	
+		
 		$(".removeTerm").bind("click", function(e){
 			$(this).parent().remove();
 		});
@@ -106,7 +106,7 @@ function addTerm(term,def){
 
 
 function showHint(){
-	$("#hint").html('Choose a predefined term from the drop-down list or <a href="javascript: void(0)" onclick="showDef()">ADD A NEW TERM</a>')
+	$("#hint").html('Choose a pre-defined term from the drop-down list or <a href="javascript: void(0)" onclick="showDef()">ADD A NEW TERM</a>')
 }
 
 //Adds a term with a new definition to the list
@@ -124,7 +124,7 @@ function defineExistingTerm(term){
 }
 
 function showDef(){
-	$("#termResults").html('Definition: <input type="text" id="termDefinition" /> <button type="button" onclick="addNewTerm()">Add</button>');
+	$("#termResults").html('<strong>Definition:</strong> <input type="text" id="termDefinition" /> <button type="button" onclick="addNewTerm()">Add</button>');
 }
 
 function addNewTerm(){
@@ -194,6 +194,7 @@ function submitForm(publishBool,action){
 	
 	
 }
+
 
 //limit the number of characters at metatheory
 function limitText(limitField, limitCount, limitNum) {

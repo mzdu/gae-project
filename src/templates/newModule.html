@@ -1,9 +1,6 @@
 {% extends "_base2.html" %}
 {% block bodyContent %}
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <style>
 .ui-autocomplete {
   max-height: 200px;
@@ -18,8 +15,6 @@
   height: 100px;
 }
 </style>
-
-
 
 <div class="subHead"><h1>New Module</h1></div>
 <div id="moduleForm">
@@ -51,7 +46,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 	<table id="terms_new_module">	
 		<tr>
 		
-			<td>Term:<input type="text" name="termlist" id="termlist"/>
+			<td><strong>Term:</strong><input type="text" name="termlist" id="termlist"/>
 				<span id="hint"></span>
 			</td>
 			
@@ -75,7 +70,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 			<ol id="scope">
 				<li><input class="scopeItem" size="80px"/></li>
 			</ol>
-			<input type="button" value="Add Scope" onclick="addScope()" />
+			<input type="button" value="Add More Scope" onclick="addScope()" />
 		</td></tr>
 	</table>
 
@@ -86,7 +81,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 				<ol id="proposition">
 					<li><input class="propositionItem" size="80px"/></li>
 				</ol>
-				<input type="button" value="Add Proposition" onclick="addProposition()") />
+				<input type="button" value="Add More Proposition" onclick="addProposition()") />
 			</td>
 		</tr>
 		<!-- Not ready -->
@@ -96,7 +91,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 				<ol id="derivation">
 					<li><input class="derivationItem" size="80px"/></li>
 				</ol>
-				<input type="button" value="Add Derivation" onclick="addDerivation()") />
+				<input type="button" value="Add More Derivation" onclick="addDerivation()") />
 			</td>
 		</tr>
 				
