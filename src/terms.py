@@ -5,6 +5,17 @@ from libmain import doRender, getUrlResourceList
 import webapp2
     
 from google.appengine.ext import db
+
+class CleanTermHandler(webapp2.RequestHandler):
+    def get(self):
+        pass
+        
+        
+    
+    def post(self):
+        pass  
+
+
     
 class NewTermHandler(webapp2.RequestHandler):
     def get(self):
@@ -123,6 +134,7 @@ app = webapp2.WSGIApplication([
                                 ('/terms/page/.*', TermHandler),
                                 ('/terms/', TermHandler),
                                 ('/terms/get', GetTermListHandler),
+                                ('/terms/clean', CleanTermHandler),
                                 ('/terms/.*', GetTermHandler),
                                 ('/.*', TermHandler)
                                ],debug = True)

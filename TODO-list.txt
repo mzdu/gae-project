@@ -1,7 +1,5 @@
-1. display the list of module with ajax
 2. /help replace the dumb content
 3. /about replace the dumb content
 4. /contribute needs to be closed after the final test
 5. improve feedback interface (low)
 6. in order to retrieve the avatar of a user, we need to activate Google+ API, 10,000 requrest/day for free
-7. https://developers.google.com/appengine/docs/python/datastore/transactions
