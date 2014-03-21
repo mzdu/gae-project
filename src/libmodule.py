@@ -264,7 +264,7 @@ def getModuleVersionCount(uid):
         return 0
 
 def getModuleCount():
-    moduleList = db.Query(datamodel.Module).fetch(limit=None)
+    moduleList = db.Query(datamodel.Module).filter('current =', True).fetch(limit=None)
     if moduleList:
         return len(moduleList)
     else:

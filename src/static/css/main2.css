@@ -344,15 +344,12 @@ a:hover{
 	background-color: #F5FFFA;
 }
 
-.box table{
+.box #contribox{
 	width: 70%;
 	margin: auto;
 	
 }
 
-.box table th, td{
-	text-align: center;
-}
 
 .box table th{
 	font-size: 12pt;
