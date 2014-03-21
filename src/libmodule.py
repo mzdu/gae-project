@@ -170,7 +170,7 @@ def getModule(uid):
         values['markdown'] = moduleObject.theoryMarkdown
         values['html'] = moduleObject.theoryHtml
         
-#         values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)
+        values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)
     else:
         values['error'] = 'Module does not exist'
     return values
