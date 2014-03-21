@@ -125,8 +125,10 @@ class TermHandler(webapp2.RequestHandler):
         values['terms_page'] = pageList
         values['terms_count'] = int(termCount)
            
-        values['javascript'] = ['/static/js/jquery.js', '/static/js/plugins/autocomplete/jquery.autocomplete.min.js', '/static/js/terms/termDefaultPage.js']
-        values['css'] = ['/static/js/plugins/autocomplete/styles.css']
+        values['javascript'] = ['/static/js/jquery-1.9.1.js', 
+                                '/static/js/jquery-ui.js',
+                                '/static/js/terms/termDefaultPage.js']
+        values['css'] = ['/static/js/jquery-ui.css']
         doRender(self, 'termDefault.html', values)
 
 app = webapp2.WSGIApplication([

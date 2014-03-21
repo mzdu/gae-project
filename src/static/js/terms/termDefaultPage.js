@@ -1,10 +1,24 @@
 //jquery autocomplete plugin
 $(document).ready(function() {
-    $('#query').autocomplete({ serviceUrl:'/api?method=getSuggestions',
-   							   deferRequestBy: 400,  
-   							   width:200,
-   							   onSelect: function(value, data){showSelectedTerm(value) }
-   	});
+	$.ajax({
+		url: '/terms/get',
+		type:"get",
+		dataType: 'json',
+		success: function(data){
+			$.each(data, function(key, value){
+			    $( "#termlist" ).autocomplete({
+			        source: value,
+			        select: function(e, ui){showSelectedTerm(e, ui);},
+			      });
+			});
+		},
+		
+		statusCode: {
+			405: function(){
+				alert('termlist not found');
+			}
+		}
+	});
    	
 	$("#loading").ajaxStart(function(){
 		$(this).show();
@@ -28,21 +42,26 @@ function searchBtnClicked(){
 
 }
 
-function showSelectedTerm(value){
-	$.getJSON("/api?method=getTermDefinitions&term="+value,
+function replaceAll(find, replace, str) {
+	  return str.replace(new RegExp(find, 'g'), replace);
+}
+
+function showSelectedTerm(e, ui){
+	selectedValue = ui.item.value;
+	slug = replaceAll(' ','-',selectedValue)
+	$.getJSON("/api?method=getTermDefinitions&term="+selectedValue,
 			   function(json){
 			     if(json.stat == 'fail'){
 			     	$(".oneColumn .header").html('');
 			     	$("#searchResult").html('Term not found');
 			     }
 			     else{
-					slug = json.term.replace(' ', '-');
-	  			  	$(".oneColumn .header").html("<a href='/terms/"+slug+"'>"+json.term+"</a>");
+	  			  	$(".oneColumn .header").html("<a href='/terms/"+slug+"'>"+selectedValue+"</a>");
 	  			  	$("#searchResult").html('');
 	  			  	var tempArray = new Array();
 	  			  	for(var i = 0; i < json.definitions.length; i++){
 	  			  		if($("#" + json.definitions[i].func).val() != ''){
-	  			  			$("#searchResult").append(json.definitions[i].func + "<div id='" + json.definitions[i].func + "'><ol></ol></div>")
+	  			  			$("#searchResult").append("<strong><a href='/terms/" + slug + "'>" + selectedValue + "</a></strong>" + "<div id='" + json.definitions[i].func + "'><ol></ol></div>")
 	  			  		}
 	  			  		$("#" + json.definitions[i].func + " ol").append('<li>'+json.definitions[i].definition+'</li>');
 	  			  		//$("#searchResult").append(json.definitions[i].definition);
