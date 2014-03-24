@@ -1,9 +1,3 @@
-var titleSort = 0;
-var contributorSort = 0;
-var dateSort = 0;
-var offset = 0;
-var limit = 10;
-
 $(document).ready(function(){
 	$("#browse").hide();
 });
@@ -17,7 +11,14 @@ function showSearch(){
 }
 
 function closeSearch(){
-	$("#browse").hide("slow");
+	$("#browse").hide("fast");
 	$("#searchswitch").replaceWith('<li id="searchswitch" onclick="showSearch()"><a href="#">Search Modules</a>');
 }
 
+function startSearch(){
+	alert("hellosearch");
+}
+
+function clearSearchResult(){
+	$("#searchresult").replaceWith('<div id="searchresult"></div>');
+}
