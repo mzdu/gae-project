@@ -340,7 +340,7 @@ a:hover{
 	padding:10px;
 	margin:10px;
 	min-height:100px;
-	width: 70%;
+	width: 80%;
 	background-color: #F5FFFA;
 }
 
@@ -358,10 +358,6 @@ a:hover{
 table .boxtitle{
 	text-align: left;
 	
-}
-
-#browse{
-	width:700px;
 }
 
 .sortable:hover {
