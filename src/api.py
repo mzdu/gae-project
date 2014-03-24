@@ -43,10 +43,6 @@ class ApiHandler(webapp2.RequestHandler):
         else:
             pass
 
-class DocumentationHandler(webapp2.RequestHandler):
-    def get(self):
-        values = dict()
-        doRender(self, 'library.html', values)
 
 class MarkdownHandler(webapp2.RequestHandler):
     def get(self):
@@ -55,7 +51,6 @@ class MarkdownHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication(
-                                         [('/api/docs.*', DocumentationHandler),
-                                          ('/api/markdown.*', MarkdownHandler),
+                                         [('/api/markdown.*', MarkdownHandler),
                                           ('/api.*', ApiHandler)],
                                           debug=True)
