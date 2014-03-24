@@ -14,9 +14,15 @@
          {% else %}
          <li><a href="/join">Contribute Module</a></li>
          {% endif %}
-         <li onclick=""><a href="#">Search Modules</a></li>
+         <li id="searchswitch" onclick="showSearch()"><a href="#">Search Modules</a></li>
          </ul>
         </div>
+        
+		<div class="clear" />
+		<div class="box" id="browse">
+			<input type="text" name="modulesearch" id="modulesearch" />
+		</div>        
+        
         
         {% if unpublished_modules %}
         	<div class="clear" />
@@ -31,10 +37,7 @@
 			 	</ol>
 			</div>
 		{% endif %}
-		<div class="clear" />
-		<div class="box" id="browse">
-			
-		</div>
+
 		<div class="clear" />
 		<div class="box" id="recentModules">	
 			<div class="header"><h3>List of Modules</h3></div>
@@ -43,9 +46,6 @@
 			<tr>
 			     <th>Title</th>
 			     <th>Version</th>
-			     <!-- 
-			     <th>Discipline</th>
-			      -->
 			     <th>Contributor</th>
 			     <th style="width:15%; text-align:right; margin-right:0px">Date Submitted</th>
 			</tr>

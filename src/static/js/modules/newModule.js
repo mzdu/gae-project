@@ -204,3 +204,5 @@ function limitText(limitField, limitCount, limitNum) {
 		limitCount.value = limitNum - limitField.value.length;
 	}
 }
+
+

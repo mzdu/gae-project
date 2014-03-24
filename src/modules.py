@@ -65,7 +65,10 @@ class NewModuleHandler(webapp2.RequestHandler):
             keys = newTerm(term, slug, definition)
          
             datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
-
+        
+        
+        
+        
         if modKey != -1:
             self.redirect("/modules", True)
         else:
@@ -242,7 +245,7 @@ class MainPageHandler(webapp2.RequestHandler):
         values['modules_general'] = modules
         values['modules_page'] = pageList
         values['modules_count'] = int(moduleCount)
-        values['javascript'] = ['/static/js/jquery.js', '/static/js/modules/moduleDefault.js']
+        values['javascript'] = ['/static/js/jquery-1.9.1.js', '/static/js/modules/moduleDefault.js']
              
         doRender(self, 'moduleDefault.html', values)
         
