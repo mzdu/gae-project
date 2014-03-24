@@ -7,7 +7,9 @@ import webapp2
 import math
 import datamodel
 import logging
+
 from google.appengine.ext import db
+from google.appengine.api import search
 
 
 # create a new module
@@ -48,7 +50,7 @@ class NewModuleHandler(webapp2.RequestHandler):
         
         #using newModule in libmodule.py
         modKey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
-         
+        logging.error(markdown) 
 ##################################################################         
         #terms related processing
         terms = self.request.get_all("terms[]")
@@ -56,19 +58,43 @@ class NewModuleHandler(webapp2.RequestHandler):
         termList = [str(term) for term in terms]
         definitionList = [str(definition) for definition in definitions]
        
+        #adhere term and definition together and combine, then append to termString
+        termDef = []
+       
         while termList:
             term = termList.pop().lower()
             definition = definitionList.pop()
+            #termDef for search document
+            termDef.append(term + ':' + definition)
+            
             slug = term.replace(' ', '-')
                
             from libterm import newTerm
             keys = newTerm(term, slug, definition)
          
             datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
+##################################################################
         
+        #create a search document
+        termStr = ';'.join(termDef)
+        propStr = ';'.join(propositionList)
         
+        my_doc = search.Document(
+            fields = [search.TextField(name="title", value=title),  #title
+                      search.TextField(name="keywords", value=keywords),  #keywords
+                      search.TextField(name="metatheory", value=markdown),  #metatheory
+                      search.TextField(name="terms", value = termStr),  #terms and definitions
+                      search.TextField(name="propositions", value=propStr),  #propositions
+                      ])
         
+        try:
+            index = search.Index(name="moduleIndex")
+            index.put(my_doc)
         
+        except search.Error:
+            logging.exception('Document Put Failed')
+        
+######### end of building search index ###########################        
         if modKey != -1:
             self.redirect("/modules", True)
         else:
@@ -119,17 +145,46 @@ class EditModuleHandler(webapp2.RequestHandler):
         definitions = self.request.get_all("definitions[]")
         termList = [str(term) for term in terms]
         definitionList = [str(definition) for definition in definitions]
+
+        #adhere term and definition together and combine, then append to termString
+        termDef = []
        
         while termList:
             term = termList.pop().lower()
             definition = definitionList.pop()
             slug = term.replace(' ', '-')
+            
+            #termDef for search document
+            termDef.append(term + ':' + definition)
                
             from libterm import newTerm
             keys = newTerm(term, slug, definition)
          
             datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()      
-              
+
+##################################################################
+        
+        #create a search document
+        termStr = ';'.join(termDef)
+        propStr = ';'.join(propositionList)
+        
+        my_doc = search.Document(
+            fields = [search.TextField(name="title", value=title),  #title
+                      search.TextField(name="keywords", value=keywords),  #keywords
+                      search.TextField(name="metatheory", value=markdown),  #metatheory
+                      search.TextField(name="terms", value = termStr),  #terms and definitions
+                      search.TextField(name="propositions", value=propStr),  #propositions
+                      ])
+        
+        try:
+            index = search.Index(name="moduleIndex")
+            index.put(my_doc)
+        
+        except search.Error:
+            logging.exception('Document Put Failed')
+        
+######### end of building search index ###########################   
+
         if modKey != -1:
             self.redirect("/modules", True)
         else:
