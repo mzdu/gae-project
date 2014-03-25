@@ -72,7 +72,6 @@ function addTerm(term,def){
 
 function getDefinition(e,ui){
 	selectedValue = ui.item.value;
-	console.log = selectedValue;
 	$.ajax({
 		url: '/api?method=getTermDefinitions&term=' + selectedValue,
 		type: 'get',

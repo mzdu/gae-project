@@ -49,8 +49,7 @@ class NewModuleHandler(webapp2.RequestHandler):
         derivationList = [str(drv) for drv in derivations]
         
         #using newModule in libmodule.py
-        modKey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
-        logging.error(markdown) 
+        modkey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
 ##################################################################         
         #terms related processing
         terms = self.request.get_all("terms[]")
@@ -72,7 +71,7 @@ class NewModuleHandler(webapp2.RequestHandler):
             from libterm import newTerm
             keys = newTerm(term, slug, definition)
          
-            datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
+            datamodel.ModuleTerm(module=modkey, term=keys[0], definition=keys[1]).put()
 ##################################################################
         
         #create a search document
@@ -80,7 +79,8 @@ class NewModuleHandler(webapp2.RequestHandler):
         propStr = ';'.join(propositionList)
         
         my_doc = search.Document(
-            fields = [search.TextField(name="title", value=title),  #title
+            fields = [
+                      search.TextField(name="title", value=title),  #title
                       search.TextField(name="keywords", value=keywords),  #keywords
                       search.TextField(name="metatheory", value=markdown),  #metatheory
                       search.TextField(name="terms", value = termStr),  #terms and definitions
@@ -88,14 +88,14 @@ class NewModuleHandler(webapp2.RequestHandler):
                       ])
         
         try:
-            index = search.Index(name="moduleIndex")
+            index = search.Index(name="modIdx")
             index.put(my_doc)
         
         except search.Error:
             logging.exception('Document Put Failed')
         
 ######### end of building search index ###########################        
-        if modKey != -1:
+        if modkey != -1:
             self.redirect("/modules", True)
         else:
             values = {'error' : 'Failed to update module. Please try again later.'}
@@ -169,7 +169,8 @@ class EditModuleHandler(webapp2.RequestHandler):
         propStr = ';'.join(propositionList)
         
         my_doc = search.Document(
-            fields = [search.TextField(name="title", value=title),  #title
+            fields = [
+                      search.TextField(name="title", value=title),  #title
                       search.TextField(name="keywords", value=keywords),  #keywords
                       search.TextField(name="metatheory", value=markdown),  #metatheory
                       search.TextField(name="terms", value = termStr),  #terms and definitions
@@ -177,7 +178,7 @@ class EditModuleHandler(webapp2.RequestHandler):
                       ])
         
         try:
-            index = search.Index(name="moduleIndex")
+            index = search.Index(name="modIdx")
             index.put(my_doc)
         
         except search.Error:

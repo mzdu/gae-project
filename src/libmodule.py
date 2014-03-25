@@ -11,7 +11,7 @@ def newModule(title, keywords, markdown, tscope, propositions, derivations, tevi
     ''' @summary: Creates a new module entity 
         @param title, keywords, markdown, scope, propositions, derivations, evidence, publish
         @type String
-        @return: Returns the uid if successful, else -1
+        @return: Returns the uid if successful, else -1, returns modkey and uid
         @rtype: integer
     '''
     from libmain import parseMarkdown
