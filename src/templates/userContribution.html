@@ -18,7 +18,12 @@
 			</tr>
 			{% for module in contributed_modules %}
 				{% if module.version == 0 %}
-				<tr></tr>
+			<tr>
+				<td class="boxtitle"><a href="/module/edit/{{module.uid}}">{{module.title}}</a></td>
+				<td></td>
+				<td>{{module.version}}</td>
+				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
+			</tr>
 				{% else %}
 			<tr>
 				<td class="boxtitle"><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
