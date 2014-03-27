@@ -7,6 +7,7 @@
 	
 	{% if is_contributing_user %}
 	<h2>Define a new term</h2>
+
 	<form method="post" action="">
 	<!-- New term added here -->
 	<table>
@@ -17,6 +18,9 @@
 		<tr>
 			<td>Define:</td>
 			<td><input name="definition" type="text" style="width: 450px" /></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="color:red">{{errors}}<td>
 		</tr>
 	</table>
 	<input name="Submit1" type="submit" value="Submit" />

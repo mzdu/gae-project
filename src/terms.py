@@ -10,33 +10,37 @@ class CleanTermHandler(webapp2.RequestHandler):
     def get(self):
         pass
         
-        
-    
     def post(self):
         pass  
 
-
-    
 class NewTermHandler(webapp2.RequestHandler):
     def get(self):
         doRender(self, 'newTerm.html')
     
     def post(self):
+        values = dict()
         term = self.request.get('term').strip().lower()
         term = str(term)
         definition = self.request.get('definition').strip()
         definition = str(definition)
-        slug = term.replace(' ', '-')
-        from libterm import newTerm
-        try:
-            termKey = newTerm(term, slug, definition)
-        except:
-            logging.error('termKey error')
         
-        if not termKey:
-            self.redirect('/terms')
+        logging.info("########"+ term + "########" + definition + "######")
+        
+        if term == '' or definition == '':
+            values['errors'] = 'term and definition cannot be empty.'
+            doRender(self, 'newTerm.html', values)
         else:
-            self.redirect('/')           
+            slug = term.replace(' ', '-')
+            from libterm import newTerm
+            try:
+                termKey = newTerm(term, slug, definition)
+            except:
+                logging.error('termKey error')
+        
+            if termKey:
+                self.redirect('/terms')
+            else:
+                self.redirect('/')           
             
 class GetTermHandler(webapp2.RequestHandler):
     def get(self):

@@ -287,7 +287,6 @@ class MainPageHandler(webapp2.RequestHandler):
         else:
             pageNumber = 1
             
-        
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
             unpublishedModules = getUnpublishedModules()
