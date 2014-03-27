@@ -96,15 +96,23 @@ class AdvancedHandler(webapp2.RequestHandler):
         else:
         	logging.error(str(arguments))
         self.redirect('/administration/advanced/')
+        
+class SanitizeHandler(webapp2.RequestHandler):
+    def get(self):
+        pass
+    
+    def post(self):
+        pass
                 
-app = webapp2.WSGIApplication([
-										('/administration/users/.*', ManageUsersHandler),
-										('/administration/modules/.*', ManageModulesHandler),
-										('/administration/articles/.*', ManageArticlesHandler),
-										('/administration/terms/.*', ManageTermsHandler),
-										('/administration/support/.*', SupportHandler),
-										('/administration/advanced/.*', AdvancedHandler),
-										('/administration', SupportHandler),
-										('/administration/.*', SupportHandler)],
-										debug=True)
+app = webapp2.WSGIApplication([                               
+                               ('/administration/users/.*', ManageUsersHandler),
+                               ('/administration/modules/.*', ManageModulesHandler),
+                               ('/administration/articles/.*', ManageArticlesHandler),
+                               ('/administration/terms/.*', ManageTermsHandler),
+                               ('/administration/support/.*', SupportHandler),
+                               ('/administration/advanced/sanitize/', SanitizeHandler),
+                               ('/administration/advanced/.*', AdvancedHandler),
+                               ('/administration', SupportHandler),
+                               ('/administration/.*', SupportHandler)],
+                              debug=True)
 	
