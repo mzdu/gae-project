@@ -925,3 +925,10 @@ div#pimped.bubble cite.rounded {
 	display:none;
 	font-size: 50%;
 }
+
+.searchTh{
+	font-style: italic;
+	color: #014C90;
+	font-weight: bold;
+	font-size: 10pt;
+}

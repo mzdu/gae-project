@@ -44,12 +44,12 @@ function startSearch(){
 					while(count<json.num_results){
 						
 						jsonObj = json.results[count];
-						html = "<span class='searchTh'>title : </span>" + jsonObj.title + "<br/>"
-							 + "<span class='searchTh'>keywords: </span>" + jsonObj.keywords + "<br/>"
-							 + "<span class='searchTh'>metatheory: </span>" + jsonObj.metatheory + "<br/>"
-							 + "<span class='searchTh'>terms: </span>" + jsonObj.terms + "<br/>"
-							 + "<span class='searchTh'>propositions: </span>" + jsonObj.propositions + "<br/><br/>" ;
-						
+						html = "<span class='searchTh'>Title : </span>" + jsonObj.title + "<br/>"
+							 + "<span class='searchTh'>Keywords: </span>" + jsonObj.keywords + "<br/>"
+							 + "<span class='searchTh'>Metatheory: </span>" + jsonObj.metatheory + "<br/>"
+							 + "<span class='searchTh'>Terms: </span>" + jsonObj.terms + "<br/>"
+							 + "<span class='searchTh'>Propositions: </span>" + jsonObj.propositions + "<br/>" 
+						     + "<span class='searchTh'><a href = '/modules/uid'>View module details</a></span><br/><br/>";
 						$('#searchresult').append(html)
 						
 						count = count + 1;
