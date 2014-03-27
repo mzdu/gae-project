@@ -39,7 +39,7 @@ function startSearch(){
 					$('#searchresult').replaceWith('<div id="searchresult">No modules found.</div>');
 				}
 				else{
-					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' closest modules were found.<br/></div>');
+					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' closest modules were found.<br/><br/></div>');
 					
 					while(count<json.num_results){
 						
@@ -50,7 +50,7 @@ function startSearch(){
 							 + "<span class='searchTh'>Metatheory: </span>" + jsonObj.metatheory + "<br/>"
 							 + "<span class='searchTh'>Terms: </span>" + jsonObj.terms + "<br/>"
 							 + "<span class='searchTh'>Propositions: </span>" + jsonObj.propositions + "<br/>" 
-						     + "<a href = '/modules/" + jsonObj.docID.toString() + "'>View module details</a><br/><br/>";
+						     + "<a href = '/modules/" + jsonObj.docID + "'>View module details</a><br/><br/>";
 						$('#searchresult').append(html)
 						
 						count = count + 1;
