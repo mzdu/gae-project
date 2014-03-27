@@ -24,8 +24,6 @@ class NewTermHandler(webapp2.RequestHandler):
         definition = self.request.get('definition').strip()
         definition = str(definition)
         
-        logging.info("########"+ term + "########" + definition + "######")
-        
         if term == '' or definition == '':
             values['errors'] = 'term and definition cannot be empty.'
             doRender(self, 'newTerm.html', values)

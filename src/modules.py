@@ -59,19 +59,36 @@ class NewModuleHandler(webapp2.RequestHandler):
        
         #adhere term and definition together and combine, then append to termString
         termDef = []
-       
+        from libterm import newTerm
         while termList:
             term = termList.pop().lower()
+            slug = term.replace(' ', '-')
             definition = definitionList.pop()
             #termDef for search document
-            termDef.append(term + ': ' + definition + '; ')
+            termDef.append(term + ': ' + definition + '; ')     
+                   
+                   
+            # find existed term
+            termKey = db.Query(datamodel.Term).filter("word = ", term).get()
             
-            slug = term.replace(' ', '-')
-               
-            from libterm import newTerm
-            keys = newTerm(term, slug, definition)
-         
-            datamodel.ModuleTerm(module=key_uid[0], term=keys[0], definition=keys[1]).put()
+            # exisited term
+            if termKey:
+                # find existed definition
+                defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
+                
+                # new definition
+                if not defKey:
+                    keys = newTerm(term, slug, definition)
+                    datamodel.ModuleTerm(module=key_uid[0], term=keys[0], definition=keys[1]).put()
+                # existed definition
+                else:
+                    # attach existed term with this module
+                    datamodel.ModuleTerm(module=key_uid[0], term=termKey, definition=defKey).put()
+                
+            # new term
+            else:
+                keys = newTerm(term, slug, definition)
+                datamodel.ModuleTerm(module=key_uid[0], term=keys[0], definition=keys[1]).put()
 ##################################################################
         
         #create a search document
@@ -140,8 +157,8 @@ class EditModuleHandler(webapp2.RequestHandler):
         derivationList = [str(drv) for drv in derivations]
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
-                                
-        #terms
+############################################################                                
+        #terms related processing
         terms = self.request.get_all("terms[]")
         definitions = self.request.get_all("definitions[]")
         termList = [str(term) for term in terms]
@@ -149,19 +166,35 @@ class EditModuleHandler(webapp2.RequestHandler):
 
         #adhere term and definition together and combine, then append to termString
         termDef = []
-       
+        from libterm import newTerm
         while termList:
             term = termList.pop().lower()
             definition = definitionList.pop()
             slug = term.replace(' ', '-')
-            
             #termDef for search document
             termDef.append(term + ':' + definition + ';')
-               
-            from libterm import newTerm
-            keys = newTerm(term, slug, definition)
-         
-            datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()      
+
+            # find existed term
+            termKey = db.Query(datamodel.Term).filter("word = ", term).get()
+            
+            # exisited term
+            if termKey:
+                # find existed definition
+                defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
+                
+                # new definition
+                if not defKey:
+                    keys = newTerm(term, slug, definition)
+                    datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
+                # existed definition
+                else:
+                    # attach existed term with this module
+                    datamodel.ModuleTerm(module=modKey, term=termKey, definition=defKey).put()
+            # new term
+            else:
+                keys = newTerm(term, slug, definition)
+                datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
+                  
 
 ##################################################################
         
@@ -212,6 +245,11 @@ class ModuleHandler(webapp2.RequestHandler):
             
             # get module info from datastore and stack them into values dictionary
             values = getModuleVersion(pathList[1])
+            
+            for obj in values['terms']:
+                logging.info('term obj: ' + str(obj.term))
+            
+            
             
             # get the count of version of a module
             count = getModuleVersionCount(int(pathList[1]))+1

@@ -51,7 +51,7 @@ function startSearch(){
 							 + "<span class='searchTh'>Terms: </span>" + jsonObj.terms + "<br/>"
 							 + "<span class='searchTh'>Propositions: </span>" + jsonObj.propositions + "<br/>" 
 						     + "<a href = '/modules/" + jsonObj.docID + "'>View module details</a><br/><br/>";
-						$('#searchresult').append(html)
+						$('#searchresult').append(html);
 						
 						count = count + 1;
 					}

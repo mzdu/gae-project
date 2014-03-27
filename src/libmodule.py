@@ -204,7 +204,7 @@ def getModuleEntity(uid):
         return moduleObject
     return None
     
-# is loaded by ModuleHandler which is used to display one specified module     
+    
 def getModuleVersion(uid, version=0):
     ''' @summary: Populates a dictionary with a particular module's values from the datastore for use in a Django template
         @param uid: The uid that describes the module to get from the datastore and the version
