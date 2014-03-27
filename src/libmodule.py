@@ -50,7 +50,7 @@ def newModule(title, keywords, markdown, tscope, propositions, derivations, tevi
                                           published = True, current = True)
                 createNewUID("modules") #increments the overall module counter once the module is published
             modKey = module.put()
-            return modKey
+            return modKey, uid
         except:
             logging.error('Failed to create module. Module number uid:' + str(uid))
             return -1

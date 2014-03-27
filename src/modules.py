@@ -49,7 +49,7 @@ class NewModuleHandler(webapp2.RequestHandler):
         derivationList = [str(drv) for drv in derivations]
         
         #using newModule in libmodule.py
-        modkey = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
+        key_uid = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
 ##################################################################         
         #terms related processing
         terms = self.request.get_all("terms[]")
@@ -64,14 +64,14 @@ class NewModuleHandler(webapp2.RequestHandler):
             term = termList.pop().lower()
             definition = definitionList.pop()
             #termDef for search document
-            termDef.append(term + ':' + definition)
+            termDef.append(term + ': ' + definition + '; ')
             
             slug = term.replace(' ', '-')
                
             from libterm import newTerm
             keys = newTerm(term, slug, definition)
          
-            datamodel.ModuleTerm(module=modkey, term=keys[0], definition=keys[1]).put()
+            datamodel.ModuleTerm(module=key_uid[0], term=keys[0], definition=keys[1]).put()
 ##################################################################
         
         #create a search document
@@ -79,6 +79,7 @@ class NewModuleHandler(webapp2.RequestHandler):
         propStr = ';'.join(propositionList)
         
         my_doc = search.Document(
+            doc_id = str(key_uid[1]),
             fields = [
                       search.TextField(name="title", value=title),  #title
                       search.TextField(name="keywords", value=keywords),  #keywords
@@ -95,7 +96,7 @@ class NewModuleHandler(webapp2.RequestHandler):
             logging.exception('Document Put Failed')
         
 ######### end of building search index ###########################        
-        if modkey != -1:
+        if key_uid[0] != -1:
             self.redirect("/modules", True)
         else:
             values = {'error' : 'Failed to update module. Please try again later.'}
@@ -155,7 +156,7 @@ class EditModuleHandler(webapp2.RequestHandler):
             slug = term.replace(' ', '-')
             
             #termDef for search document
-            termDef.append(term + ':' + definition)
+            termDef.append(term + ':' + definition + ';')
                
             from libterm import newTerm
             keys = newTerm(term, slug, definition)
@@ -169,6 +170,7 @@ class EditModuleHandler(webapp2.RequestHandler):
         propStr = ';'.join(propositionList)
         
         my_doc = search.Document(
+            doc_id = str(uid),
             fields = [
                       search.TextField(name="title", value=title),  #title
                       search.TextField(name="keywords", value=keywords),  #keywords

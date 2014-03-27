@@ -39,17 +39,18 @@ function startSearch(){
 					$('#searchresult').replaceWith('<div id="searchresult">No modules found.</div>');
 				}
 				else{
-					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' related modules were found.<br/></div>');
+					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' closest modules were found.<br/></div>');
 					
 					while(count<json.num_results){
 						
 						jsonObj = json.results[count];
+						
 						html = "<span class='searchTh'>Title : </span>" + jsonObj.title + "<br/>"
 							 + "<span class='searchTh'>Keywords: </span>" + jsonObj.keywords + "<br/>"
 							 + "<span class='searchTh'>Metatheory: </span>" + jsonObj.metatheory + "<br/>"
 							 + "<span class='searchTh'>Terms: </span>" + jsonObj.terms + "<br/>"
 							 + "<span class='searchTh'>Propositions: </span>" + jsonObj.propositions + "<br/>" 
-						     + "<span class='searchTh'><a href = '/modules/uid'>View module details</a></span><br/><br/>";
+						     + "<a href = '/modules/" + jsonObj.docID.toString() + "'>View module details</a><br/><br/>";
 						$('#searchresult').append(html)
 						
 						count = count + 1;

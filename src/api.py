@@ -37,7 +37,7 @@ def getModules(self,content):
     
     index = search.Index(name="modIdx")
     querystring = content.strip()
-    doc_limit = 5
+    doc_limit = 3
     
     try:
         search_query = search.Query(
@@ -62,7 +62,9 @@ def getModules(self,content):
         jsonList = []
         # get document from results
         for doc in results:
-             
+            
+#             logging.error(doc.doc_id)
+            jsonData["docID"] = doc.doc_id
             # get snippet of metatheory, terms and propositions
             # expr.name, expr.value
             for expr in doc.expressions:
@@ -83,7 +85,7 @@ def getModules(self,content):
     if results:
         jsonData = {'results': jsonList,
                     'num_results': num_results,
-                    "stat": "ok"
+                    "stat": "ok",
                     }
     else:
         jsonData = {'error': 'Document Search Error', 'stat' : 'fail'}
