@@ -14,14 +14,14 @@
          {% else %}
          <li><a href="/join">Contribute Module</a></li>
          {% endif %}
-         <li id="searchswitch" onclick="showSearch()"><a href="#">Search Modules</a></li>
+         <li id="searchswitch" onclick="showSearch()"><a href="javascript:void(0)">Search Modules</a></li>
          </ul>
         </div>
         
 		<div class="clear" />
 		<div class="box" id="browse">
 			<input type="text" name="modulesearch" id="modulesearch" size="60"/>
-			<button id="search" onclick="startSearch()">Module Search</button><button onclick="clearSearchResult()">Clear</button>
+			<button id="startSearch" onclick="startSearch()">Module Search</button><button onclick="clearSearchResult()">Clear</button>
 			<div id="searchresult"></div>
 		</div>        
         

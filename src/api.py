@@ -88,7 +88,7 @@ def getModules(self,content):
     else:
         jsonData = {'error': 'Document Search Error', 'stat' : 'fail'}
  
-    self.response.out.write(json.dumps(jsonData))
+    return json.dumps(jsonData)
 
 
 def getSuggestions(self):
