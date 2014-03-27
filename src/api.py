@@ -36,26 +36,59 @@ def getModules(self,content):
     self.response.headers['Content-Type'] = 'application/json'
     
     index = search.Index(name="modIdx")
-    query_string = content
+    querystring = content.strip()
+    doc_limit = 5
     
     try:
-        results = index.search(query_string)
+        search_query = search.Query(
+                                    query_string = querystring,
+                                    options = search.QueryOptions(
+                                        limit = doc_limit,
+                                        snippeted_fields=["metatheory", "terms", "propositions"],
+                                        returned_fields=["title","keywords"]
+                                                      ))
+        results = index.search(search_query)
 
     except search.Error:
         logging.exception('search failed')
-     
-#     if results:
-#         for result in results:
-#             result.
-#         
-#         
-#         jsonData = {'results': results,
-#                     "stat": "ok",
-#                     }
-#     else:
-#         jsonData = {'error': 'Document Search Error', 'stat' : 'fail'}
-# 
-#     self.response.out.write(json.dumps(jsonData))
+    
+    
+    if results:
+        
+        num_results = len(results.results)
+        logging.error(str(num_results)+" results are returned.")
+        
+        jsonData = dict()
+        jsonList = []
+        # get document from results
+        for doc in results:
+             
+            # get snippet of metatheory, terms and propositions
+            # expr.name, expr.value
+            for expr in doc.expressions:
+                jsonData[expr.name] = expr.value
+            
+            # get title and keywords
+            # field.name, field.value
+            for field in doc.fields:
+                jsonData[field.name] = field.value
+                
+            jsonList.append(jsonData)
+            
+        logging.error('jsonList:' + str(jsonList))
+    else:
+        num_results = 0
+        jsonList = []
+
+    if results:
+        jsonData = {'results': jsonList,
+                    'num_results': num_results,
+                    "stat": "ok"
+                    }
+    else:
+        jsonData = {'error': 'Document Search Error', 'stat' : 'fail'}
+ 
+    self.response.out.write(json.dumps(jsonData))
 
 
 def getSuggestions(self):
