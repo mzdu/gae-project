@@ -26,7 +26,6 @@ function clearSearchResult(){
 
 function startSearch(){
 	clearSearchResult();
-	count = 0;
 	
 	var query = $("#modulesearch").val();
 	$.ajax({
@@ -39,6 +38,7 @@ function startSearch(){
 					$('#searchresult').replaceWith('<div id="searchresult">No modules found.</div>');
 				}
 				else{
+					count = 0;
 					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' closest modules were found.<br/><br/></div>');
 					
 					while(count<json.num_results){
