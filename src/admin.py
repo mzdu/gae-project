@@ -64,6 +64,15 @@ class ManageTermsHandler(webapp2.RequestHandler):
             doRender(self, 'ManageTerms.html', values)
         else:
             self.redirect('/')
+
+class ManagePrezisHandler(webapp2.RequestHandler):
+    def get(self):
+        if isAdministratorUser() is True:
+            values = dict()
+            values["javascript"] = ["/static/js/jquery.js","/static/js/admin/terms.js"]
+            doRender(self, 'ManagePrezis.html', values)
+        else:
+            self.redirect('/')
         
 class SupportHandler(webapp2.RequestHandler):
     def get(self):
@@ -109,6 +118,7 @@ app = webapp2.WSGIApplication([
                                ('/administration/modules/.*', ManageModulesHandler),
                                ('/administration/articles/.*', ManageArticlesHandler),
                                ('/administration/terms/.*', ManageTermsHandler),
+                               ('/administration/prezis/.*', ManagePrezisHandler),
                                ('/administration/support/.*', SupportHandler),
                                ('/administration/advanced/sanitize/', SanitizeHandler),
                                ('/administration/advanced/.*', AdvancedHandler),
