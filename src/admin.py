@@ -3,9 +3,26 @@ import logging
 import datamodel
 
 import webapp2
+import jinja2
+import os
 from google.appengine.api import users
 from google.appengine.ext import db
 from libuser import isContributingUser, isAdministratorUser
+
+jinja_environment2 = jinja2.Environment(loader = jinja2.FileSystemLoader(os.path.dirname(__file__) + '/templates'), autoescape=True)
+
+def doRender2(handler, tname = 'index.html', values = {}):
+    from libmain import buildUserMenu
+    userMenuValues = buildUserMenu()
+    
+    for key in userMenuValues:
+        values[key] = userMenuValues[key]
+
+    values['is_contributing_user'] = isContributingUser()
+        
+    temp = jinja_environment2.get_template(tname)
+    handler.response.out.write(temp.render(values))
+    return True
  
 class ManageUsersHandler(webapp2.RequestHandler):
     def get(self):
@@ -47,14 +64,6 @@ class ManageModulesHandler(webapp2.RequestHandler):
         else:
             self.redirect('/')
 
-class ManageArticlesHandler(webapp2.RequestHandler):
-	def get(self):
-		if isAdministratorUser() is True:
-			values = dict()
-			values["javascript"] = ["/static/js/jquery.js","/static/js/admin/AdvancedPage.js"]
-			doRender(self, 'ManageArticles.html', values)
-		else:
-			self.redirect('/')
 
 class ManageTermsHandler(webapp2.RequestHandler):
     def get(self):
@@ -69,10 +78,61 @@ class ManagePrezisHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
-            values["javascript"] = ["/static/js/jquery.js","/static/js/admin/terms.js"]
-            doRender(self, 'ManagePrezis.html', values)
+            values["javascript"] = ["/static/js/jquery.js"]
+            
+            preziObj = db.Query(datamodel.Prezis).filter('current_tag =', True).get()
+            if preziObj:
+                values['title1'] = preziObj.title_1
+                values['link1'] = '<' + preziObj.link_1
+                
+                values['title2'] = preziObj.title_2
+                values['link2'] = '<' + preziObj.link_2
+                
+                values['title3'] = preziObj.title_3
+                values['link3'] = '<' + preziObj.link_3
+                
+                values['title4'] = preziObj.title_4
+                values['link4'] = '<' + preziObj.link_4
+            
+            doRender2(self, 'ManagePrezis.html', values)
         else:
             self.redirect('/')
+        
+        
+    def post(self):
+        
+        title1 = self.request.get("title1")
+        link1 = self.request.get("link1")
+        if link1[0] == '<':
+            link1 = link1[1:]
+        else:
+            pass
+        
+        title2 = self.request.get("title2")
+        link2 = self.request.get("link2")
+        if link2[0] == '<':
+            link2 = link2[1:]
+        else:
+            pass
+        
+        title3 = self.request.get("title3")
+        link3 = self.request.get("link3")
+        if link3[0] == '<':
+            link3 = link3[1:]
+        else:
+            pass
+        
+        title4 = self.request.get("title4")
+        link4 = self.request.get("link4")
+        if link4[0] == '<':
+            link4 = link4[1:]
+        else:
+            pass
+        
+        cKey = db.Query(datamodel.Prezis).filter('current_tag =', True).get().key()
+        datamodel.Prezis(key=cKey, title_1=title1, link_1=link1, title_2=title2, link_2=link2, title_3=title3, link_3=link3, title_4=title4, link_4=link4, current_tag=True).put()
+        
+        self.redirect('/administration/')
         
 class SupportHandler(webapp2.RequestHandler):
     def get(self):
@@ -116,7 +176,6 @@ class SanitizeHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([                               
                                ('/administration/users/.*', ManageUsersHandler),
                                ('/administration/modules/.*', ManageModulesHandler),
-                               ('/administration/articles/.*', ManageArticlesHandler),
                                ('/administration/terms/.*', ManageTermsHandler),
                                ('/administration/prezis/.*', ManagePrezisHandler),
                                ('/administration/support/.*', SupportHandler),

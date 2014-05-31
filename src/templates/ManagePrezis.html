@@ -8,17 +8,40 @@
 
     <div class="twoColumnRed">
         <div class="header">
-            <h3>Manage Prezis</h3>
+            <h3>Manage Prezis (Under Contruction)</h3>
         </div>
-        <img src="/static/images/ajax-loader.gif" id="allTermsLoading" />
+		
+		<form method="post">
+		        
         <table id="tblPrezis">
-        <>
-        
-        
+        <tr>
+        	<th colspan="2">Prezi 1</th><th colspan="2">Prezi 2</th>
+        </tr>
+        <tr>
+        	<th>Title:</th><td><input type="text" size="25" name="title1" value="{{title1}}" /></td>
+        	<th>Title:</th><td><input type="text" size="25" name="title2" value="{{title2}}" /></td>
+        </tr>
+        <tr>
+        	<th>Link:</th><td><input type="text" size="25" name="link1" value="{{link1}}" /></td>
+        	<th>Link:</th><td><input type="text" size="25" name="link2" value="{{link2}}" /></td>
+        </tr>
+        <tr>
+        	<th colspan="2">Prezi 3</th><th colspan="2">Prezi 4</th>
+        </tr>
+        <tr>
+        	<th>Title:</th><td><input type="text" size="25" name="title3" value="{{title3}}" /></td>
+        	<th>Title:</th><td><input type="text" size="25" name="title4" value="{{title4}}" /></td>
+        </tr>
+        <tr>
+        	<th>Link:</th><td><input type="text" size="25" name="link3" value="{{link3}}" /></td>
+        	<th>Link:</th><td><input type="text" size="25" name="link4" value="{{link4}}" /></td>
+        </tr>
+        <tr>
+        <td colspan="4"><input type="submit" value="Update"></td>
+        </tr>
         </table>
+        </form>
     </div>
-
-
 
 {% endif %}
 {% endblock %}

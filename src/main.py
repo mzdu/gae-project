@@ -5,8 +5,10 @@ from libmain import doRender, sendFeedbackEmail
 from libuser import getCurrentUserInfo
  
 import webapp2
+import datamodel
 import logging
 
+from google.appengine.ext import db
 
 class HelpHandler(webapp2.RequestHandler):
     def get(self):
@@ -114,6 +116,25 @@ class MainPageRedirecter(webapp2.RequestHandler):
 class MainPageHandler2(webapp2.RequestHandler):
     def get(self):
         values = dict()
+        
+        preziObj = db.Query(datamodel.Prezis).filter('current_tag =', True).get()
+        if preziObj:
+            
+            values['title1'] = preziObj.title_1
+            values['link1'] = preziObj.link_1
+            
+            values['title2'] = preziObj.title_2
+            values['link2'] = preziObj.link_2
+            
+            values['title3'] = preziObj.title_3
+            values['link3'] = preziObj.link_3
+            
+            values['title4'] = preziObj.title_4
+            values['link4'] = preziObj.link_4        
+        
+        else:
+            pass
+        
         values['css'] = ['/static/css/jquery-impromptu.css','/static/css/jquery.orgchart.css']
         values['javascript'] = ['/static/js/jquery-impromptu.min.js',
                                 '/static/js/jquery.orgchart.min.js',
