@@ -121,15 +121,19 @@ class MainPageHandler2(webapp2.RequestHandler):
         if preziObj:
             
             values['title1'] = preziObj.title_1
+            values['pic1'] = preziObj.pic_1
             values['link1'] = preziObj.link_1
             
             values['title2'] = preziObj.title_2
+            values['pic2'] = preziObj.pic_2
             values['link2'] = preziObj.link_2
             
             values['title3'] = preziObj.title_3
+            values['pic3'] = preziObj.pic_3
             values['link3'] = preziObj.link_3
             
             values['title4'] = preziObj.title_4
+            values['pic4'] = preziObj.pic_4
             values['link4'] = preziObj.link_4        
         
         else:

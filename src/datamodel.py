@@ -95,13 +95,21 @@ class ContributingUser(db.Model):
     
 class Prezis(db.Model):
     title_1 = db.StringProperty()
+    pic_1 = db.StringProperty()
     link_1 = db.StringProperty()
+    
     title_2 = db.StringProperty()
+    pic_2 = db.StringProperty()
     link_2 = db.StringProperty()
+    
     title_3 = db.StringProperty()
+    pic_3 = db.StringProperty()
     link_3 = db.StringProperty()
+    
     title_4 = db.StringProperty()
+    pic_4 = db.StringProperty()
     link_4 = db.StringProperty()
+    
     current_tag = db.BooleanProperty()
 
 

@@ -83,15 +83,19 @@ class ManagePrezisHandler(webapp2.RequestHandler):
             preziObj = db.Query(datamodel.Prezis).filter('current_tag =', True).get()
             if preziObj:
                 values['title1'] = preziObj.title_1
+                values['pic1'] = preziObj.pic_1
                 values['link1'] = '<' + preziObj.link_1
                 
                 values['title2'] = preziObj.title_2
+                values['pic2'] = preziObj.pic_2
                 values['link2'] = '<' + preziObj.link_2
                 
                 values['title3'] = preziObj.title_3
+                values['pic3'] = preziObj.pic_3
                 values['link3'] = '<' + preziObj.link_3
                 
                 values['title4'] = preziObj.title_4
+                values['pic4'] = preziObj.pic_4
                 values['link4'] = '<' + preziObj.link_4
             
             doRender2(self, 'ManagePrezis.html', values)
@@ -102,6 +106,7 @@ class ManagePrezisHandler(webapp2.RequestHandler):
     def post(self):
         
         title1 = self.request.get("title1")
+        pic1 = self.request.get("pic1")
         link1 = self.request.get("link1")
         if link1[0] == '<':
             link1 = link1[1:]
@@ -109,6 +114,7 @@ class ManagePrezisHandler(webapp2.RequestHandler):
             pass
         
         title2 = self.request.get("title2")
+        pic2 = self.request.get("pic2")
         link2 = self.request.get("link2")
         if link2[0] == '<':
             link2 = link2[1:]
@@ -116,6 +122,7 @@ class ManagePrezisHandler(webapp2.RequestHandler):
             pass
         
         title3 = self.request.get("title3")
+        pic3 = self.request.get("pic3")
         link3 = self.request.get("link3")
         if link3[0] == '<':
             link3 = link3[1:]
@@ -123,6 +130,7 @@ class ManagePrezisHandler(webapp2.RequestHandler):
             pass
         
         title4 = self.request.get("title4")
+        pic4 = self.request.get("pic4")
         link4 = self.request.get("link4")
         if link4[0] == '<':
             link4 = link4[1:]
@@ -130,7 +138,7 @@ class ManagePrezisHandler(webapp2.RequestHandler):
             pass
         
         cKey = db.Query(datamodel.Prezis).filter('current_tag =', True).get().key()
-        datamodel.Prezis(key=cKey, title_1=title1, link_1=link1, title_2=title2, link_2=link2, title_3=title3, link_3=link3, title_4=title4, link_4=link4, current_tag=True).put()
+        datamodel.Prezis(key=cKey, title_1=title1, pic_1=pic1, link_1=link1, title_2=title2, pic_2=pic2, link_2=link2, title_3=title3, pic_3=pic3, link_3=link3, title_4=title4, pic_4=pic4, link_4=link4, current_tag=True).put()
         
         self.redirect('/administration/')
         
