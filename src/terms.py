@@ -113,10 +113,33 @@ class TermHandler(webapp2.RequestHandler):
              
         else:
             pageNumber = 1        
-   
+
+'''   
         pageList = []
+        pStart = 0
+        pEnd = 0        
+        
         for pageN in range(pageMax):
+            # starts from '1', '2', '3'...
             pageList.append(str(pageN+1))
+            # if there are less than 10 pages, list them all
+            
+        if len(pageList) > 10:
+            
+            if pageNumber < 10:
+                pageList = pageList[:10]
+            
+            else:
+                pStart = 
+                pEnd = 
+                
+                pageList = pageList[]
+        
+        else:
+            pass    
+'''                
+            
+            
                
         from libuser import isContributingUser
         if isContributingUser() is True:
