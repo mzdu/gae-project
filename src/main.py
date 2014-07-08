@@ -28,7 +28,7 @@ class ContributeHandler(webapp2.RequestHandler):
 class ContactHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
-        doRender(self, 'feedback.html', values)
+        doRender(self, 'contact.html', values)
 
 class FeedbackHandler(webapp2.RequestHandler):
     def get(self):

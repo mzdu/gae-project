@@ -1,0 +1,43 @@
+{% extends "_base2.html" %}
+{% block bodyContent %}
+
+{% if error %}
+		<p>{{error}}</p>
+{% else %}
+
+<div class="oneColumn">
+	<div class="header">Contact Us</div>
+	<p>
+		Please direct all communications to either:
+	<blockquote>
+	<table>
+		<tr>
+			<td>
+				Barry Markovsky, Project Director <br/>
+		   		Professor of Sociology, University of South Carolina <br/>
+		   		barry@sc.edu <br/>
+		  		<br/>
+		   		Jake Frederick, Sociology Graduate Assistant <br/>
+		   		University of South Carolina <br/>
+		   		frederit@email.sc.edu <br/>
+			</td>
+		
+			<td>
+				José M. Vidal, Project Director <br/>
+				Professor of Computer Science & Engineering, University of South Carolina <br/>
+				vidal@sc.edu <br/>
+				<br/>
+				Mingzhe Du, Project Developer <br/>
+				PhD Student of Computer Science & Engineering, University of South Carolina <br/>
+				dum@email.sc.edu <br/>			
+			</td>
+		</tr>
+	</table>
+	</blockquote>
+	</p>
+</div>
+
+
+
+{% endif %}
+{% endblock %}
