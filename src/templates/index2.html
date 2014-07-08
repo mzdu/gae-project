@@ -10,20 +10,29 @@ $(function() {
 			<div class="module">
 				<div class="header"><h3>New Users</h3></div>
 				<div id="newUsers">
-		
-					<div id="preziGrid">
-						<div id="prezi1">
-							<a href="javascript:openPrompt({prezi:1})"><img src="{{pic1}}"/></a>
-						</div>
-						<div id="prezi2">
-							<a href="javascript:openPrompt({prezi:2})"><img src="{{pic2}}"/></a>
-						</div>
-						<div id="prezi3">
-							<a href="javascript:openPrompt({prezi:3})"><img src="{{pic3}}"/></a>
-						</div>
-						<div id="prezi4">
-							<a href="javascript:openPrompt({prezi:4})"><img src="{{pic4}}"/></a>
-						</div>
+					<div>
+					<table id="preziGrid">
+						<tr>
+							<td>
+								<a href="javascript:openPrompt({prezi:1})"><img src="{{pic1}}"/></a>
+							</td>
+								
+							<td>
+								<a href="javascript:openPrompt({prezi:2})"><img src="{{pic2}}"/></a>
+							</td>
+						</tr>
+							
+						<tr>
+							<td>
+								<a href="javascript:openPrompt({prezi:3})"><img src="{{pic3}}"/></a>
+							</td>
+							
+							<td>
+								<a href="javascript:openPrompt({prezi:4})"><img src="{{pic4}}"/></a>
+							</td>
+						</tr>
+					</table>
+					
 					</div>
 					
 					<div id="preziList">

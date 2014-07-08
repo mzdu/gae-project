@@ -796,34 +796,10 @@ div#pimped.bubble cite.rounded {
 	
 }
 
-#preziGrid #prezi1,#prezi2,#prezi3,#prezi4{
-	padding: 5px;	
+#preziGrid td{
+	padding: 15px;	
 }
 
-//lock the relative position of prezis
-#preziGrid #prezi1{
-	position: relative;
-}
-#preziGrid #prezi2{
-	position: relative;
-	top: -195px;
-	left: 350px;
-}
-#preziGrid #prezi3{
-	position: relative;
-	top: -180px;
-	left: 0px;
-}
-#preziGrid #prezi4{
-	position: relative;
-	top: -375px;
-	left: 350px;
-}
-
-#preziGrid img{
-	width: 280px;
-	
-}
 
 #newUsers #preziList{
 	position: absolute;
