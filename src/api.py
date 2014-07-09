@@ -37,7 +37,7 @@ def getModules(self,content):
     
     index = search.Index(name="modIdx")
     querystring = content.strip()
-    doc_limit = 3
+    doc_limit = 30
     
     try:
         search_query = search.Query(
