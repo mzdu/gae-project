@@ -93,6 +93,7 @@ class TermHandler(webapp2.RequestHandler):
         
         from libmain import RepresentsInt
         from libterm import getTermCount
+        from libuser import isContributingUser
            
         termCount = float(getTermCount())
  
@@ -114,7 +115,7 @@ class TermHandler(webapp2.RequestHandler):
         else:
             pageNumber = 1        
 
-'''   
+        '''   
         pageList = []
         pStart = 0
         pEnd = 0        
@@ -137,17 +138,16 @@ class TermHandler(webapp2.RequestHandler):
         
         else:
             pass    
-'''                
+        '''                
             
             
-               
-        from libuser import isContributingUser
+        
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
                
         terms = db.Query(datamodel.Term).order('-date_submitted').fetch(limit=pageLimit, offset=(pageNumber-1)*pageLimit)
         values['terms_general'] = terms
-        values['terms_page'] = pageList
+#         values['terms_page'] = pageList
         values['terms_count'] = int(termCount)
            
         values['javascript'] = ['/static/js/jquery-1.9.1.js', 
