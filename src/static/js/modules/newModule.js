@@ -195,7 +195,7 @@ function submitForm(publishBool,action){
 }
 
 
-//limit the number of characters at metatheory
+//limits the number of characters at metatheory
 function limitText(limitField, limitCount, limitNum) {
 	if (limitField.value.length > limitNum) {
 		limitField.value = limitField.value.substring(0, limitNum);

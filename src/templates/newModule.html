@@ -70,7 +70,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 			<ol id="scope">
 				<li><input class="scopeItem" size="80px"/></li>
 			</ol>
-			<input type="button" value="Add More Scope" onclick="addScope()" />
+			<input type="button" value="Add Scope Conditions" onclick="addScope()" />
 		</td></tr>
 	</table>
 
@@ -81,7 +81,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 				<ol id="proposition">
 					<li><input class="propositionItem" size="80px"/></li>
 				</ol>
-				<input type="button" value="Add More Proposition" onclick="addProposition()") />
+				<input type="button" value="Add Proposition" onclick="addProposition()") />
 			</td>
 		</tr>
 		<!-- Not ready -->
@@ -91,7 +91,7 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 				<ol id="derivation">
 					<li><input class="derivationItem" size="80px"/></li>
 				</ol>
-				<input type="button" value="Add More Derivation" onclick="addDerivation()") />
+				<input type="button" value="Add Derivation" onclick="addDerivation()") />
 			</td>
 		</tr>
 				
@@ -109,8 +109,13 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 	
 </div>
 <div id="buttons">
-<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save and Exit</button>
-<button name="btnPublish" onclick="submitForm('true','new')" value="Publish" id="publishBtn" disabled>Save and Publish</button>
+<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save and Send for Approval</button>
+<!-- Adds the control of approval -->
+{% if is_administrator %}
+<button name="btnPublish" onclick="submitForm('true','new')" value="Publish" id="publishBtn" disabled>Publish</button>
+{% else %}
+
+{% endif %}
 <button onclick="enableSubmit()" id="readyBtn">Ready?</button>
 </div>
 {% endblock %}

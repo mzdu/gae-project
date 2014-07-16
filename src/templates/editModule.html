@@ -72,7 +72,7 @@
 				<li><input class="scopeItem" value="{{scope}}" size="80px" /><button class='removeScope'>X</button></li>
 				{% endfor %}
 			</ol>
-			<input type="button" value="Add More Scope" onclick="addScope()" />
+			<input type="button" value="Add Scope Conditions" onclick="addScope()" />
 		</td></tr>
 	</table>
 
@@ -85,7 +85,7 @@
 					<li><input class="propositionItem" value="{{proposition}}" size="80px"/><button class='removeProposition'>X</button></li>
 				{% endfor %}				
 				</ol>
-				<input type="button" value="Add More Proposition" onclick="addProposition()") />
+				<input type="button" value="Add Proposition" onclick="addProposition()") />
 			</td>
 		</tr>
 		<!-- Not ready -->
@@ -97,7 +97,7 @@
 					<li><input class="derivationItem" value="{{derivation}}" size="80px"/><button class='removeDerivation'>X</button></li>
 				{% endfor %}	
 				</ol>
-				<input type="button" value="Add More Derivation" onclick="addDerivation()") />
+				<input type="button" value="Add Derivation" onclick="addDerivation()") />
 			</td>
 		</tr>
 				
@@ -115,14 +115,19 @@
 
 {% if module_published %}
 <div id="buttons">
-<button name="btnSubmitModule" onclick="submitForm('true','edit')" value="Submit" id="submitBtn" disabled>Submit</button>
-<button onclick="enableSubmit()">Ready?</button>
+	<button name="btnSubmitModule" onclick="submitForm('true','edit')" value="Submit" id="submitBtn" disabled>Submit</button>
+	<button onclick="enableSubmit()">Ready?</button>
 </div>
 {% else %}
 <div id="buttons">
-<button name="btnSubmitModule" onclick="submitForm('false','edit')" value="Save" id="submitBtn" disabled>Save and Exit</button>
-<button name="btnPublish" onclick="submitForm('true','edit')" value="Publish" id="publishBtn" disabled>Save and Publish</button>
-<button onclick="enableSubmit()" id="readyBtn">Ready?</button>
+	<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save and Send for Approval</button>
+	<!-- Adds the control of approval -->
+	{% if is_administrator %}
+	<button name="btnPublish" onclick="submitForm('true','new')" value="Publish" id="publishBtn" disabled>Publish</button>
+	{% else %}
+	
+	{% endif %}
+	<button onclick="enableSubmit()" id="readyBtn">Ready?</button>
 </div>
 {% endif %}
 {% endblock %}

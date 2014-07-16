@@ -1,7 +1,7 @@
 #from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID
 from libmain import doRender, getUrlResourceList
 from libmodule import newModule, getModule, updateModule, getUnpublishedModules, getModuleVersion, getModuleVersionCount
-from libuser import isContributingUser
+from libuser import isContributingUser, isAdministratorUser
 
 import webapp2
 import math
@@ -28,6 +28,11 @@ class NewModuleHandler(webapp2.RequestHandler):
             values['css'] = ['/static/js/jquery-ui.css',
                              '/static/css/modules.css', 
                              '/static/js/plugins/wmd_stackOverflow/wmd.css']
+            
+            if isAdministratorUser() is True:
+                values['is_administrator'] = True
+            else:
+                values['is_administrator'] = False
             
             doRender(self, 'newModule.html',values)
              
@@ -137,6 +142,11 @@ class EditModuleHandler(webapp2.RequestHandler):
                              '/static/css/modules.css', 
                              '/static/js/plugins/wmd_stackOverflow/wmd.css']
             
+            if isAdministratorUser() is True:
+                values['is_administrator'] = True
+            else:
+                values['is_administrator'] = False     
+                       
             doRender(self, 'editModule.html', values)
         else:
             self.redirect('/modules')
