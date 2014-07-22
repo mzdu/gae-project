@@ -784,7 +784,12 @@ div#pimped.bubble cite.rounded {
 	padding: 5px;
 }
 
+/* Contact Table Layout */
 
+#contactTable td,th{
+	font-size: 200%;
+	
+}
 
 
 /* =Misc 2

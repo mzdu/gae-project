@@ -908,3 +908,16 @@ div#pimped.bubble cite.rounded {
 	font-weight: bold;
 	font-size: 10pt;
 }
+
+/* contact table */
+#contactTable th{
+	padding-top: 20px;
+}
+
+#contactTable td{
+	padding: 15px;
+}
+
+#contactTable td,th{
+	font-size: 9pt;
+}
