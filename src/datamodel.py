@@ -18,6 +18,7 @@ class WikiUser(db.Model):
     location = db.StringProperty()
     admin = db.BooleanProperty()
     organization = db.StringProperty()
+    title = db.StringProperty()
     birthday = db.DateTimeProperty()
     about = db.StringProperty()
     user_id = db.StringProperty()
