@@ -1,0 +1,17 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+    <div class="twoColumnBlue">
+        <div class="header">
+            <h3>Manage Proposed Contributions</h3>
+        </div>
+		<img src="/static/images/ajax-loader.gif" id="allModulesLoading" />
+		<table id="pendingModules"></table>     
+    </div>
+
+{% endif %}
+{% endblock %}
