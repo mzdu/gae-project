@@ -219,24 +219,6 @@ def getPendingModules(self):
         
     return json.dumps(jsonData)
 
-
-def getFeaturedModule(self):
-    try:
-        featured_module = db.Query(datamodel.FeaturedModule).order("-featured_date").get()
-        jsonData = {'stat':'ok','title':featured_module.module.title,'uid':featured_module.module.uid}
-    except:
-        jsonData = {'stat':'failed','message':'failed to find featured module'}
-    return json.dumps(jsonData)
-
-def featureModule(self, module):
-    try:
-        module_object = db.Query(datamodel.Module).filter("uid",int(module)).get()
-        featured_module = datamodel.FeaturedModule(module = module_object).put()
-        jsonData = {'stat' : 'ok'}
-    except:
-        jsonData = {'stat':'failed','message':'failed to feature module'}
-    return json.dumps(jsonData)
-
 def removeModule(self, module_uid):
     try:
         admin = isAdministratorUser()
@@ -376,7 +358,6 @@ class ApiHandler(webapp2.RequestHandler):
             json = getModules(self, content)
             self.response.out.write(json)
             return    
-        
             
         elif self.request.get('method') == 'getCurrentModules':
             json = getCurrentModules(self)
@@ -388,6 +369,12 @@ class ApiHandler(webapp2.RequestHandler):
             json = getPastModules(module, version)
             self.response.out.write(json)
             return
+        elif self.request.get('method') == 'getPendingModules':
+            json = getPendingModules(self)
+            self.response.out.write(json)
+            return        
+        
+        
         elif self.request.get('method') == 'getFeaturedModule':
             json = getFeaturedModule(self)
             self.response.out.write(json)
