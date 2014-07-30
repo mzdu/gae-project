@@ -149,6 +149,16 @@ class SupportHandler(webapp2.RequestHandler):
             doRender(self, 'Support.html', values)
         else:
             self.redirect('/')
+            
+class PendingHandler(webapp2.RequestHandler):    
+    def get(self):
+        if isAdministratorUser() is True:
+            values = dict()
+            values["javascript"] = ["/static/js/jquery.js","/static/js/admin/module.js"]
+            doRender(self, 'ManagePendings.html', values)
+        else:
+            self.redirect('/')      
+            
         
 class AdvancedHandler(webapp2.RequestHandler):
     def get(self):
@@ -189,6 +199,7 @@ app = webapp2.WSGIApplication([
                                ('/administration/support/.*', SupportHandler),
                                ('/administration/advanced/sanitize/', SanitizeHandler),
                                ('/administration/advanced/.*', AdvancedHandler),
+                               ('/administration/pending/.*', PendingHandler),
                                ('/administration', SupportHandler),
                                ('/administration/.*', SupportHandler)],
                               debug=True)

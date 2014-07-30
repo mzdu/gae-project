@@ -173,7 +173,7 @@ def getCurrentModules(self):
     except:
         jsonData = {'stat':'failed','message':'failed to load modules'}
     try:
-        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[]}
+        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[],'published':[]}
         for module in current_modules:
             jsonData['uid'].append(module.uid)
             jsonData['title'].append(module.title)
@@ -199,6 +199,26 @@ def getPastModules(self, module):
     except:
         jsonData = {'stat':'fail','message':'failed to find all data'}
     return json.dumps(jsonData)
+
+def getPendingModules(self):
+    try:
+        # get pending modules
+        pending_modules = db.Query(datamodel.Module).filter("published",False).order("-date_submitted")
+    except:
+        jsonData = {'stat':'failed','message':'failed to find pending module'}
+        
+    try:
+        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'version':[]}
+        for module in pending_modules:
+            jsonData['uid'].append(module.uid)
+            jsonData['title'].append(module.title)
+            jsonData['date_submitted'].append('%02d/%02d/%04d' % (module.date_submitted.month, module.date_submitted.day, module.date_submitted.year))
+            jsonData['version'].append(module.version)
+    except:
+        jsonData = {'stat':'fail','message':'failed to find all data'}        
+        
+    return json.dumps(jsonData)
+
 
 def getFeaturedModule(self):
     try:

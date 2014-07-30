@@ -15,14 +15,14 @@ function getCurrentModules(id) {
 	$.getJSON("/api?method=getCurrentModules",
 		function(json) {
 			if(json.stat == 'ok') {
-				var tableRows = "<thead><tr><th></th><th>Title</th><th>Date Submitted</th><th>Last Update</th><th>Current Version</th><th></th><th></th></tr></thead><tbody>";
+				var tableRows = "<thead><tr><th>Title</th><th>Date Submitted</th><th>Last Update</th><th>Current Version</th><th></th><th></th></tr></thead><tbody>";
 				for(var i = 0; i < json.title.length; i++){
-	  				tableRows += "<tr><td><span style='cursor:pointer;' onclick=featureModule(" + json.uid[i] + ")>Feature</span></td>";
-					tableRows += "<td><a href='/modules/" + json.uid[i] + "'>" + json.title[i] + "</a></td>";
+//	  				tableRows += "<tr><td><span style='cursor:pointer;' onclick=featureModule(" + json.uid[i] + ")>Feature</span></td>";
+					tableRows += "<td><a href='/modules/" + json.uid[i] + "' target='_blank'>" + json.title[i] + "</a></td>";
 					tableRows += "<td>" + json.date_submitted[i] + "</td>";
 					tableRows += "<td>" + json.last_update[i] + "</td>";
-					tableRows += "<td>" + json.current_version[i] + "</td>";
-					tableRows += "<td><span style='cursor:pointer;' onclick='getPastModules(" + json.uid[i] + ")'>View Versions</span></td>";
+					tableRows += "<td><center>" + json.current_version[i] + "</center></td>";
+//					tableRows += "<td><span style='cursor:pointer;' onclick='getPastModules(" + json.uid[i] + ")'>View Versions</span></td>";
 					tableRows += "<td><span style='cursor:pointer;' onclick=removeModule(" + json.uid[i] + ")><b>X</b></span></td></tr>";
 					tableRows += "<tr><td></td><td colspan='6'><div style='display:none;' id='module_" + json.uid[i] + "'></div></td></tr>";
 	  			}
@@ -68,7 +68,7 @@ function setCurrentVersion(uid, version) {
 		});
 	init();
 }
-
+ 
 function getFeaturedModule() {
 	$.getJSON("/api?method=getFeaturedModule",
 		function(json) {
@@ -80,6 +80,19 @@ function getFeaturedModule() {
 			}
 		});
 }
+
+function getPendingModules() {
+	$.getJSON("/api?method=getPendingModule",
+		function(json) {
+			if(json.stat == 'ok') {
+				$("#featuredAdminContentFound").append("<span><b>Pending: </b><a href='/modules/" + json.uid + "'>" + json.title + "</a></span>");
+			}
+			else {
+				$("#featuredAdminContentFound").append("<span><b>Unable to load pending module!</b></span>");
+			}
+		});
+}
+
 
 function featureModule(module) {
 	$.getJSON("/api?method=featureModule&module=" + module,
@@ -111,5 +124,5 @@ function init() {
 	$("#featuredAdminContentFound").find("span").remove();
 	$("#tblModules").find("tr").remove();
 	getCurrentModules("#tblModules");
-	getFeaturedModule();
+//	getFeaturedModule();
 }
