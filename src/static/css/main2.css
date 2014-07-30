@@ -921,3 +921,7 @@ div#pimped.bubble cite.rounded {
 #contactTable td,th{
 	font-size: 9pt;
 }
+
+#tblModules td, th{
+	padding-left: 5px;
+}
