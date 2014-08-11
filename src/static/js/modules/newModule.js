@@ -59,6 +59,21 @@ function addDerivation(){
 		});
 }
 
+function addEvidence(){
+	
+	$("#evidence").append("<textarea cols='59' id='evidenceArea' name='evidence' rows='5'></textarea><button class='removeEvidence'>X</button>");
+	$(".removeEvidence").bind("click", function(e){
+			$(this).remove();
+			$("#evidenceArea").remove();
+			$("#here").append("<input type='button' value='+' onclick='addEvidence()' id='evidBtn' />");
+		});
+	
+	$("#evidBtn").remove();
+	
+		
+}
+
+
 //adds a previously defined term to the list of terms that will be associated with this module when the user submits the module.
 function addTerm(term,def){
 	$("#termList").append("<li><span class='term'>"+ term +"</span> - <span class='definition'>" + def + "</span> <button class='removeTerm'>X</button></li>");
@@ -137,7 +152,7 @@ function addNewTerm(){
 //Enables the submit button after the user clicks 'Ready?'
 function enableSubmit(){
 	$("#submitBtn").removeAttr("disabled");
-	$("#publishBtn").removeAttr("disabled");
+//	$("#sendBtn").removeAttr("disabled");
 	$("#readyBtn").remove();
 } 
 
@@ -152,6 +167,8 @@ function submitForm(publishBool,action){
 
 	var title = $("#title").val();
 	var keywords = $("#keywords").val();
+	
+	var moduleId = $("#uid").val();
 	
 	if(title == ''){
 		alert('Please include a title');
@@ -177,22 +194,39 @@ function submitForm(publishBool,action){
 			
 			"published" : publishBool,
 			
-			"uid" : $("#uid").val()
+			"uid" : moduleId
 	}
 	$("#submitBtn").remove();
-	$("#publishBtn").remove();
-	$("#buttons").html("Module is being submitted. If you are not redirected within 10 seconds <a href='/modules'>click here</a>.");
+//	$("#sendBtn").remove();
+	$("#sendBtn").removeAttr("disabled");
+	$("#btnInfo").html("Module Saved. If you wish to edit this module again, please <a href='/users/contribution/1'>click here</a>.");
 	if(action == "new")
 	{
-		$.post("/module/new",json,function(){window.location = "/modules"});
+		$.post("/module/new",json,function(){});
 	}
 	else
 	{
 		$.post("/module/edit",json,function(){window.location = "/modules"});
 	}
 	
+}
+
+
+
+function sendForm(){
+	var title = $("#title").val();
+	var message = prompt("Why do you propose this suggestion?");
+	
+	json = {
+			"title": title,
+			"message" : message	
+	}
+	
+	$.post("/notify",json,function(){window.location = "/modules"});
 	
 }
+
+
 
 
 //limits the number of characters at metatheory

@@ -31,11 +31,11 @@
 	</table>
 	<br />
 		<form name="myform">
-		<strong>Background / Metatheory:</strong> <font size="1">You have <input readonly type="text" name="countdown" size="3" value="500"> characters left.(Maximum characters: 500)</font>
+		<strong>Background / Metatheory:</strong> <font size="1">You have <input readonly type="text" name="countdown" size="3" value="2000"> characters left.(Maximum characters: 2000)</font>
 			  <div id="wmd-button-bar" class="wmd-panel"></div>
 		      <br/>
-		      <textarea id="wmd-input" class="wmd-panel" name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,500);" 
-onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" rows=""></textarea>
+		      <textarea id="wmd-input" class="wmd-panel" name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,2000);" 
+onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,2000);" cols="" rows=""></textarea>
 		      <br/>
 		      Preview:
 		      <div id="wmd-preview" class="wmd-panel"></div>
@@ -68,9 +68,9 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 		<tr><td class="title">Scope Conditions: </td>
 		<td>
 			<ol id="scope">
-				<li><input class="scopeItem" size="80px"/></li>
+				
 			</ol>
-			<input type="button" value="Add Scope Condition" onclick="addScope()" />
+			<input type="button" value="+" onclick="addScope()" />
 		</td></tr>
 	</table>
 
@@ -79,9 +79,9 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 			<td class="title">Propositions: </td>
 			<td>
 				<ol id="proposition">
-					<li><input class="propositionItem" size="80px"/></li>
+					
 				</ol>
-				<input type="button" value="Add Proposition" onclick="addProposition()") />
+				<input type="button" value="+" onclick="addProposition()") />
 			</td>
 		</tr>
 		<!-- Not ready -->
@@ -89,16 +89,26 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 			<td class="title">Derivations: </td>
 			<td>
 				<ol id="derivation">
-					<li><input class="derivationItem" size="80px"/></li>
+					
 				</ol>
-				<input type="button" value="Add Derivation" onclick="addDerivation()") />
+				<input type="button" value="+" onclick="addDerivation()") />
 			</td>
 		</tr>
 				
 		<tr>
 			<td class="title">Evidence: </td>
 			<td>
-				<textarea cols="59" id="evidence" name="evidence" rows="5"></textarea>
+				<div id="evidence">
+				
+				
+				
+				
+				</div>
+				
+				<div id="here">
+				<input type="button" value="+" onclick="addEvidence()" id="evidBtn" />
+				</div>
+				
 			</td>
 		</tr>		
 
@@ -109,13 +119,9 @@ onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,500);" cols="" 
 	
 </div>
 <div id="buttons">
-<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save and Send for Approval</button>
-<!-- Adds the control of approval -->
-{% if is_administrator %}
-<button name="btnPublish" onclick="submitForm('true','new')" value="Publish" id="publishBtn" disabled>Publish</button>
-{% else %}
-
-{% endif %}
 <button onclick="enableSubmit()" id="readyBtn">Ready?</button>
+<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save</button>
+<button name="btnSend" onclick="sendForm()" value="Send" id="sendBtn" disabled>Send for Approval</button>
+<span id="btnInfo"></span>
 </div>
 {% endblock %}

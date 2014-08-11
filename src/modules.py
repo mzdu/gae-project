@@ -358,7 +358,7 @@ app = webapp2.WSGIApplication([
                                ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
                                ('/modules/page.*', MainPageHandler),
-                               ('/modules/?', MainPageHandler),
+                               ('/modules', MainPageHandler),
                                ('/modules/.*', ModuleHandler)
                                 ],debug=True)
 

@@ -6,7 +6,7 @@ from google.appengine.ext import db
 
 ############################ add, update & get a module ########################################
 
-# add new module into datastore
+# add a new module into datastore
 def newModule(title, keywords, markdown, tscope, propositions, derivations, tevidence, publish):
     ''' @summary: Creates a new module entity 
         @param title, keywords, markdown, scope, propositions, derivations, evidence, publish
@@ -66,19 +66,29 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
     '''
     from libmain import parseMarkdown
     oldModule = getModuleEntity(uid)
-    #this if is for when module has been published previously
+    
+    # this if is for when module has been published previously
     if publish == "true" and oldModule.version > 0:
         user = getCurrentUserEntity()
-        oldModule.current = False
-        oldModule.published = True
-        db.put(oldModule)
+        # when edit a published module, do not touch the old module, but duplicate a new copy
+        # with current version + 1, and new id
+        
+        oldVersion = oldModule.version
+#         oldModule.current = False
+#         oldModule.published = True
+#         db.put(oldModule)
         try:
             uid = int(uid)
         except:
             return -1   
         
-        #create uid for module version
-        revision_uid = versionIncrement(uid)
+        # assign the mock version to new module. But the system version counter will not be touched.
+        
+#         #create uid for module version
+#         revision_uid = versionIncrement(uid)
+
+        revision_uid = oldVersion + 1
+        
         if revision_uid == -1:
             return -1
         else:
@@ -117,6 +127,29 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
         key = db.put(module)
         createNewUID("modules") #increments the overall module counter once the module is published
         return key
+    
+    
+    # when edit an unpublished module, keep the version to 0 and unpublished, save the updated content to the old module id
+    elif publish == "false" and oldModule.version == 0:
+        module = oldModule
+        module.title = title
+        module.keywords = keywords
+        module.theoryMarkdown = markdown
+        module.theoryHtml = parseMarkdown(markdown)
+        module.scope = tscope
+        module.propositions = propositions
+        module.derivations = derivations
+        module.evidence = tevidence
+
+        # keep the version0 unpublished module have only one copy
+        module.published = False
+        module.current = True
+        module.version = 0
+        key = db.put(module)
+        return key
+        
+        
+    
     else:
         module = oldModule
         module.title = title
@@ -131,6 +164,12 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
         module.version = 0
         key = db.put(module)
         return key
+
+
+
+    
+
+
 
 # get a module
 def getModule(uid):
@@ -220,8 +259,8 @@ def getModuleVersion(uid, version=0):
         return values
     
     if version == 0:
-        #since the optional param 'version' wasn't specified, pull the current versions of the requested module
-        moduleObject = db.Query(datamodel.Module).filter('uid =', uid).filter('current =', True).filter('published =', True).get()
+        #since the optional param 'version' wasn't specified, pull the current versions of the requested module, no matter it is published or not.
+        moduleObject = db.Query(datamodel.Module).filter('uid =', uid).filter('current =', True).get()
     else:
         try:
             #check to see if the version is a slug or a version number.
