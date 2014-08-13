@@ -132,7 +132,7 @@ class EditModuleHandler(webapp2.RequestHandler):
             values = dict()
             url = getUrlResourceList(self)
             # get all values of a module
-            values = getModule(url[2])
+            values = getModuleVersion(url[2],url[3])
             values['javascript'] = ['/static/js/jquery-1.9.1.js', 
                                     '/static/js/jquery-ui.js',
                                     '/static/js/modules/newModule.js',
@@ -161,12 +161,17 @@ class EditModuleHandler(webapp2.RequestHandler):
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
         uid = int(self.request.get("uid"))
+        
+        # nVersion is the newest currently publish module version
+        nVer = self.request.get("nVersion")
+        # mVersion states the current editing module version
+        mVer = self.request.get("mVersion")
 
         scopeList = [str(scope) for scope in scopes]
         propositionList = [str(prop) for prop in propositions]
         derivationList = [str(drv) for drv in derivations]
           
-        modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
+        modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool, nVer, mVer)
 ############################################################                                
         #terms related processing
         terms = self.request.get_all("terms[]")

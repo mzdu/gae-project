@@ -186,12 +186,12 @@ def getCurrentModules(self):
 
 def getPastModules(self, module):
     try:
-        past_modules = db.Query(datamodel.Module).filter("current",False).order("-date_submitted")
+        pending_modules = db.Query(datamodel.Module).filter("published",False).order("-date_submitted")
     except:
-        jsonData = {'stat':'failed','message':'failed to load modules'}
+        jsonData = {'stat':'failed','message':'failed to load pending modules'}
     try:
         jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'version':[]}
-        for module in past_modules:
+        for module in pending_modules:
             jsonData['uid'].append(module.uid)
             jsonData['title'].append(module.title)
             jsonData['date_submitted'].append('%02d/%02d/%04d' % (module.date_submitted.month, module.date_submitted.day, module.date_submitted.year))
@@ -208,15 +208,15 @@ def getPendingModules(self):
         jsonData = {'stat':'failed','message':'failed to find pending module'}
         
     try:
-        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'version':[]}
+        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[],'published':[]}
         for module in pending_modules:
             jsonData['uid'].append(module.uid)
             jsonData['title'].append(module.title)
             jsonData['date_submitted'].append('%02d/%02d/%04d' % (module.date_submitted.month, module.date_submitted.day, module.date_submitted.year))
-            jsonData['version'].append(module.version)
+            jsonData['last_update'].append('%02d/%02d/%04d' % (module.last_update.month, module.last_update.day, module.last_update.year))
+            jsonData['current_version'].append(module.version)
     except:
-        jsonData = {'stat':'fail','message':'failed to find all data'}        
-        
+        jsonData = {'stat':'fail','message':'failed to find all data'}
     return json.dumps(jsonData)
 
 def removeModule(self, module_uid):
@@ -374,16 +374,6 @@ class ApiHandler(webapp2.RequestHandler):
             self.response.out.write(json)
             return        
         
-        
-        elif self.request.get('method') == 'getFeaturedModule':
-            json = getFeaturedModule(self)
-            self.response.out.write(json)
-            return
-        elif self.request.get('method') == 'featureModule':
-            module = self.request.get('module')
-            json = featureModule(self, module)
-            self.response.out.write(json)
-            return
         elif self.request.get('method') == 'setCurrentVersion':
             module = self.request.get('module')
             version = self.request.get('version')

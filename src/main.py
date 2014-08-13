@@ -41,6 +41,16 @@ class FeedbackHandler(webapp2.RequestHandler):
         sendFeedbackEmail(userInfo["email"], aSubject, aBody)
         self.redirect('/')
 
+class NotifyHandler(webapp2.RequestHandler):
+    def post(self):
+        title = self.request.get("title")
+        message = self.request.get("message")
+        aSubject = "Module " + title + " is waiting for your approval"
+        aBody = "Module:" + title + "\nContributor's Proposal Suggestion:" + message
+        
+        sendFeedbackEmail("wikitheoria.public@gmail.com", aSubject, aBody)
+
+
 class JoinHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
@@ -54,9 +64,11 @@ class JoinHandler(webapp2.RequestHandler):
     def post(self):
         email = self.request.get("email")
         name = self.request.get("name")
+        organization = self.request.get("organization")
+        title = self.request.get("title")
         note = self.request.get("note")
         aSubject = name + " would like to become a member of Wikitheoria -- Needs Authorization"
-        aBody = "name: " + name + "\nEmail: " + email + "\n\n" + note
+        aBody = "name: " + name + "\nEmail: " + email + "\nOrganization: " + organization + "\nTitle: " + title + "\n\n" + note
         sendFeedbackEmail(email, aSubject, aBody)
         self.redirect('/')
 
@@ -153,6 +165,7 @@ app = webapp2.WSGIApplication([
                                           ('/contribute.*', ContributeHandler),
                                           ('/feedback.*', FeedbackHandler),
                                           ('/contact.*', ContactHandler),
+                                          ('/notify.*', NotifyHandler),
                                           ('/join.*', JoinHandler),
                                           ('/main', MainPageRedirecter),
                                           ('/.*', MainPageHandler2)

@@ -154,7 +154,7 @@ class PendingHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
-            values["javascript"] = ["/static/js/jquery.js","/static/js/admin/module.js"]
+            values["javascript"] = ["/static/js/jquery.js","/static/js/admin/pending.js"]
             doRender(self, 'ManagePendings.html', values)
         else:
             self.redirect('/')      

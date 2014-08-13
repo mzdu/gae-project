@@ -199,14 +199,14 @@ function submitForm(publishBool,action){
 	$("#submitBtn").remove();
 //	$("#sendBtn").remove();
 	$("#sendBtn").removeAttr("disabled");
-	$("#btnInfo").html("Module Saved. If you wish to edit this module again, please <a href='/users/contribution/1'>click here</a>.");
+	$("#btnInfo").html("Module Saved. Wish to edit again, please <a href='/users/contribution/1'>check here</a>.");
 	if(action == "new")
 	{
 		$.post("/module/new",json,function(){});
 	}
 	else
 	{
-		$.post("/module/edit",json,function(){window.location = "/modules"});
+		$.post("/module/edit",json,function(){});
 	}
 	
 }
