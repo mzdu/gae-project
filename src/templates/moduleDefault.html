@@ -41,7 +41,7 @@
 			</tr>
 			{% for module in modules_general %}
 			     <tr>
-					<td><a href="/modules/{{module.uid}}/{{module.slug}}">{{module.title}}</a></td>
+					<td><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
 					<td>{{module.version}}</td>
 					<td><a href="/users/{{module.contributor.uid}}" target="_self">{{module.contributor.alias}}</a></td>
 					<td style="text-align:right; padding-right:25px">{{module.date_submitted.month}}/{{module.date_submitted.day}}/{{module.date_submitted.year}}</td>
@@ -69,7 +69,7 @@
 				</div>
 			     <ol>
 			     {% for module in unpublished_modules %}
-			     	<li><a href="/module/edit/{{module.uid}}">{{module.title}}</a></li>
+			     	<li><a href="/module/edit/{{module.uid}}/{{module.version}}">{{module.title}}</a></li>
 			     {% endfor %}
 			 	</ol>
 			</div>

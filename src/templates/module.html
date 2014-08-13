@@ -14,7 +14,13 @@
 			<div class="header">
 				<span class="title"><a href="{{module_url}}" target="_self">{{module_title_general}}</a></span>
 				{% if contributing_user %}
-				 [<a href="{{module_edit_url}}" target="_self">edit</a>]
+				
+					{% if module_version >= module_newest_version or module_version == 0 %}
+				 		[<a href="{{module_edit_url}}" target="_self">edit</a>]
+				 	{% else %}
+				 	
+				 	{% endif %}
+				 
 				{% else %}
 				{% endif %}
 				<br />Version: {{module_version}}
@@ -67,7 +73,7 @@
 <div class="module_sideBar">
 	<div class="header">
 		  Title: <a href="{{module_url}}" target="_self">{{module_title_general}}</a><br />
-		  Version: {{module_version}}<br />
+		  Version: {{module_version}} / {{module_newest_version}}<br />
 		   <form method="post" action="">
 				  History: <select name="version">
 				  {% for version in versions %}
@@ -83,7 +89,12 @@
 		<div class="metaData">
 			<span class="descriptor">Contributor:</span> <a href="/users/{{module_contrubutor_general.uid}}/" target="_self">{{module_contrubutor_general.alias}}</a> <br />
 			<span class="descriptor">Updated:</span> {{module_last_update_general}}
-		
+			
+			{% if module_newest_version == 0 or module_version > module_newest_version %}
+			<span class="descriptor">Status: Pending</span> 
+			{% else %}
+			{% endif %}
+			
 		</div><br class="clear" />
 	</div>
 </div>	

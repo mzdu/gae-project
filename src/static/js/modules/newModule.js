@@ -170,6 +170,9 @@ function submitForm(publishBool,action){
 	
 	var moduleId = $("#uid").val();
 	
+	var nVer = $("#nVersion").val();
+	var mVer = $("#mVersion").val();
+	
 	if(title == ''){
 		alert('Please include a title');
 		return;
@@ -193,6 +196,9 @@ function submitForm(publishBool,action){
 			"evidence" : evidence,
 			
 			"published" : publishBool,
+			
+			"nVersion" : nVer,
+			"mVersion" : mVer,
 			
 			"uid" : moduleId
 	}

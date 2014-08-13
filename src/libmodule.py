@@ -57,7 +57,7 @@ def newModule(title, keywords, markdown, tscope, propositions, derivations, tevi
 
 # update a module
 #def updateModule(uid, title, meta_theory, markdown, scope, propositions, discipline, publish):
-def updateModule(uid, title, keywords, markdown, tscope, propositions, derivations, tevidence, publish, nVersion, mVersion):
+def updateModule(uid, title, keywords, markdown, tscope, propositions, derivations, tevidence, publish, nVersion=0, mVersion=0):
     ''' @summary: Updates a module entity 
         @param uid, title, meta_theory, scope, propositions, discipline
         @type String
@@ -67,20 +67,46 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
     from libmain import parseMarkdown
     user = getCurrentUserEntity()
     
-    # published
-    if publish == "true":
-        # current is true; get a new copy
+    nVersion = int(nVersion)
+    mVersion = int(mVersion)
+    
+    logging.info('nVer is' + str(nVersion) + ' mVer is' + str(mVersion))
+    
+    if nVersion == mVersion and nVersion == 0:
+        logging.info('version 0, unpublished')
+        
         oldModule = getModuleEntity(uid)
-        
-        
+        module = oldModule
+        module.title = title
+        module.keywords = keywords
+        module.theoryMarkdown = markdown
+        module.theoryHtml = parseMarkdown(markdown)
+        module.scope = tscope
+        module.propositions = propositions
+        module.derivations = derivations
+        module.evidence = tevidence
+ 
+        # keep the version0 unpublished module have only one copy
+        module.published = False
+        module.current = True
+        module.version = 0
+        key = db.put(module)
+        return key 
+
+
+    elif nVersion == mVersion and nVersion > 0:
+        logging.info('editing a published current module')
+        oldModule = getModuleEntity(uid)
+         
+         
         if oldModule.version > 0:
             tempVersion = oldModule.version + 1
-            
+             
             try:
                 uid = int(uid)
             except:
                 return -1 
-                
+                 
             if tempVersion == -1:
                 return -1
             else:
@@ -102,9 +128,74 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
                 except:
                     logging.error('Failed to create module. Module number uid:' + str(uid))
                     return -1            
-
+ 
         else:
-            pass
+            pass        
+        
+
+
+    elif mVersion - nVersion == 1:
+        logging.info('editing proposed module')
+        
+        oldModule = getUnpublishedModuleEntity(uid)
+        
+        module = oldModule
+        module.title = title
+        module.keywords = keywords
+        module.theoryHtml = parseMarkdown(markdown)
+        module.theoryMarkdown = markdown
+        module.scope = tscope
+        module.propositions = propositions
+        module.derivations = derivations
+        module.evidence = tevidence
+         
+        module.published = False
+        module.current = False
+         
+        key = db.put(module)
+        return key        
+    else:
+        logging.info('editing a module')
+#
+#     
+#     # published
+#     if publish == "true":
+#         # current is true; get a new copy
+#         oldModule = getModuleEntity(uid)
+#         
+#         
+#         if oldModule.version > 0:
+#             tempVersion = oldModule.version + 1
+#             
+#             try:
+#                 uid = int(uid)
+#             except:
+#                 return -1 
+#                 
+#             if tempVersion == -1:
+#                 return -1
+#             else:
+#                 try:
+#                     moduleRevision = datamodel.Module(version = tempVersion,
+#                                                       title = title, 
+#                                                       keywords = keywords, 
+#                                                       theoryMarkdown = markdown,
+#                                                       theoryHtml = parseMarkdown(markdown),
+#                                                       uid = uid,  
+#                                                       scope = tscope, 
+#                                                       propositions = propositions,
+#                                                       derivations = derivations,
+#                                                       evidence = tevidence,
+#                                                       contributor = user,
+#                                                       current = False, published = False)
+#                     moduleRevision.put()
+#                     return moduleRevision
+#                 except:
+#                     logging.error('Failed to create module. Module number uid:' + str(uid))
+#                     return -1            
+# 
+#         else:
+#             pass
 
 #     # not published; save the data under current user    
 #     elif publish == "false":
@@ -150,8 +241,8 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
 #         else:
 #             pass
   
-    else:
-        pass    
+#     else:
+#         pass    
 
 
 # get a module
@@ -296,7 +387,7 @@ def getModuleVersion(uid, version=0):
         values['module_evidence_general'] = moduleObject.evidence
         
         values['module_uid'] = moduleObject.uid
-        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + str(nVersion)
+        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + str(version)
         values['module_version'] = moduleObject.version
         values['markdown'] = moduleObject.theoryMarkdown
         values['html'] = moduleObject.theoryHtml

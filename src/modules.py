@@ -162,9 +162,9 @@ class EditModuleHandler(webapp2.RequestHandler):
         publishBool = self.request.get("published")
         uid = int(self.request.get("uid"))
         
-        # nVersion is the newest currently publish module version
+        # nVersion is the currently published newest module version
         nVer = self.request.get("nVersion")
-        # mVersion states the current editing module version
+        # mVersion states the version of current editing module 
         mVer = self.request.get("mVersion")
 
         scopeList = [str(scope) for scope in scopes]
@@ -213,26 +213,26 @@ class EditModuleHandler(webapp2.RequestHandler):
 
 ##################################################################
         
-        #create a search document
-        termStr = ';'.join(termDef)
-        propStr = ';'.join(propositionList)
-        
-        my_doc = search.Document(
-            doc_id = str(uid),
-            fields = [
-                      search.TextField(name="title", value=title),  #title
-                      search.TextField(name="keywords", value=keywords),  #keywords
-                      search.TextField(name="metatheory", value=markdown),  #metatheory
-                      search.TextField(name="terms", value = termStr),  #terms and definitions
-                      search.TextField(name="propositions", value=propStr),  #propositions
-                      ])
-        
-        try:
-            index = search.Index(name="modIdx")
-            index.put(my_doc)
-        
-        except search.Error:
-            logging.exception('Document Put Failed')
+#         #create a search document
+#         termStr = ';'.join(termDef)
+#         propStr = ';'.join(propositionList)
+#         
+#         my_doc = search.Document(
+#             doc_id = str(uid),
+#             fields = [
+#                       search.TextField(name="title", value=title),  #title
+#                       search.TextField(name="keywords", value=keywords),  #keywords
+#                       search.TextField(name="metatheory", value=markdown),  #metatheory
+#                       search.TextField(name="terms", value = termStr),  #terms and definitions
+#                       search.TextField(name="propositions", value=propStr),  #propositions
+#                       ])
+#         
+#         try:
+#             index = search.Index(name="modIdx")
+#             index.put(my_doc)
+#         
+#         except search.Error:
+#             logging.exception('Document Put Failed')
         
 ######### end of building search index ###########################   
 

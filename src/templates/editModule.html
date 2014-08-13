@@ -30,7 +30,7 @@
 	<br />
 		<form name="myform">
 		<strong>Background / Metatheory:</strong>
-		<font size="1">&nbsp;&nbsp;&nbsp;&nbsp;You have <input readonly type="text" name="countdown" size="3" value="500"> characters left.(Maximum characters: 2000)</font>
+		<font size="1">&nbsp;&nbsp;&nbsp;&nbsp;You have <input readonly type="text" name="countdown" size="3" value="2000"> characters left.(Maximum characters: 2000)</font>
 			  <div id="wmd-button-bar" class="wmd-panel"></div>
 		      <br/>
 		      <textarea id="wmd-input" class="wmd-panel" name="limitedtextarea" onKeyDown="limitText(this.form.limitedtextarea,this.form.countdown,2000);" 
@@ -112,22 +112,21 @@
 	
 	<br />
 	<input name="uid" id="uid" type="hidden" value="{{module_uid}}"/>
+	<input name="nVersion" id="nVersion" type="hidden" value="{{module_newest_version}}" />
+	<input name="mVersion" id="mVersion" type="hidden" value="{{module_version}}" />
 
 {% if module_published %}
 <div id="buttons">
-	<button name="btnSubmitModule" onclick="submitForm('true','edit')" value="Submit" id="submitBtn" disabled>Submit</button>
-	<button onclick="enableSubmit()">Ready?</button>
+<button onclick="enableSubmit()">Ready?</button>
+<button name="btnSubmitModule" onclick="submitForm('true','edit')" value="Save" id="submitBtn" disabled>Save</button>
+<button name="btnSend" onclick="sendForm()" value="Send" id="sendBtn" disabled>Send for Approval</button>
 </div>
 {% else %}
 <div id="buttons">
-	<button name="btnSubmitModule" onclick="submitForm('false','new')" value="Save" id="submitBtn" disabled>Save and Send for Approval</button>
-	<!-- Adds the control of approval -->
-	{% if is_administrator %}
-	<button name="btnPublish" onclick="submitForm('true','new')" value="Publish" id="publishBtn" disabled>Publish</button>
-	{% else %}
-	
-	{% endif %}
-	<button onclick="enableSubmit()" id="readyBtn">Ready?</button>
+<button onclick="enableSubmit()" id="readyBtn">Ready?</button>
+<button name="btnSubmitModule" onclick="submitForm('false','edit')" value="Save" id="submitBtn" disabled>Save</button>
+<button name="btnSend" onclick="sendForm()" value="Send" id="sendBtn" disabled>Send for Approval</button>
 </div>
 {% endif %}
+
 {% endblock %}
