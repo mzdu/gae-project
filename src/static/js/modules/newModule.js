@@ -228,7 +228,7 @@ function submitForm(publishBool,action){
 	{
 		if(mVer == nVer)
 		{
-			$.post("/module/edit",json,function(){window.location = "/modules/" + moduleId + "/" + mVer});
+			$.post("/module/edit",json,function(){window.location = "/modules});
 		}
 		else if(mVer > nVer)
 		{

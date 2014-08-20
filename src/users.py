@@ -104,6 +104,8 @@ class UserContributionsHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         path = getUrlResourceList(self)
+
+        
         try:
             uid = int(path[2])
         except:
