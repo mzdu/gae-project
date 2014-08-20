@@ -34,7 +34,12 @@ $(document).ready(function(){
 		$(".removeDerivation").bind("click", function(e){
 			$(this).parent().remove();
 		});
+		
 });
+
+
+
+
 
 
 function addScope(){
@@ -169,9 +174,11 @@ function submitForm(publishBool,action){
 	var keywords = $("#keywords").val();
 	
 	var moduleId = $("#uid").val();
+	var moduleKey = $("#ukey").val();
 	
 	var nVer = $("#nVersion").val();
 	var mVer = $("#mVersion").val();
+	
 	
 	if(title == ''){
 		alert('Please include a title');
@@ -204,15 +211,33 @@ function submitForm(publishBool,action){
 	}
 	$("#submitBtn").remove();
 //	$("#sendBtn").remove();
+	
+
+	
+	
+	
+	
 	$("#sendBtn").removeAttr("disabled");
 	$("#btnInfo").html("Module Saved. Wish to edit again, please <a href='/users/contribution/1'>check here</a>.");
 	if(action == "new")
-	{
-		$.post("/module/new",json,function(){});
+	{	
+		
+		$.post("/module/new",json,function(){window.location = "/modules"});
 	}
 	else
 	{
-		$.post("/module/edit",json,function(){});
+		if(mVer == nVer)
+		{
+			$.post("/module/edit",json,function(){window.location = "/modules/" + moduleId + "/" + mVer});
+		}
+		else if(mVer > nVer)
+		{
+			$.post("/module/edit",json,function(){window.location = "/preview/" + moduleKey});
+		}
+		else
+		{
+			$.post("/module/edit",json,function(){window.location = "/modules"});
+		}
 	}
 	
 }

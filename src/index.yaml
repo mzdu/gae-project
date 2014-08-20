@@ -27,6 +27,13 @@ indexes:
 
 - kind: Module
   properties:
+  - name: contributor
+  - name: published
+  - name: last_update
+    direction: desc
+
+- kind: Module
+  properties:
   - name: current
   - name: date_submitted
     direction: desc

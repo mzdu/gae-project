@@ -3,6 +3,7 @@ from libuser import getCurrentUserEntity
 import datamodel
 import logging
 from google.appengine.ext import db
+from google.appengine.ext.db import Key
 
 ############################ add, update & get a module ########################################
 
@@ -135,7 +136,7 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
 
 
     elif mVersion - nVersion == 1:
-        logging.info('editing proposed module')
+        logging.info('keep on editing an unpublished module')
         
         oldModule = getUnpublishedModuleEntity(uid)
         
@@ -292,7 +293,7 @@ def getModule(uid):
 
 def getUnpublishedModules():
     user = getCurrentUserEntity()
-    modules = db.Query(datamodel.Module).filter('contributor  =', user).filter('published =', False).fetch(20)
+    modules = db.Query(datamodel.Module).filter('contributor  =', user).filter('published =', False).order('-last_update').fetch(200)
     return modules
 
 def publishModule(uid):
@@ -317,13 +318,8 @@ def getModuleEntity(uid):
         return moduleObject
     return None
 
-def currentStatus(uid):
-    pass
-
-
-
 def getUnpublishedModuleEntity(uid):
-    ''' @summary: Returns a Unpublished Module object from the datastore
+    ''' @summary: Returns an unpublished Module object from the datastore
         @param uid: The uid that describes the module to get from the datastore
         @type uid: String (later typecasted to an int)
         @return: Returns a Module object
@@ -335,16 +331,12 @@ def getUnpublishedModuleEntity(uid):
     except:
         return None
     # One contributor could only have one version of particularly proposed unpublished module
-    que = db.Query(datamodel.Module).filter('uid =', uid).filter('contributor =', user).filter('publish =', False)
+    que = db.Query(datamodel.Module).filter('uid =', uid).filter('contributor =', user).filter('published =', False).filter('current =', False)
     moduleObject = que.get()
     if moduleObject:
         return moduleObject
     return None
 
-
-
-    
-    
 def getModuleVersion(uid, version=0):
     ''' @summary: Populates a dictionary with a particular module's values from the datastore for use in a Django template
         @param uid: The uid that describes the module to get from the datastore and the version
@@ -400,6 +392,63 @@ def getModuleVersion(uid, version=0):
     else:
         values['error'] = 'Module does not exist'
     return values
+
+
+def getModuleByKey(key):
+    ''' @summary: Populates a dictionary with a particular module's values from the datastore for use in a Django template
+        @param key: The key that describes the module to get from the datastore and the version
+        @type key: Key('keyString')
+        @return: Returns a dictionary containing module entity data
+        @rtype: dictionary
+    '''    
+
+    values = dict()
+    
+    try:
+        key = Key(str(key))
+    except:
+        values['error'] = 'Module \'s keys are not Key type. Please check the URL. '
+        return values
+    
+    try:
+        moduleObject = db.Query(datamodel.Module).filter('__key__ =', key).get()
+    except:
+        values['error'] = 'Cannot get module by key. '
+    
+    
+    values['module_newest_version'] = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('current =', True).get().version
+    
+    
+    if moduleObject:
+        values['module_title_general'] = moduleObject.title
+        values['module_keywords_general'] = moduleObject.keywords
+        values['module_contrubutor_general'] = moduleObject.contributor
+        values['module_last_update_general'] = '%02d/%02d/%04d' % (moduleObject.date_submitted.month, moduleObject.date_submitted.day, moduleObject.date_submitted.year)
+        values['module_scope_general'] = moduleObject.scope
+        values['module_propositions_general'] = moduleObject.propositions
+        
+        values['module_derivations_general'] = moduleObject.derivations
+        values['module_evidence_general'] = moduleObject.evidence
+        
+        values['module_uid'] = moduleObject.uid
+        values['module_key'] = str(key)
+        values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + str(moduleObject.version) + '/' + str(key)
+        values['module_version'] = moduleObject.version
+        values['markdown'] = moduleObject.theoryMarkdown
+        values['html'] = moduleObject.theoryHtml
+        values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)
+        
+        if moduleObject.current is True:
+            values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + moduleObject.title
+        else:
+            values['module_url'] = '/modules/' + str(moduleObject.uid) + '/' + str(moduleObject.version) + '/' + moduleObject.title
+    else:
+        values['error'] = 'Module does not exist'
+    return values
+
+
+
+
 
 def getModuleVersionCount(uid):
     countObject = db.Query(datamodel.VersionCounter).filter("module = ", uid).get()

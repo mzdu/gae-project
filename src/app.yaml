@@ -38,6 +38,9 @@ handlers:
 
 - url: /modules/page.*
   script: modules.app
+  
+- url: /preview/.*
+  script: modules.app
 
 - url: /modules.*
   script: modules.app

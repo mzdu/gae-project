@@ -18,7 +18,8 @@ function getPendingModules(id) {
 				var tableRows = "<thead><tr><th>Title</th><th>Date Submitted</th><th>Date Updated</th><th>Version</th><th></th><th></th></tr></thead><tbody>";
 				for(var i = 0; i < json.title.length; i++){
 //	  				tableRows += "<tr><td><span style='cursor:pointer;' onclick=featureModule(" + json.uid[i] + ")>Feature</span></td>";
-					tableRows += "<td><a href='/modules/" + json.uid[i] + "/" + json.current_version[i] + "' target='_blank'>" + json.title[i] + "</a></td>";
+//					tableRows += "<td><a href='/modules/" + json.uid[i] + "/" + json.current_version[i] + "' target='_blank'>" + json.title[i] + "</a></td>";
+					tableRows += "<td><a href='/preview/" + json.key[i] + "' target='_blank'>" + json.title[i] + "</a></td>";
 					tableRows += "<td>" + json.date_submitted[i] + "</td>";
 					tableRows += "<td>" + json.last_update[i] + "</td>";
 					tableRows += "<td><center>" + json.current_version[i] + "</center></td>";

@@ -208,13 +208,15 @@ def getPendingModules(self):
         jsonData = {'stat':'failed','message':'failed to find pending module'}
         
     try:
-        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[],'published':[]}
+        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[],'published':[],'key':[]}
         for module in pending_modules:
             jsonData['uid'].append(module.uid)
             jsonData['title'].append(module.title)
             jsonData['date_submitted'].append('%02d/%02d/%04d' % (module.date_submitted.month, module.date_submitted.day, module.date_submitted.year))
             jsonData['last_update'].append('%02d/%02d/%04d' % (module.last_update.month, module.last_update.day, module.last_update.year))
             jsonData['current_version'].append(module.version)
+            jsonData['key'].append(str(module.key()))
+
     except:
         jsonData = {'stat':'fail','message':'failed to find all data'}
     return json.dumps(jsonData)

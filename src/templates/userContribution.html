@@ -12,14 +12,33 @@
 		<table id="contribox">
 			<tr>
 				<th class="boxtitle">Title</th>
-				<th></th>
 				<th>Version</th>
 				<th>Update</th>
 			</tr>
+			<tr><td colspan="3"><hr></td></tr>
+			<tr><td colspan="3">Pending Contributions</td></tr>
+			<tr><td colspan="3"><hr></td></tr>
+			{% for module in unpublished_modules %}
+			<tr>
+				{% if module.version == 0 %}
+				<td class="boxtitle"><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
+				<td>{{module.version}}</td>
+				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
+				{% else %}
+				<td class="boxtitle"><a href="/preview/{{module.key()}}">{{module.title}}</a></td>
+				<td>{{module.version}}</td>
+				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
+				{% endif %}				
+			</tr>
+
+			{% endfor %}
+			<tr><td colspan="3"><hr></td></tr>
+			<tr><td colspan="3">Published Contributions</td></tr>
+			<tr><td colspan="3"><hr></td></tr>
+						
 			{% for module in contributed_modules %}
 			<tr>
 				<td class="boxtitle"><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
-				<td></td>
 				<td>{{module.version}}</td>
 				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
 			</tr>
@@ -27,6 +46,7 @@
 			{% endfor %}
 		</table>
 		</div>
+	  
 	  
 	{% endif %}
 		

@@ -69,7 +69,11 @@
 				</div>
 			     <ol>
 			     {% for module in unpublished_modules %}
+			     	{% if module.version == 0 %}
 			     	<li><a href="/module/edit/{{module.uid}}/{{module.version}}">{{module.title}}</a></li>
+			     	{% else %}
+			     	<li><a href="/module/edit/{{module.uid}}/{{module.version}}/{{module.key()}}">{{module.title}}</a></li>
+			     	{% endif %}
 			     {% endfor %}
 			 	</ol>
 			</div>

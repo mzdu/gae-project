@@ -112,6 +112,7 @@
 	
 	<br />
 	<input name="uid" id="uid" type="hidden" value="{{module_uid}}"/>
+	<input name="ukey" id="ukey" type="hidden" value="{{module_key}}"/>
 	<input name="nVersion" id="nVersion" type="hidden" value="{{module_newest_version}}" />
 	<input name="mVersion" id="mVersion" type="hidden" value="{{module_version}}" />
 
@@ -119,13 +120,11 @@
 <div id="buttons">
 <button onclick="enableSubmit()">Ready?</button>
 <button name="btnSubmitModule" onclick="submitForm('true','edit')" value="Save" id="submitBtn" disabled>Save</button>
-<button name="btnSend" onclick="sendForm()" value="Send" id="sendBtn" disabled>Send for Approval</button>
 </div>
 {% else %}
 <div id="buttons">
 <button onclick="enableSubmit()" id="readyBtn">Ready?</button>
 <button name="btnSubmitModule" onclick="submitForm('false','edit')" value="Save" id="submitBtn" disabled>Save</button>
-<button name="btnSend" onclick="sendForm()" value="Send" id="sendBtn" disabled>Send for Approval</button>
 </div>
 {% endif %}
 

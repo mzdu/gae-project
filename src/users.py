@@ -114,9 +114,13 @@ class UserContributionsHandler(webapp2.RequestHandler):
         if isCurrentUser(uid):
             values['is_current_user'] = 'True'
             userObject = getUserEntity(uid)
-            contributedModule = db.Query(datamodel.Module).filter('contributor =', userObject).order('-last_update')
+            contributedModule = db.Query(datamodel.Module).filter("published =", True).filter('contributor =', userObject).order('-last_update')
             values['contributed_modules'] = contributedModule
         
+            from libmodule import getUnpublishedModules
+            unpublishedModules = getUnpublishedModules()
+            values['unpublished_modules'] = unpublishedModules
+                        
         userInfo = getUserInfo(uid)
         for key in userInfo:
             values[key] = userInfo[key]

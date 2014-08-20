@@ -13,17 +13,8 @@
 	<div class="module">
 			<div class="header">
 				<span class="title"><a href="{{module_url}}" target="_self">{{module_title_general}}</a></span>
-				{% if contributing_user %}
-				
-					{% if module_version >= module_newest_version or module_version == 0 %}
-				 		[<a href="{{module_edit_url}}" target="_self">edit</a>]
-				 	{% else %}
-				 	
-				 	{% endif %}
-				 
-				{% else %}
-				{% endif %}
 				<br />Version: {{module_version}}
+
 			</div>
 			<h3 class="sectionHeader">Key Words:</h3>
 			<div class="generalContent">{{module_keywords_general}}</div>
@@ -91,12 +82,33 @@
 			<span class="descriptor">Updated:</span> {{module_last_update_general}}
 			
 			{% if module_newest_version == 0 or module_version > module_newest_version %}
-			<span class="descriptor">Status: Pending</span> 
+			<span class="descriptor">Status: Unpublished</span> 
 			{% else %}
 			{% endif %}
 			
 		</div><br class="clear" />
 	</div>
+	
+	<div class="toolkit">
+		<div>
+		
+			{% if contributing_user %}
+				{% if module_version > module_newest_version or module_version == 0 %}
+				<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
+			 		[<a href="{{module_edit_url}}" target="_self">Edit</a>]
+			 		[<a href="#" target="_self">Send for Approval</a>]<br />
+			 	{% elif module_version == module_newest_version %}
+			 	<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
+			 		[<a href="{{module_edit_url}}" target="_self">Suggest Modifications</a>]<br />
+			 	{% else %}
+			 		
+			 	{% endif %}
+			 
+			{% else %}
+			</ul>
+			{% endif %}
+		</div>
+	</div>	
 </div>	
 {% endif %}	
 {% endif %}

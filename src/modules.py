@@ -10,6 +10,7 @@ import logging
 
 from google.appengine.ext import db
 from google.appengine.api import search
+from google.appengine.ext.db import Key
 
 
 # create a new module
@@ -131,8 +132,16 @@ class EditModuleHandler(webapp2.RequestHandler):
         if isContributingUser() is True:
             values = dict()
             url = getUrlResourceList(self)
-            # get all values of a module
-            values = getModuleVersion(url[2],url[3])
+            
+            if len(url) == 5:
+                from libmodule import getModuleByKey
+                keyStr = url[4]
+                values = getModuleByKey(keyStr)
+            else:    
+                # get all values of a module
+                values = getModuleVersion(url[2],url[3])
+                
+                
             values['javascript'] = ['/static/js/jquery-1.9.1.js', 
                                     '/static/js/jquery-ui.js',
                                     '/static/js/modules/newModule.js',
@@ -306,6 +315,41 @@ class ModuleHandler(webapp2.RequestHandler):
         uid = self.request.get("module_version_uid")
         self.redirect('/modules/' + uid + '/' + version)
 
+        
+class PreviewModuleHandler(webapp2.RequestHandler):
+    """ Preview a editing module by its entity key"""
+    def get(self):
+        
+        #convert a url to a list of segmented elements like ['preview','']
+        pathList = getUrlResourceList(self)
+         
+        values = dict()
+        from libmodule import getModuleByKey
+         
+        
+        logging.error(pathList)
+        
+        
+        if len(pathList) < 2:
+            logging.info('jump to the 1 branch')
+         
+        # case ['preview','keyxxxx'], which indicates the newest version   
+        elif len(pathList) == 2 and pathList[0] == 'preview':
+            key = pathList[1]
+            values = getModuleByKey(key)
+            
+            if isContributingUser() is True:
+                values["contributing_user"] = "True"
+            doRender(self, 'module.html', values)
+             
+        else:
+            logging.info('jump to the 3 branch')
+    
+    
+    def post(self):
+        pass        
+        
+
 
 #display the list of modules         
 class MainPageHandler(webapp2.RequestHandler):
@@ -362,6 +406,7 @@ class MainPageHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
                                ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
+                               ('/preview/.*', PreviewModuleHandler),
                                ('/modules/page.*', MainPageHandler),
                                ('/modules', MainPageHandler),
                                ('/modules/.*', ModuleHandler)
