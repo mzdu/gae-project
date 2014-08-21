@@ -250,7 +250,7 @@ class EditModuleHandler(webapp2.RequestHandler):
         else:
             values = {'error' : 'Failed to update module. Please try again later.'}
             doRender(self, 'error.html', values)
-
+        
 
 # display a selected module 
 class ModuleHandler(webapp2.RequestHandler):

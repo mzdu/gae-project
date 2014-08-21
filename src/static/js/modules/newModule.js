@@ -212,11 +212,6 @@ function submitForm(publishBool,action){
 	$("#submitBtn").remove();
 //	$("#sendBtn").remove();
 	
-
-	
-	
-	
-	
 	$("#sendBtn").removeAttr("disabled");
 	$("#btnInfo").html("Module Saved. Wish to edit again, please <a href='/users/contribution/1'>check here</a>.");
 	if(action == "new")
@@ -228,7 +223,7 @@ function submitForm(publishBool,action){
 	{
 		if(mVer == nVer)
 		{
-			$.post("/module/edit",json,function(){window.location = "/modules});
+			$.post("/module/edit",json,function(){window.location = "/modules"});
 		}
 		else if(mVer > nVer)
 		{
@@ -239,7 +234,6 @@ function submitForm(publishBool,action){
 			$.post("/module/edit",json,function(){window.location = "/modules"});
 		}
 	}
-	
 }
 
 
