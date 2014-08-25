@@ -37,11 +37,6 @@ $(document).ready(function(){
 		
 });
 
-
-
-
-
-
 function addScope(){
 	$("#scope").append("<li><input class='scopeItem' size='80px'/> <button class='removeScope'>X</button></li>");
 	$(".removeScope").bind("click", function(e){
@@ -75,7 +70,6 @@ function addEvidence(){
 	
 	$("#evidBtn").remove();
 	
-		
 }
 
 
@@ -213,25 +207,33 @@ function submitForm(publishBool,action){
 //	$("#sendBtn").remove();
 	
 	$("#sendBtn").removeAttr("disabled");
-	$("#btnInfo").html("Module Saved. Wish to edit again, please <a href='/users/contribution/1'>check here</a>.");
+	$("#btnInfo").html("Module Saved. Forwarding to the preview page, please <a href='/users/contribution/1'>check here</a>.");
 	if(action == "new")
 	{	
 		
-		$.post("/module/new",json,function(){window.location = "/modules"});
+		$.post("/module/new",json,function(result){window.location = "/modules/" + result + "/0"});
 	}
 	else
 	{
 		if(mVer == nVer)
-		{
-			$.post("/module/edit",json,function(){window.location = "/modules"});
+		{	
+			if(mVer == 0)
+			{
+				$.post("/module/edit",json,function(result){window.location = "/modules/" + moduleId + "/0"});
+			}
+			else
+			{
+			$.post("/module/edit",json,function(result){window.location = "/preview/" + result});
+			}
 		}
 		else if(mVer > nVer)
 		{
-			$.post("/module/edit",json,function(){window.location = "/preview/" + moduleKey});
+			$.post("/module/edit",json,function(result){window.location = "/preview/" + result});
+			
 		}
 		else
 		{
-			$.post("/module/edit",json,function(){window.location = "/modules"});
+			$.post("/module/edit",json,function(result){window.location = "/preview/" + result});
 		}
 	}
 }

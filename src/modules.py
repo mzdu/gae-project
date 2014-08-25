@@ -120,7 +120,8 @@ class NewModuleHandler(webapp2.RequestHandler):
         
 ######### end of building search index ###########################        
         if key_uid[0] != -1:
-            self.redirect("/modules", True)
+            uid = str(key_uid[1])
+            self.response.out.write(uid)
         else:
             values = {'error' : 'Failed to update module. Please try again later.'}
             doRender(self, 'error.html', values)        
@@ -245,11 +246,17 @@ class EditModuleHandler(webapp2.RequestHandler):
         
 ######### end of building search index ###########################   
 
-        if modKey != -1:
-            self.redirect("/modules", True)
-        else:
-            values = {'error' : 'Failed to update module. Please try again later.'}
-            doRender(self, 'error.html', values)
+        modKey = str(modKey)
+        self.response.out.write(modKey)
+        
+        logging.error('modKey is ' + modKey)
+
+#         if modKey != -1:
+#             values = {'error' : 'Edit Module, all passed.'}
+#             doRender(self, 'error.html', values)
+#         else:
+#             values = {'error' : 'Failed to update module. Please try again later.'}
+#             doRender(self, 'error.html', values)
         
 
 # display a selected module 
