@@ -50,6 +50,18 @@ class NotifyHandler(webapp2.RequestHandler):
         
         sendFeedbackEmail("wikitheoria.public@gmail.com", aSubject, aBody)
 
+class NotifyHandler2(webapp2.RequestHandler):
+    def post(self):
+        title = self.request.get("title")
+        message = self.request.get("message")
+        email = self.request.get("email")
+        aSubject = "Feedback: Module " + title 
+        aBody = "Module:" + title + "\nFeedback Suggestion:" + message
+        
+        from google.appengine.api import mail
+        
+        mail.send_mail("wikitheoria.public@gmail.com", email, aSubject, aBody)
+        
 
 class JoinHandler(webapp2.RequestHandler):
     def get(self):
@@ -165,6 +177,7 @@ app = webapp2.WSGIApplication([
                                           ('/contribute.*', ContributeHandler),
                                           ('/feedback.*', FeedbackHandler),
                                           ('/contact.*', ContactHandler),
+                                          ('/notify2.*', NotifyHandler2),
                                           ('/notify.*', NotifyHandler),
                                           ('/join.*', JoinHandler),
                                           ('/main', MainPageRedirecter),

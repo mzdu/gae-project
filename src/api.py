@@ -6,6 +6,7 @@ from libuser import isContributingUser, isAdministratorUser
 import webapp2
 from google.appengine.ext import db
 from google.appengine.api import search
+from google.appengine.ext.db import Key
 
 
 def getTermDefinitions(self):
@@ -263,6 +264,56 @@ def setCurrentVersion(self, uid, version):
         jsonData = {'stat':'failed','message':'could not update current version'}
     return json.dumps(jsonData)
 
+
+def publishCurrentVersion(self, uKey):
+    # self, uKey
+    try:
+        current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
+    except:
+        jsonData = {'stat':'failed','message':'could not load module'}
+    
+    try:
+        # if its version == 0, then it is a newly created and never published module    
+        if current_module.version == 0:
+            current_module.current = True
+            current_module.published = True    
+            current_module.version = 1
+            current_module.put()
+            jsonData = {'stat':'ok'}
+        
+        # we need to pull out the uid of old_module, find the current version, set the old version current to False
+        # set the new_module    
+        else:
+            module_id = current_module.uid
+            old_module = db.Query(datamodel.Module).filter("uid =", module_id).filter("current =",True).get()
+            old_module.current = False
+            old_module.put()
+            
+            current_module.current = True
+            current_module.published = True
+            current_module.put()
+    
+            jsonData = {'stat':'ok'}
+    except:
+        jsonData = {'stat':'failed','message':'could not update current version'}
+        
+    return json.dumps(jsonData)    
+
+def getModule(self, uKey):
+#     try:
+    current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
+    
+    jsonData ={'email': current_module.contributor.email}
+    jsonData['title1'] = current_module.title    
+        
+#     except:
+#         jsonData = {'stat':'failed','message':'could not load module'} 
+        
+    return json.dumps(jsonData)
+        
+            
+
+
 def browseModules(self):
     discipline = self.request.get('discipline')
     sort = self.request.get('sort')
@@ -382,6 +433,16 @@ class ApiHandler(webapp2.RequestHandler):
             json = setCurrentVersion(self, module, version)
             self.response.out.write(json)
             return
+        elif self.request.get('method') == 'publishCurrentVersion':
+            moduleKey = self.request.get('module')
+            json = publishCurrentVersion(self, moduleKey)
+            self.response.out.write(json)
+            return        
+        elif self.request.get('method') == 'getModule':
+            moduleKey = self.request.get('moduleKey')
+            json = getModule(self, moduleKey)
+            self.response.out.write(json)
+            return        
         elif self.request.get('method') == 'removeModule':
             module = self.request.get('module')
             json = removeModule(self, module)

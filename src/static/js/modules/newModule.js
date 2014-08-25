@@ -249,7 +249,9 @@ function sendForm(){
 			"message" : message	
 	}
 	
-	$.post("/notify",json,function(){window.location = "/modules"});
+	$.post("/notify",json,function(){window.location = "/modules"}
+	
+	);
 	
 }
 

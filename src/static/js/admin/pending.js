@@ -24,8 +24,9 @@ function getPendingModules(id) {
 					tableRows += "<td>" + json.last_update[i] + "</td>";
 					tableRows += "<td><center>" + json.current_version[i] + "</center></td>";
 					
-					tableRows += "<td><span style='cursor:pointer;' onclick=acceptModule(" + json.uid[i] + ")><b>✓</b></span></td>";
-					tableRows += "<td><span style='cursor:pointer;' onclick=rejectModule(" + json.uid[i] + ")><b>X</b></span></td> </tr>";	
+					tableRows += "<td><span style='cursor:pointer;' onclick=acceptModule(" + "'" + json.key[i] + "'" + ")><b>✓</b></span></td>";
+					tableRows += "<td><span style='cursor:pointer;' onclick=rejectModule(" + "'" + json.key[i] + "'" + ")><b>X</b></span></td> </tr>";
+//					tableRows += "<td><span style='cursor:pointer;' onclick=obsoleteModule(" + "'" + json.key[i] + "'" + ")><b>Obsolte</b></span></td> </tr>";
 					
 					tableRows += "<tr><td></td><td colspan='6'><div style='display:none;' id='module_" + json.uid[i] + "'></div></td></tr>";
 	  			}
@@ -38,13 +39,48 @@ function getPendingModules(id) {
 }
 
 
-function acceptModule(uid) {
-	alert('accept it');
+function acceptModule(uKey) {
+	$.getJSON("/api?method=publishCurrentVersion&module=" + uKey,
+			function(json) {
+				if(json.stat == 'ok') {
+					alert("Module Published");
+					window.location = "/administration/pending/";
+				}
+				else {
+					alert(json.message);
+				}
+			});
+		init();
 }
 
 
-function rejectModule(uid) {
-	alert('reject it');
+function rejectModule(uKey) {
+	$.getJSON("/api?method=getModule&moduleKey=" + uKey,
+			function(json) {
+				sendFeedback(json.title1, json.email);
+			});
+		init();	
+}
+
+function obsoleteModule(uKey) {
+	alert('Obsolete current module');
+}
+
+function sendFeedback(title, email){
+	var title = title;
+	var email = email;
+	var message = prompt("Improve suggestion?");
+	
+	json = {
+			"title": title,
+			"message" : message,
+			"email" : email
+	}
+	
+	$.post("/notify2",json,function(){window.location = "/administration/pending/"}
+	
+	);
+	
 }
 
 
@@ -58,7 +94,6 @@ function setCurrentVersion(uid, version) {
 				alert(json.message);
 			}
 		});
-	init();
 }
  
 
