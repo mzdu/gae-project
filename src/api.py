@@ -267,6 +267,9 @@ def setCurrentVersion(self, uid, version):
 
 def publishCurrentVersion(self, uKey):
     # self, uKey
+    
+    from libmodule import versionIncrement
+    
     try:
         current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
     except:
@@ -277,8 +280,11 @@ def publishCurrentVersion(self, uKey):
         if current_module.version == 0:
             current_module.current = True
             current_module.published = True    
-            current_module.version = 1
+            current_module.version = 1 
             current_module.put()
+            
+            versionIncrement(current_module.uid)
+            
             jsonData = {'stat':'ok'}
         
         # we need to pull out the uid of old_module, find the current version, set the old version current to False
@@ -292,6 +298,8 @@ def publishCurrentVersion(self, uKey):
             current_module.current = True
             current_module.published = True
             current_module.put()
+            
+            versionIncrement(module_id)
     
             jsonData = {'stat':'ok'}
     except:
@@ -300,14 +308,14 @@ def publishCurrentVersion(self, uKey):
     return json.dumps(jsonData)    
 
 def getModule(self, uKey):
-#     try:
-    current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
+    try:
+        current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
     
-    jsonData ={'email': current_module.contributor.email}
-    jsonData['title1'] = current_module.title    
+        jsonData ={'email': current_module.contributor.email}
+        jsonData['title1'] = current_module.title    
         
-#     except:
-#         jsonData = {'stat':'failed','message':'could not load module'} 
+    except:
+        jsonData = {'stat':'failed','message':'could not load module'} 
         
     return json.dumps(jsonData)
         

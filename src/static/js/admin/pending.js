@@ -43,7 +43,6 @@ function acceptModule(uKey) {
 	$.getJSON("/api?method=publishCurrentVersion&module=" + uKey,
 			function(json) {
 				if(json.stat == 'ok') {
-					alert("Module Published");
 					window.location = "/administration/pending/";
 				}
 				else {
@@ -51,6 +50,7 @@ function acceptModule(uKey) {
 				}
 			});
 		init();
+		alert("Module Published");
 }
 
 
@@ -59,7 +59,6 @@ function rejectModule(uKey) {
 			function(json) {
 				sendFeedback(json.title1, json.email);
 			});
-		init();	
 }
 
 function obsoleteModule(uKey) {
