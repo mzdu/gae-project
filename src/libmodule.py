@@ -124,8 +124,8 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
                                                       evidence = tevidence,
                                                       contributor = user,
                                                       current = False, published = False)
-                    moduleRevision.put()
-                    return moduleRevision
+                    key = moduleRevision.put()
+                    return key
                 except:
                     logging.error('Failed to create module. Module number uid:' + str(uid))
                     return -1            
@@ -465,7 +465,7 @@ def getModuleCount():
         return 0
 
 def versionIncrement(uid):
-    counter = db.Query(datamodel.VersionCounter).filter('module =', uid).get()
+    counter = db.Query(datamodel.VersionCounter).filter('module =', uid).filter('current =', True).get()
 
     if not counter:
         counterKey = datamodel.VersionCounter(module = uid, count = 1).put()

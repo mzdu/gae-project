@@ -9,6 +9,8 @@
 		<p>{{module_error}}</p>
 {% else %}
 
+<script type="text/javascript" src="/static/js/modules/newModule.js"></script>
+
 <div id="moduleWrapper">
 	<div class="module">
 			<div class="header">
@@ -96,7 +98,7 @@
 				{% if module_version > module_newest_version or module_version == 0 %}
 				<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Edit</a>]
-			 		[<a href="#" target="_self">Send for Approval</a>]<br />
+			 		[<a href="javascript:sendForm()" target="_self">Send for Approval</a>]<br />
 			 	{% elif module_version == module_newest_version %}
 			 	<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Suggest Modifications</a>]<br />

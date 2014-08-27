@@ -223,7 +223,7 @@ function submitForm(publishBool,action){
 			}
 			else
 			{
-			$.post("/module/edit",json,function(result){window.location = "/preview/" + result});
+				$.post("/module/edit",json,function(result){window.location = "/preview/" + result});
 			}
 		}
 		else if(mVer > nVer)

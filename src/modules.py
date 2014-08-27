@@ -294,6 +294,8 @@ class ModuleHandler(webapp2.RequestHandler):
             values['versions'] = versions
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
+                
+            values['javascript'] = ['/static/js/newModule.js']    
             doRender(self, 'module.html', values)
         else:
             try:
