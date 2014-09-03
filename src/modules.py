@@ -97,26 +97,26 @@ class NewModuleHandler(webapp2.RequestHandler):
                 datamodel.ModuleTerm(module=key_uid[0], term=keys[0], definition=keys[1]).put()
 ##################################################################
         
-        #create a search document
-        termStr = ';'.join(termDef)
-        propStr = ';'.join(propositionList)
-        
-        my_doc = search.Document(
-            doc_id = str(key_uid[1]),
-            fields = [
-                      search.TextField(name="title", value=title),  #title
-                      search.TextField(name="keywords", value=keywords),  #keywords
-                      search.TextField(name="metatheory", value=markdown),  #metatheory
-                      search.TextField(name="terms", value = termStr),  #terms and definitions
-                      search.TextField(name="propositions", value=propStr),  #propositions
-                      ])
-        
-        try:
-            index = search.Index(name="modIdx")
-            index.put(my_doc)
-        
-        except search.Error:
-            logging.exception('Document Put Failed')
+#         #create a search document
+#         termStr = ';'.join(termDef)
+#         propStr = ';'.join(propositionList)
+#         
+#         my_doc = search.Document(
+#             doc_id = str(key_uid[1]),
+#             fields = [
+#                       search.TextField(name="title", value=title),  #title
+#                       search.TextField(name="keywords", value=keywords),  #keywords
+#                       search.TextField(name="metatheory", value=markdown),  #metatheory
+#                       search.TextField(name="terms", value = termStr),  #terms and definitions
+#                       search.TextField(name="propositions", value=propStr),  #propositions
+#                       ])
+#         
+#         try:
+#             index = search.Index(name="modIdx")
+#             index.put(my_doc)
+#         
+#         except search.Error:
+#             logging.exception('Document Put Failed')
         
 ######### end of building search index ###########################        
         if key_uid[0] != -1:
@@ -190,20 +190,28 @@ class EditModuleHandler(webapp2.RequestHandler):
         definitionList = [str(definition) for definition in definitions]
 
         #adhere term and definition together and combine, then append to termString
-        termDef = []
+#         termDef = []
+
         from libterm import newTerm
         while termList:
             term = termList.pop().lower()
             definition = definitionList.pop()
             slug = term.replace(' ', '-')
-            #termDef for search document
-            termDef.append(term + ':' + definition + ';')
-
+#             #termDef for search document
+#             termDef.append(term + ':' + definition + ';')
+        
+            # remove the old term list from datastore then append new list to module
+            moduleTerms = db.Query(datamodel.ModuleTerm).filter('module =', modKey).fetch(limit=None,offset=0)
+            for moduleTerm in moduleTerms:
+                moduleTerm.delete()
+             
+        
             # find existed term
             termKey = db.Query(datamodel.Term).filter("word = ", term).get()
             
             # exisited term
             if termKey:
+                logging.error('jumping to the termKey branch')
                 # find existed definition
                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
                 
@@ -217,6 +225,7 @@ class EditModuleHandler(webapp2.RequestHandler):
                     datamodel.ModuleTerm(module=modKey, term=termKey, definition=defKey).put()
             # new term
             else:
+                logging.error('jumping to the else branch')
                 keys = newTerm(term, slug, definition)
                 datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
                   
@@ -249,8 +258,6 @@ class EditModuleHandler(webapp2.RequestHandler):
         modKey = str(modKey)
         self.response.out.write(modKey)
         
-        logging.error('modKey is ' + modKey)
-
 #         if modKey != -1:
 #             values = {'error' : 'Edit Module, all passed.'}
 #             doRender(self, 'error.html', values)

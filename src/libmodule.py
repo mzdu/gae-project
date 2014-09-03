@@ -355,7 +355,6 @@ def getModuleVersion(uid, version=0):
     nVersion = tempObj.version
     values['module_newest_version'] = nVersion
     
-    
     if version == 0:
         #since the optional param 'version' wasn't specified, pull the current versions of the requested module, no matter it is published or not.
         moduleObject = db.Query(datamodel.Module).filter('uid =', uid).filter('current =', True).get()
@@ -366,8 +365,16 @@ def getModuleVersion(uid, version=0):
             moduleObject = db.Query(datamodel.Module).filter('uid =', uid).filter('version =', version).get()
         except:
             moduleObject = db.Query(datamodel.Module).filter('uid =', uid).filter('current =', True).filter('published =', True).get()
-    
+
     if moduleObject:
+        # get original contributor
+        orgObj = db.Query(datamodel.Module).filter('uid =', uid).filter('version =', 1).get()
+        if orgObj:
+            values['module_contrubutor_original'] = orgObj.contributor
+        else:
+            values['module_contrubutor_original'] = moduleObject.contributor
+        
+        
         values['module_title_general'] = moduleObject.title
         values['module_keywords_general'] = moduleObject.keywords
         values['module_contrubutor_general'] = moduleObject.contributor
@@ -418,11 +425,20 @@ def getModuleByKey(key):
     
     values['module_newest_version'] = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('current =', True).get().version
     
+    orgObj = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('version =', 1).get()
+    if orgObj:
+        values['module_contrubutor_original'] = orgObj.contributor
+    else:
+        values['module_contrubutor_original'] = moduleObject.contributor
+    
+    
     
     if moduleObject:
         values['module_title_general'] = moduleObject.title
         values['module_keywords_general'] = moduleObject.keywords
         values['module_contrubutor_general'] = moduleObject.contributor
+        
+        
         values['module_last_update_general'] = '%02d/%02d/%04d' % (moduleObject.date_submitted.month, moduleObject.date_submitted.day, moduleObject.date_submitted.year)
         values['module_scope_general'] = moduleObject.scope
         values['module_propositions_general'] = moduleObject.propositions

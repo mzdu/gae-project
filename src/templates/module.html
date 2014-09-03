@@ -77,10 +77,12 @@
 				  <input type="hidden" name="module_version_uid" value="{{module_uid}}" />
 			</form>
 	</div>
-			
+	<br />		
 	<div class="intro">
 		<div class="metaData">
-			<span class="descriptor">Contributor:</span> <a href="/users/{{module_contrubutor_general.uid}}/" target="_self">{{module_contrubutor_general.alias}}</a> <br />
+			<span class="descriptor">Original Contributor:</span><br /> <a href="/users/{{module_contrubutor_original.uid}}/" target="_self">{{module_contrubutor_original.alias}}</a> <br />
+			<span class="descriptor">Latest Contributor:</span><br /> <a href="/users/{{module_contrubutor_general.uid}}/" target="_self">{{module_contrubutor_general.alias}}</a> <br />
+			<br />
 			<span class="descriptor">Updated:</span> {{module_last_update_general}}
 			
 			{% if module_newest_version == 0 or module_version > module_newest_version %}

@@ -162,7 +162,7 @@ function submitForm(publishBool,action){
 	var derivations = [];
 	var terms = [];
 	var definitions = [];
-	var evidence = $("#evidence").val();
+	var evidence = $("#evidenceArea").val();
 
 	var title = $("#title").val();
 	var keywords = $("#keywords").val();

@@ -72,7 +72,7 @@
 				<li><input class="scopeItem" value="{{scope}}" size="80px" /><button class='removeScope'>X</button></li>
 				{% endfor %}
 			</ol>
-			<input type="button" value="Add Scope Condition" onclick="addScope()" />
+			<input type="button" value="+" onclick="addScope()" />
 		</td></tr>
 	</table>
 
@@ -85,7 +85,7 @@
 					<li><input class="propositionItem" value="{{proposition}}" size="80px"/><button class='removeProposition'>X</button></li>
 				{% endfor %}				
 				</ol>
-				<input type="button" value="Add Proposition" onclick="addProposition()") />
+				<input type="button" value="+" onclick="addProposition()") />
 			</td>
 		</tr>
 		<!-- Not ready -->
@@ -97,14 +97,27 @@
 					<li><input class="derivationItem" value="{{derivation}}" size="80px"/><button class='removeDerivation'>X</button></li>
 				{% endfor %}	
 				</ol>
-				<input type="button" value="Add Derivation" onclick="addDerivation()") />
+				<input type="button" value="+" onclick="addDerivation()") />
 			</td>
 		</tr>
 				
 		<tr>
 			<td class="title">Evidence:</td>
 			<td>
+				{% if module_evidence_general %}
+			
 				<textarea cols="59" id="evidence" name="evidence" rows="5">{{module_evidence_general}}</textarea>
+				
+				{% else %}
+				<div id="evidence">
+				
+				</div>
+				
+				<div id="here">
+				<input type="button" value="+" onclick="addEvidence()" id="evidBtn" />
+				</div>
+				
+				{% endif %}
 			</td>
 		</tr>		
 
