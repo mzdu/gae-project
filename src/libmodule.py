@@ -381,7 +381,7 @@ def getModuleVersion(uid, version=0):
         values['module_last_update_general'] = '%02d/%02d/%04d' % (moduleObject.date_submitted.month, moduleObject.date_submitted.day, moduleObject.date_submitted.year)
         values['module_scope_general'] = moduleObject.scope
         values['module_propositions_general'] = moduleObject.propositions
-        
+        values['module_key'] = moduleObject.key()
         values['module_derivations_general'] = moduleObject.derivations
         values['module_evidence_general'] = moduleObject.evidence
         

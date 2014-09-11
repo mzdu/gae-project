@@ -248,6 +248,29 @@ def removeModule(self, module_uid):
     else:
         return json.dumps({'stat' : 'fail', 'message' : 'must be an administrator'})
 
+def removeModuleByKey(self, module_key):
+    try:
+        admin = isAdministratorUser()
+    except:
+        admin = False
+    if admin is True:
+        try:
+            module_key = Key(module_key)
+            
+            module = db.Query(datamodel.Module).filter("__key__ =", module_key).get() 
+        except:
+            jsonData = {'stat' : 'fail' , 'message' : 'no module found'}
+            return json.dumps(jsonData)
+        try:
+            module.delete()
+            jsonData = {'stat' : 'ok'}
+        except:
+            jsonData = {'stat' : 'fail' , 'message' : 'unable to delete module'}
+        return json.dumps(jsonData)
+    else:
+        return json.dumps({'stat' : 'fail', 'message' : 'must be an administrator'})
+
+
 def setCurrentVersion(self, uid, version):
     try:
         old_module = db.Query(datamodel.Module).filter("module",int(uid)).filter("current",True).get()
@@ -454,6 +477,11 @@ class ApiHandler(webapp2.RequestHandler):
         elif self.request.get('method') == 'removeModule':
             module = self.request.get('module')
             json = removeModule(self, module)
+            self.response.out.write(json)
+            return
+        elif self.request.get('method') == 'removeModuleByKey':
+            moduleKey = self.request.get('moduleKey')
+            json = removeModuleByKey(self, moduleKey)
             self.response.out.write(json)
             return
         elif self.request.get('method') == 'browseModules':

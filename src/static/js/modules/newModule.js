@@ -257,6 +257,24 @@ function sendForm(){
 
 function discardDraft(){
 	// allow user to delete an unpublished module entity
+	var ok1 = confirm("Delete this draft permanently?");
+	if (ok1 == true){
+		moduleKey = $("#modKEY").val();
+		$.getJSON("/api?method=removeModuleByKey&moduleKey=" + moduleKey,
+				function(json) {
+					if(json.stat == 'ok') {
+						alert("Draft Discarded.");
+						window.location = "/modules";
+					}
+					else {
+						alert("unable to remove module!");
+					}
+				});
+			init();
+		
+	}
+
+	
 }
 
 
