@@ -255,7 +255,9 @@ function sendForm(){
 	
 }
 
-
+function discardDraft(){
+	// allow user to delete an unpublished module entity
+}
 
 
 //limits the number of characters at metatheory

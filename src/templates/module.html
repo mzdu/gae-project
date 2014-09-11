@@ -74,7 +74,7 @@
 				  {% endfor %}
 				  </select>
 				  <input type="submit" value="Go" />
-				  <input type="hidden" name="module_version_uid" value="{{module_uid}}" />
+				  <input type="hidden" id ="modID" name="module_version_uid" value="{{module_uid}}" />
 			</form>
 	</div>
 	<br />		
@@ -100,7 +100,8 @@
 				{% if module_version > module_newest_version or module_version == 0 %}
 				<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Edit</a>]
-			 		[<a href="javascript:sendForm()" target="_self">Send for Approval</a>]<br />
+			 		[<a href="javascript:sendForm()" target="_self">Send for Approval</a>]<br /><br/>
+			 		[<a href="javascript:discardDraft()" target="_self">Discard Draft</a>]<br />
 			 	{% elif module_version == module_newest_version %}
 			 	<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Suggest Modifications</a>]<br />
