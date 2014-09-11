@@ -105,13 +105,14 @@ class UserContributionsHandler(webapp2.RequestHandler):
         values = dict()
         path = getUrlResourceList(self)
 
+
         
         try:
             uid = int(path[2])
         except:
-            values['error'] = 'Invalid character after /user/'
-            doRender(self, 'userContribution.html', values) 
-            return
+            from libuser import getCurrentUserID
+            uid = getCurrentUserID()
+            logging.error('uid' + str(uid))
         
         if isCurrentUser(uid):
             values['is_current_user'] = 'True'

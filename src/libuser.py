@@ -172,6 +172,18 @@ def getGoogleUserObject():
         return user
     else:
         return False    
+
+def getCurrentUserID():
+    ''' @summary: Finds and returns the currently logged in user's user entity from the datastore
+        @rtype: user ID 
+    '''
+    user = getGoogleUserObject()
+    que = db.Query(datamodel.WikiUser)
+    que = que.filter('user_id =', user.user_id())
+    userEntity = que.get()
+    userID = userEntity.uid
+    
+    return userID
     
 def getCurrentUserEntity():
     ''' @summary: Finds and returns the currently logged in user's user entity from the datastore
