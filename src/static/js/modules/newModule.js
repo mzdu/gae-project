@@ -195,9 +195,7 @@ function submitForm(publishBool,action){
 			"scopes" : scopes,
 			"derivations" : derivations,
 			"evidence" : evidence,
-			
 			"published" : publishBool,
-			
 			"nVersion" : nVer,
 			"mVersion" : mVer,
 			
@@ -263,8 +261,8 @@ function discardDraft(){
 		$.getJSON("/api?method=removeModuleByKey&moduleKey=" + moduleKey,
 				function(json) {
 					if(json.stat == 'ok') {
-						alert("Draft Discarded.");
-						window.location = "/modules";
+						alert("Draft Removed.");
+						window.location = "/users/contribution/";
 					}
 					else {
 						alert("unable to remove module!");
@@ -273,8 +271,6 @@ function discardDraft(){
 			init();
 		
 	}
-
-	
 }
 
 

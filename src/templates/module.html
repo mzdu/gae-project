@@ -14,7 +14,7 @@
 <div id="moduleWrapper">
 	<div class="module">
 			<div class="header">
-				<span class="title"><a href="{{module_url}}" target="_self">{{module_title_general}}</a></span>
+				<span class="title"><a href="javascript:void(0)" target="_self">{{module_title_general}}</a></span>
 				<br />Version: {{module_version}}
 
 			</div>
@@ -65,19 +65,32 @@
 
 <div class="module_sideBar">
 	<div class="header">
-		  Title: <a href="{{module_url}}" target="_self">{{module_title_general}}</a><br />
-		  Version: {{module_version}} / {{module_newest_version}}<br />
-		   <form method="post" action="">
-				  History: <select name="version">
-				  {% for version in versions %}
-				      <option value="{{version}}">{{version}}</option>
-				  {% endfor %}
-				  </select>
-				  <input type="submit" value="Go" />
-				  <input type="hidden" id ="modID" name="module_version_uid" value="{{module_uid}}" />
-				  <input type="hidden" id ="modVER" value="{{module_version}}" />
-				  <input type="hidden" id ="modKEY" value="{{module_key}}" />
-			</form>
+		Title: <a href="javascript:void(0)" target="_self">{{module_title_general}}</a><br />
+		Version: {{module_version}} / {{module_newest_version}}<br />
+		 
+		<form method="post" action="">
+		
+			{% if module_version > module_newest_version or module_version == 0 %}
+				
+			
+			{% else %}
+					History: <select name="version">
+				{% for version in versions %}
+				    <option value="{{version}}">{{version}}</option>
+				{% endfor %}
+				</select>
+				<input type="submit" value="Go" />			
+			
+			{% endif %}
+			
+
+
+			
+			
+			<input type="hidden" id ="modID" name="module_version_uid" value="{{module_uid}}" />
+			<input type="hidden" id ="modVER" value="{{module_version}}" />
+			<input type="hidden" id ="modKEY" value="{{module_key}}" />
+		</form>
 	</div>
 	<br />		
 	<div class="intro">
@@ -88,7 +101,7 @@
 			<span class="descriptor">Updated:</span> {{module_last_update_general}}
 			
 			{% if module_newest_version == 0 or module_version > module_newest_version %}
-			<span class="descriptor">Status: Unpublished</span> 
+			<span class="descriptor">Status: Proposing</span> 
 			{% else %}
 			{% endif %}
 			

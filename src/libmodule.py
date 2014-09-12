@@ -462,12 +462,8 @@ def getModuleByKey(key):
         values['error'] = 'Module does not exist'
     return values
 
-
-
-
-
 def getModuleVersionCount(uid):
-    countObject = db.Query(datamodel.VersionCounter).filter("module = ", uid).get()
+    countObject = db.Query(datamodel.VersionCounter).filter("module =", uid).get()
     if countObject:
         return countObject.count
     else:
@@ -481,7 +477,7 @@ def getModuleCount():
         return 0
 
 def versionIncrement(uid):
-    counter = db.Query(datamodel.VersionCounter).filter('module =', uid).filter('current =', True).get()
+    counter = db.Query(datamodel.VersionCounter).filter('module =', uid).get()
 
     if not counter:
         counterKey = datamodel.VersionCounter(module = uid, count = 1).put()

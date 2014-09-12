@@ -318,7 +318,7 @@ class ModuleHandler(webapp2.RequestHandler):
             versions = []
             i = 1
             while i < count:
-                versions.append(str(i))
+                versions.insert(0,str(i))
                 i += 1
             values['versions'] = versions
             if isContributingUser() is True:
