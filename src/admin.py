@@ -141,7 +141,50 @@ class ManagePrezisHandler(webapp2.RequestHandler):
         datamodel.Prezis(key=cKey, title_1=title1, pic_1=pic1, link_1=link1, title_2=title2, pic_2=pic2, link_2=link2, title_3=title3, pic_3=pic3, link_3=link3, title_4=title4, pic_4=pic4, link_4=link4, current_tag=True).put()
         
         self.redirect('/administration/')
+
+class ManageNewsHandler(webapp2.RequestHandler):
+    def get(self):
+        if isAdministratorUser() is True:
+            values = dict()
+            values['javascript'] = ['/static/js/jquery-1.9.1.js',
+                                    '/static/js/jquery-ui.js',
+                                    '/static/js/plugins/wmd_stackOverflow/wmd.js', 
+                                    '/static/js/plugins/wmd_stackOverflow/showdown.js']
+            values['css'] = ['/static/js/jquery-ui.css',
+                             '/static/js/plugins/wmd_stackOverflow/wmd.css']
+            
+            newsObject = db.Query(datamodel.News).get()
+            
+            if newsObject: 
+                values['markdown'] = newsObject.newsMarkdown
+                values['html'] = newsObject.newsHtml
+            else:
+                values['markdown'] = ""
+                values['html'] = ""
+                                       
+            doRender(self, 'ManageNews.html', values)
+        else:
+            pass
         
+        
+    def post(self):   
+        from libmain import parseMarkdown
+        
+        markdown = self.request.get("newsArea")
+        newsObject = db.Query(datamodel.News).get()    
+        if newsObject:
+            newsObject.newsMarkdown = markdown
+            newsObject.newsHtml = parseMarkdown(markdown)
+            key = db.put(newsObject)
+        else:
+            news = datamodel.News(newsMarkdown = markdown, newsHtml = parseMarkdown(markdown))
+            key = news.put()
+        
+        if key:
+            self.redirect('/')
+        else:
+            logging.error('can not save news')        
+
 class SupportHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
@@ -196,6 +239,7 @@ app = webapp2.WSGIApplication([
                                ('/administration/modules/.*', ManageModulesHandler),
                                ('/administration/terms/.*', ManageTermsHandler),
                                ('/administration/prezis/.*', ManagePrezisHandler),
+                               ('/administration/news/.*', ManageNewsHandler),
                                ('/administration/support/.*', SupportHandler),
                                ('/administration/advanced/sanitize/', SanitizeHandler),
                                ('/administration/advanced/.*', AdvancedHandler),

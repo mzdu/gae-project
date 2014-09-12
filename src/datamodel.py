@@ -113,7 +113,10 @@ class Prezis(db.Model):
     
     current_tag = db.BooleanProperty()
 
-
+class News(db.Model):
+    newsMarkdown = db.TextProperty()
+    newsHtml = db.TextProperty()
+    
 #     
 # class ApiKey(db.Model):
 #     hash = db.StringProperty()

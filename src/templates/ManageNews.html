@@ -1,0 +1,29 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+    <div class="twoColumnBlue">
+        <div class="header">
+            <h3>Manage News</h3>
+        </div>
+		<form name="myform" method="POST">
+		
+		<div id="wmd-button-bar" class="wmd-panel"></div>
+		   <br/>
+		   <textarea id="wmd-input" class="wmd-panel" name="newsArea" cols="" rows="">{{markdown}}</textarea>
+			<br/>
+		<strong>Preview:</strong>
+		<div id="wmd-preview" class="wmd-panel"></div>
+		      
+		      <br/>
+		<input type="submit" value="Update News" />
+		</form>     
+		
+		
+    </div>
+
+{% endif %}
+{% endblock %}

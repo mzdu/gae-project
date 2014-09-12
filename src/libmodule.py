@@ -426,6 +426,7 @@ def getModuleByKey(key):
     values['module_newest_version'] = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('current =', True).get().version
     
     orgObj = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('version =', 1).get()
+    
     if orgObj:
         values['module_contrubutor_original'] = orgObj.contributor
     else:

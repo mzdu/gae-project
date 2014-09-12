@@ -169,6 +169,14 @@ class MainPageHandler2(webapp2.RequestHandler):
                                 '/static/js/index/index.js',
                                 ]
         
+       
+        
+        newsObj = db.Query(datamodel.News).get()
+        if newsObj:
+            values['html'] = newsObj.newsHtml
+        else:
+            values['html'] = "News coming soon..."
+        
         doRender(self, 'index2.html', values)
         
 app = webapp2.WSGIApplication([
