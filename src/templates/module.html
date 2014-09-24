@@ -16,6 +16,10 @@
 			<div class="header">
 				<span class="title"><a href="javascript:void(0)" target="_self">{{module_title_general}}</a></span>
 				<br />Version: {{module_version}}
+				{% if show_hint == True %}
+				<br /><span style="color:red">Warning: Another user’s suggested modifications for this module currently are under review.</span>
+				{% else %}
+				{% endif %}
 
 			</div>
 			<h3 class="sectionHeader">Key Words:</h3>

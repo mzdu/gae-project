@@ -425,6 +425,10 @@ def getModuleByKey(key):
     
     values['module_newest_version'] = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('current =', True).get().version
     
+    moduleSet = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('version =', moduleObject.version).fetch(limit=None)
+    if len(moduleSet) > 1:
+        values['show_hint'] = True
+    
     orgObj = db.Query(datamodel.Module).filter('uid =', moduleObject.uid).filter('version =', 1).get()
     
     if orgObj:
@@ -484,10 +488,10 @@ def versionIncrement(uid):
         counterKey = datamodel.VersionCounter(module = uid, count = 1).put()
     else:
         counterKey = counter.key()
-    try:
-        from libmain import autoIncrement
-        uid = db.run_in_transaction(autoIncrement, counterKey)
-        return uid
-    except db.TransactionFailedError:
-        logging.error('Failed to get auto increment(version increment) value during transaction and retries')
-        return -1
+        try:
+            from libmain import autoIncrement
+            uid = db.run_in_transaction(autoIncrement, counterKey)
+            return uid
+        except db.TransactionFailedError:
+            logging.error('Failed to get auto increment(version increment) value during transaction and retries')
+            return -1
