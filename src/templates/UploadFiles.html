@@ -19,7 +19,7 @@
             {% for blob in blobs %}
             <tr>        
                 <td>{{blob.filename}}</td>
-                <td><a href="/serve/{{blob.key()}}">/serve/{{blob.key()}}</a></td>
+                <td><a href="/serve/{{blob.key()}}">File Address</a></td>
             	<td>{{blob.creation.date()}}</td>
             </tr>
             {% endfor %}
