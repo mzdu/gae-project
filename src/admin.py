@@ -1,12 +1,14 @@
 from libmain import doRender
 import logging
 import datamodel
-
+import urllib
 import webapp2
 import jinja2
 import os
 from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 from libuser import isContributingUser, isAdministratorUser
 
 jinja_environment2 = jinja2.Environment(loader = jinja2.FileSystemLoader(os.path.dirname(__file__) + '/templates'), autoescape=True)
@@ -185,6 +187,49 @@ class ManageNewsHandler(webapp2.RequestHandler):
         else:
             logging.error('can not save news')        
 
+class ManageWikiWordsHandler(webapp2.RequestHandler):
+    def get(self):
+        if isAdministratorUser() is True:
+            values = dict()
+            values['javascript'] = ['/static/js/jquery-1.9.1.js',
+                                    '/static/js/jquery-ui.js',
+                                    '/static/js/plugins/wmd_stackOverflow/wmd.js', 
+                                    '/static/js/plugins/wmd_stackOverflow/showdown.js']
+            values['css'] = ['/static/js/jquery-ui.css',
+                             '/static/js/plugins/wmd_stackOverflow/wmd.css']
+            
+            wwObject = db.Query(datamodel.WikiWords).get()
+            
+            if wwObject: 
+                values['markdown'] = wwObject.wwMarkdown
+                values['html2'] = wwObject.wwHtml
+            else:
+                values['markdown'] = ""
+                values['html2'] = ""
+                                       
+            doRender(self, 'ManageWikiWords.html', values)
+        else:
+            pass
+        
+        
+    def post(self):   
+        from libmain import parseMarkdown
+        
+        markdown = self.request.get("wwArea")
+        wwObject = db.Query(datamodel.WikiWords).get()    
+        if wwObject:
+            wwObject.wwMarkdown = markdown
+            wwObject.wwHtml = parseMarkdown(markdown)
+            key = db.put(wwObject)
+        else:
+            ww = datamodel.WikiWords(wwMarkdown = markdown, wwHtml = parseMarkdown(markdown))
+            key = ww.put()
+        
+        if key:
+            self.redirect('/')
+        else:
+            logging.error('can not save wiki words')  
+            
 class SupportHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
@@ -201,7 +246,31 @@ class PendingHandler(webapp2.RequestHandler):
             doRender(self, 'ManagePendings.html', values)
         else:
             self.redirect('/')      
-            
+
+class UploadHandler(webapp2.RequestHandler):    
+    def get(self):
+        if isAdministratorUser() is True:
+            upload_url = blobstore.create_upload_url('/upload')
+            values = dict()
+            values["javascript"] = ["/static/js/jquery.js","/static/js/admin/pending.js"]
+            blobs = blobstore.BlobInfo.all()
+            values["blobs"] = blobs
+            values["upload_url"] = upload_url
+            doRender(self, 'UploadFiles.html', values)
+        else:
+            self.redirect('/administration/upload')      
+
+class UploadHandler2(blobstore_handlers.BlobstoreUploadHandler):
+    def post(self):
+        upload_files = self.get_uploads('file')  # 'file' is file upload field in the form
+        blob_info = upload_files[0]
+        self.redirect('/administration/')
+
+class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, resource):
+        resource = str(urllib.unquote(resource))
+        blob_info = blobstore.BlobInfo.get(resource)
+        self.send_blob(blob_info)                        
         
 class AdvancedHandler(webapp2.RequestHandler):
     def get(self):
@@ -234,16 +303,19 @@ class SanitizeHandler(webapp2.RequestHandler):
     def post(self):
         pass
                 
-app = webapp2.WSGIApplication([                               
+app = webapp2.WSGIApplication([('/upload', UploadHandler2),  
+                               ('/serve/([^/]+)?', ServeHandler),                             
                                ('/administration/users/.*', ManageUsersHandler),
                                ('/administration/modules/.*', ManageModulesHandler),
                                ('/administration/terms/.*', ManageTermsHandler),
                                ('/administration/prezis/.*', ManagePrezisHandler),
                                ('/administration/news/.*', ManageNewsHandler),
+                               ('/administration/wikiwords/.*', ManageWikiWordsHandler),
                                ('/administration/support/.*', SupportHandler),
                                ('/administration/advanced/sanitize/', SanitizeHandler),
                                ('/administration/advanced/.*', AdvancedHandler),
                                ('/administration/pending/.*', PendingHandler),
+                               ('/administration/upload/.*', UploadHandler),
                                ('/administration', SupportHandler),
                                ('/administration/.*', SupportHandler)],
                               debug=True)

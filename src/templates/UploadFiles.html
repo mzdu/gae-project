@@ -1,0 +1,37 @@
+{% extends "_admin_base.html" %}
+{% block adminContent %}
+
+{% if error %}
+        <p>{{error}}</p>
+{% else %}
+
+
+    <div class="twoColumnYellow">
+        <div class="header">
+            <h3>Upload Files</h3>
+        </div>
+        <table style="width: 80%">
+            <tr>
+                <th>File Name</th>
+                <th style="width:100px">Link</th>
+                <th>Upload Date</th>
+            </tr>
+            {% for blob in blobs %}
+            <tr>        
+                <td>{{blob.filename}}</td>
+                <td><a href="/serve/{{blob.key()}}">/serve/{{blob.key()}}</a></td>
+            	<td>{{blob.creation.date()}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <h4>Upload File:</h4>
+	     <form action="{{upload_url}}" method="POST" enctype="multipart/form-data">
+        	<input type="file" name="file"><br> 
+        	<input type="submit" name="submit" value="Submit">
+    	</form>
+
+    </div>
+
+{% endif %}
+{% endblock %}

@@ -116,6 +116,10 @@ class Prezis(db.Model):
 class News(db.Model):
     newsMarkdown = db.TextProperty()
     newsHtml = db.TextProperty()
+
+class WikiWords(db.Model):
+    wwMarkdown = db.TextProperty()
+    wwHtml = db.TextProperty()
     
 #     
 # class ApiKey(db.Model):

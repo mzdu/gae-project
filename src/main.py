@@ -168,7 +168,11 @@ class MainPageHandler2(webapp2.RequestHandler):
                                 '/static/js/jquery.orgchart.min.js',
                                 '/static/js/index/index.js',
                                 ]
-        
+        wwObj = db.Query(datamodel.WikiWords).get()
+        if wwObj:
+            values['html2'] = wwObj.wwHtml
+        else:
+            values['html2'] = "Wiki in Words coming soon..."
        
         
         newsObj = db.Query(datamodel.News).get()

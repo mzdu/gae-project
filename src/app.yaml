@@ -62,7 +62,13 @@ handlers:
   
 - url: /terms.*
   script: terms.app
-  
+
+- url: /upload
+  script: admin.app
+
+- url: /serve/.*
+  script: admin.app
+    
 - url: /.*
   script: main.app
 
