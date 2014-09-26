@@ -216,6 +216,7 @@ class ManageWikiWordsHandler(webapp2.RequestHandler):
         from libmain import parseMarkdown
         
         markdown = self.request.get("wwArea")
+        
         wwObject = db.Query(datamodel.WikiWords).get()    
         if wwObject:
             wwObject.wwMarkdown = markdown
