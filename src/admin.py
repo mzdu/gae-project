@@ -263,7 +263,8 @@ class UploadHandler(webapp2.RequestHandler):
 
 class UploadHandler2(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
-        upload_files = self.get_uploads('file')  # 'file' is file upload field in the form
+        # 'file' is file upload field in the form
+        upload_files = self.get_uploads('file')  
         blob_info = upload_files[0]
         self.redirect('/administration/')
 
