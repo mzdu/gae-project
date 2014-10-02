@@ -22,10 +22,20 @@
 				{% endif %}
 
 			</div>
+			{% if module_keywords_general %}
 			<h3 class="sectionHeader">Key Words:</h3>
-			<div class="generalContent">{{module_keywords_general}}</div>
+			<div class="generalContent">{{module_keywords_general}}</div>			
+			{% endif %}
+			
+			{% if html == 'none' %}
+			<h3 class="sectionHeader" style="display:none">Background / Metatheory:</h3>
+			<div class="generalContent" style="display:none"></div>
+			{% else %}
 			<h3 class="sectionHeader">Background / Metatheory:</h3>
 			<div class="generalContent">{{html}}</div>
+			{% endif %}
+			
+			{% if terms %}
 			<div class="terms">
 				<h3 class="sectionHeader">Terms & Definitions:</h3>
 				<ul>
@@ -34,6 +44,9 @@
 					{% endfor %}
 				</ul>
 			</div><!-- end terms -->
+			{% endif %}
+			
+			{% if module_scope_general %}
 			<div class="scope">
 				<h3 class="sectionHeader">Scope Conditions:</h3>
 				<ol>
@@ -42,6 +55,9 @@
 						{% endfor %}
 				</ol>
 			</div><!-- end scope -->
+			{% endif %}
+			
+			{% if module_propositions_general %}
 			<div class="propositions">
 				<h3 class="sectionHeader">Propositions:</h3>
 				<ol>
@@ -50,6 +66,9 @@
 					{% endfor %}
 				</ol>
 			</div><!-- end propositions -->
+			{% endif %}
+			
+			{% if module_derivations_general %}
 			<div class="derivations">
 				<h3 class="sectionHeader">Derivations:</h3>
 				<ol>
@@ -58,10 +77,14 @@
 					{% endfor %}
 				</ol>
 			</div><!-- end derivations -->
+			{% endif %}
+			
+			{% if module_evidence_general %}
 			<div class="evidence">
 				<h3 class="sectionHeader">Evidence:</h3>
 				<div>{{module_evidence_general}}</div>
 			</div><!-- end evidence -->
+			{% endif %}
 	</div>
 </div>				
 		
