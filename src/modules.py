@@ -168,6 +168,8 @@ class EditModuleHandler(webapp2.RequestHandler):
         propositions = self.request.get_all("propositions[]")
         derivations =  self.request.get_all("derivations[]")
         evidence = self.request.get("evidence")
+        logging.info('post evidence:' + str(evidence))
+        
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
         uid = int(self.request.get("uid"))
