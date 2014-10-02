@@ -86,7 +86,6 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
         module.propositions = propositions
         module.derivations = derivations
         module.evidence = tevidence
-        logging.info('Module Evidence at updateModule() is:'+ str(tevidence))
  
         # keep the version0 unpublished modules have only one copy
         module.published = False

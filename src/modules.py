@@ -168,8 +168,6 @@ class EditModuleHandler(webapp2.RequestHandler):
         propositions = self.request.get_all("propositions[]")
         derivations =  self.request.get_all("derivations[]")
         evidence = self.request.get("evidence")
-        logging.info('post evidence:' + str(evidence))
-        
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
         uid = int(self.request.get("uid"))
@@ -184,29 +182,32 @@ class EditModuleHandler(webapp2.RequestHandler):
         derivationList = [str(drv) for drv in derivations]
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool, nVer, mVer)
+
 ############################################################                                
         #terms related processing
         terms = self.request.get_all("terms[]")
         definitions = self.request.get_all("definitions[]")
-        termList = [str(term) for term in terms]
-        definitionList = [str(definition) for definition in definitions]
+        termList = [term for term in terms]
+        definitionList = [definition for definition in definitions]
 
         #adhere term and definition together and combine, then append to termString
 #         termDef = []
 
+
+        # remove the old term list from datastore then append new list to module
+        moduleTerms = db.Query(datamodel.ModuleTerm).filter('module =', modKey).fetch(limit=None,offset=0)
+        for moduleTerm in moduleTerms:
+            moduleTerm.delete()
+
+
         from libterm import newTerm
+        
         while termList:
             term = termList.pop().lower()
             definition = definitionList.pop()
             slug = term.replace(' ', '-')
 #             #termDef for search document
 #             termDef.append(term + ':' + definition + ';')
-        
-            # remove the old term list from datastore then append new list to module
-            moduleTerms = db.Query(datamodel.ModuleTerm).filter('module =', modKey).fetch(limit=None,offset=0)
-            for moduleTerm in moduleTerms:
-                moduleTerm.delete()
-             
         
             # find existed term
             termKey = db.Query(datamodel.Term).filter("word = ", term).get()
