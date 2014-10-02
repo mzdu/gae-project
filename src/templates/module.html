@@ -126,8 +126,10 @@
 			 	{% elif module_version == module_newest_version and module_status != 'archived' %}
 			 		<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Suggest Modifications</a>]<br />
-			 	{% else %}
-			 		
+			 	{% elif module_status == 'archived'%}
+					<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
+			 		[<a href="javascript:discardDraft()" target="_self">Discard Draft</a>]<br />			 	
+			 	{% else %}	
 			 	{% endif %}
 			 
 			{% else %}
