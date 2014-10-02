@@ -65,17 +65,22 @@ function getPendingModules(id) {
 
 
 function acceptModule(uKey) {
-	$.getJSON("/api?method=publishCurrentVersion&module=" + uKey,
-			function(json) {
-				if(json.stat == 'ok') {
-					window.location = "/administration/pending/";
-				}
-				else {
-					alert(json.message);
-				}
-			});
-		init();
-		alert("Module Published");
+	if(confirm('Accept this module may archive other copies, proceeding?')){
+		$.getJSON("/api?method=publishCurrentVersion&module=" + uKey,
+				function(json) {
+					if(json.stat == 'ok') {
+						window.location = "/administration/pending/";
+					}
+					else {
+						alert(json.message);
+					}
+				});
+			init();
+			alert("Module Published");
+	}
+	else{
+		
+	}
 }
 
 
@@ -121,10 +126,6 @@ function setCurrentVersion(uid, version) {
 			}
 		});
 }
- 
-
-
-
 
 function removeModule(module) {
 	$.getJSON("/api?method=removeModule&module=" + module,
