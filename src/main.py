@@ -9,6 +9,7 @@ import datamodel
 import logging
 
 from google.appengine.ext import db
+from google.appengine.ext.db import Key
 
 class HelpHandler(webapp2.RequestHandler):
     def get(self):
@@ -45,6 +46,13 @@ class NotifyHandler(webapp2.RequestHandler):
     def post(self):
         title = self.request.get("title")
         message = self.request.get("message")
+        modKey = self.request.get("modKey")
+        modKey = Key(modKey)
+        # change the status of module
+        modObj = db.Query(datamodel.Module).filter("__key__ =", modKey).get()
+        modObj.status = "flag"
+        key = db.put(modObj)
+        
         aSubject = "Module " + title + " is waiting for your approval"
         aBody = "Module:" + title + "\nContributor's Proposal Suggestion:" + message
         
@@ -54,6 +62,15 @@ class NotifyHandler2(webapp2.RequestHandler):
     def post(self):
         title = self.request.get("title")
         message = self.request.get("message")
+        modKey = self.request.get("modKey")
+        modKey = Key(modKey)
+        # change the status of module
+        modObj = db.Query(datamodel.Module).filter("__key__ =", modKey).get()
+        modObj.status = "reviewing"
+        key = db.put(modObj)        
+        
+        
+        
         email = self.request.get("email")
         aSubject = "Feedback: Module " + title 
         aBody = "Module:" + title + "\nFeedback Suggestion:" + message

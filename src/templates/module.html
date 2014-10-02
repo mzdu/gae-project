@@ -16,7 +16,7 @@
 			<div class="header">
 				<span class="title"><a href="javascript:void(0)" target="_self">{{module_title_general}}</a></span>
 				<br />Version: {{module_version}}
-				{% if show_hint == True %}
+				{% if show_hint == True and module_status !='archived' %}
 				<br /><span style="color:red">Warning: Another user’s suggested modifications for this module currently are under review.</span>
 				{% else %}
 				{% endif %}
@@ -106,6 +106,8 @@
 			
 			{% if module_newest_version == 0 or module_version > module_newest_version %}
 			<span class="descriptor">Status: Proposing</span> 
+			{% elif module_status == 'archived' %}
+			<span class="descriptor">Status: Archived</span>
 			{% else %}
 			{% endif %}
 			
@@ -117,12 +119,12 @@
 		
 			{% if contributing_user %}
 				{% if module_version > module_newest_version or module_version == 0 %}
-				<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
+					<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Edit</a>]
 			 		[<a href="javascript:sendForm()" target="_self">Send for Approval</a>]<br /><br/>
 			 		[<a href="javascript:discardDraft()" target="_self">Discard Draft</a>]<br />
-			 	{% elif module_version == module_newest_version %}
-			 	<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
+			 	{% elif module_version == module_newest_version and module_status != 'archived' %}
+			 		<img src='/static/images/toolkit.jpg' style="width:20px"/><br/>
 			 		[<a href="{{module_edit_url}}" target="_self">Suggest Modifications</a>]<br />
 			 	{% else %}
 			 		

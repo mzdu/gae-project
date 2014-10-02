@@ -455,6 +455,7 @@ def getModuleByKey(key):
         values['module_key'] = str(key)
         values['module_edit_url'] = '/module/edit/' + str(moduleObject.uid) + '/' + str(moduleObject.version) + '/' + str(key)
         values['module_version'] = moduleObject.version
+        values['module_status'] = moduleObject.status
         values['markdown'] = moduleObject.theoryMarkdown
         values['html'] = moduleObject.theoryHtml
         values['terms'] = db.Query(datamodel.ModuleTerm).filter('module =', moduleObject)

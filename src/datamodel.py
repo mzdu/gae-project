@@ -47,6 +47,12 @@ class Module(db.Model):
     published = db.BooleanProperty()
     current = db.BooleanProperty()
     
+    # status code: 
+    # flag: a module has been clicked and asking for approval
+    # archived: a module has been archived
+    # reviewed: a module is being reviewed by an editor
+    status = db.StringProperty()
+    
 class VersionCounter(db.Model):
     module = db.IntegerProperty()
     count = db.IntegerProperty()

@@ -209,7 +209,7 @@ def getPendingModules(self):
         jsonData = {'stat':'failed','message':'failed to find pending module'}
         
     try:
-        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[],'published':[],'key':[]}
+        jsonData = {'stat':'ok','uid':[],'title':[],'date_submitted':[],'last_update':[],'current_version':[],'published':[],'key':[],'status':[]}
         for module in pending_modules:
             jsonData['uid'].append(module.uid)
             jsonData['title'].append(module.title)
@@ -217,6 +217,7 @@ def getPendingModules(self):
             jsonData['last_update'].append('%02d/%02d/%04d' % (module.last_update.month, module.last_update.day, module.last_update.year))
             jsonData['current_version'].append(module.version)
             jsonData['key'].append(str(module.key()))
+            jsonData['status'].append(module.status)
 
     except:
         jsonData = {'stat':'fail','message':'failed to find all data'}
@@ -291,7 +292,7 @@ def setCurrentVersion(self, uid, version):
 def publishCurrentVersion(self, uKey):
     # self, uKey
     
-    from libmodule import versionIncrement
+    from libmodule import versionIncrement,getModuleVersionCount
     
     try:
         current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
@@ -322,8 +323,14 @@ def publishCurrentVersion(self, uKey):
             current_module.published = True
             current_module.put()
             
+            # Once we publish the newest copy of this version, we will archive other copies.
+            archived_version = getModuleVersionCount(module_id) + 1
+            other_modules = db.Query(datamodel.Module).filter("uid =", module_id).filter("__key__ !=", Key(uKey)).filter("version =", archived_version).fetch(limit=None)
+            for module in other_modules:
+                module.status = "archived"
+                module.put()
+            
             versionIncrement(module_id)
-    
             jsonData = {'stat':'ok'}
     except:
         jsonData = {'stat':'failed','message':'could not update current version'}
@@ -335,7 +342,8 @@ def getModule(self, uKey):
         current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
     
         jsonData ={'email': current_module.contributor.email}
-        jsonData['title1'] = current_module.title    
+        jsonData['title1'] = current_module.title  
+        jsonData['modKey'] = uKey  
         
     except:
         jsonData = {'stat':'failed','message':'could not load module'} 

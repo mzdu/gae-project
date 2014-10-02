@@ -21,6 +21,7 @@ function getCurrentModules(id) {
 					tableRows += "<td><a href='/modules/" + json.uid[i] + "' target='_blank'>" + json.title[i] + "</a></td>";
 					tableRows += "<td>" + json.date_submitted[i] + "</td>";
 					tableRows += "<td>" + json.last_update[i] + "</td>";
+
 					tableRows += "<td><center>" + json.current_version[i] + "</center></td>";
 //					tableRows += "<td><span style='cursor:pointer;' onclick='getPastModules(" + json.uid[i] + ")'>View Versions</span></td>";
 					tableRows += "<td><span style='cursor:pointer;' onclick=removeModule(" + json.uid[i] + ")><b>X</b></span></td></tr>";
