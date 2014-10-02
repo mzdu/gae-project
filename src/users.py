@@ -104,9 +104,6 @@ class UserContributionsHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         path = getUrlResourceList(self)
-
-
-        
         try:
             uid = int(path[2])
         except:
@@ -120,9 +117,11 @@ class UserContributionsHandler(webapp2.RequestHandler):
             contributedModule = db.Query(datamodel.Module).filter("published =", True).filter('contributor =', userObject).order('-last_update')
             values['contributed_modules'] = contributedModule
         
-            from libmodule import getUnpublishedModules
+            from libmodule import getUnpublishedModules, getArchivedModules
             unpublishedModules = getUnpublishedModules()
             values['unpublished_modules'] = unpublishedModules
+            archivedModules = getArchivedModules()
+            values['archived_modules'] = archivedModules
                         
         userInfo = getUserInfo(uid)
         for key in userInfo:

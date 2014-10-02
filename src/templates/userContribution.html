@@ -44,6 +44,26 @@
 			</tr>
 
 			{% endfor %}
+			
+			<tr><td colspan="3"><hr></td></tr>
+			<tr><td colspan="3">Archived Contributions</td></tr>
+			<tr><td colspan="3"><hr></td></tr>
+			{% for module in archived_modules %}
+			<tr>
+				{% if module.version == 0 %}
+				<td class="boxtitle"><a href="/modules/{{module.uid}}/{{module.version}}">{{module.title}}</a></td>
+				<td>{{module.version}}</td>
+				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
+				{% else %}
+				<td class="boxtitle"><a href="/preview/{{module.key()}}">{{module.title}}</a></td>
+				<td>{{module.version}}</td>
+				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
+				{% endif %}				
+			</tr>
+
+			{% endfor %}			
+			
+			
 		</table>
 		</div>
 	  

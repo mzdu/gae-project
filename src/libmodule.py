@@ -294,7 +294,12 @@ def getModule(uid):
 
 def getUnpublishedModules():
     user = getCurrentUserEntity()
-    modules = db.Query(datamodel.Module).filter('contributor  =', user).filter('published =', False).order('-last_update').fetch(200)
+    modules = db.Query(datamodel.Module).filter('status !=','archived').filter('contributor  =', user).filter('published =', False).fetch(limit=None)
+    return modules
+
+def getArchivedModules():
+    user = getCurrentUserEntity()
+    modules = db.Query(datamodel.Module).filter('contributor  =', user).filter('published =', False).filter('status =', 'archived').order('-last_update').fetch(limit=None)
     return modules
 
 def publishModule(uid):
