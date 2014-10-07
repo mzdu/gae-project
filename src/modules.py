@@ -304,8 +304,9 @@ class ModuleHandler(webapp2.RequestHandler):
             values['versions'] = versions
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
-                
-            values['javascript'] = ['/static/js/modules/newModule.js']    
+            
+            values['css'] = ['/static/css/jquery-impromptu.css']    
+            values['javascript'] = ['/static/js/jquery-impromptu.min.js','/static/js/modules/newModule.js']    
             
             doRender(self, 'module.html', values)
         else:
@@ -327,8 +328,8 @@ class ModuleHandler(webapp2.RequestHandler):
             values['versions'] = versions
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
-                
-            values['javascript'] = ['/static/js/modules/newModule.js'] 
+            values['css'] = ['/static/css/jquery-impromptu.css']        
+            values['javascript'] = ['/static/js/jquery-impromptu.min.js','/static/js/modules/newModule.js'] 
             doRender(self, 'module.html', values)
             
             
@@ -363,7 +364,8 @@ class PreviewModuleHandler(webapp2.RequestHandler):
             if isContributingUser() is True:
                 values["contributing_user"] = "True"
 
-            values['javascript'] = ['/static/js/modules/newModule.js'] 
+            values['css'] = ['/static/css/jquery-impromptu.css']        
+            values['javascript'] = ['/static/js/jquery-impromptu.min.js','/static/js/modules/newModule.js']
             doRender(self, 'module.html', values)
              
         else:

@@ -236,38 +236,81 @@ function submitForm(publishBool,action){
 	}
 }
 
-function sendForm(){
-	var title = $("#title").val();
-	var message = prompt("Why do you propose this suggestion?");
-	var modKey = $("#modKEY").val();
-	json = {
-			"title": title,
-			"message" : message,
-			"modKey" : modKey
+function openPrompt(o){
+	
+	title1 = "Send for Approval";
+	link1 = "<div>If this is not a new module please indicate the changes that you have <br>suggested and your rational for those changes.</div>" +
+			"<textarea id='sfaArea' rows='6' cols='50'></textarea>";
+
+	title2 = "Discard Draft"
+	link2 = "<div>Delete this draft permanently?</div>"
+		
+	
+	
+	if (o.message==1){
+		var statesdemo = {
+			state0: {
+				title:title1,
+				html:link1,
+				buttons: { "Yes, I'm Ready": true, "No, Lets Wait": false},
+				submit: function(e,v,m,f){
+					if(v==true){
+						var title = $("#title").val();
+						var message = $("#sfaArea").val();
+						var modKey = $("#modKEY").val();
+						json = {
+								"title": title,
+								"message" : message,
+								"modKey" : modKey
+						}
+						
+						$.post("/notify",json,function(){window.location = "/modules"});						
+					}
+				}
+			}
+		
+		};	
 	}
 	
-	$.post("/notify",json,function(){window.location = "/modules"});
+	else if(o.message==2){
+		var statesdemo = {
+				state0: {
+					title:title2,
+					html:link2,
+					buttons: { "Yes, Delete": true, "No, Lets Wait": false},
+					submit: function(e,v,m,f){
+						if(v==true){
+							moduleKey = $("#modKEY").val();
+							$.getJSON("/api?method=removeModuleByKey&moduleKey=" + moduleKey,
+									function(json) {
+										if(json.stat == 'ok') {
+											window.location = "/users/contribution/";
+										}
+										else {
+											console.log("unable to remove module!");
+										}
+									});
+								init();					
+						}
+					}
+				}
+			
+			};			
+	}
 	
+	else{
+	}
+	$.prompt(statesdemo);
+	$('div.jqi').css('width','430px');
+}
+
+function sendForm(){
+	openPrompt({message:1});
 }
 
 function discardDraft(){
 	// allow user to delete an unpublished module entity
-	var ok1 = confirm("Delete this draft permanently?");
-	if (ok1 == true){
-		moduleKey = $("#modKEY").val();
-		$.getJSON("/api?method=removeModuleByKey&moduleKey=" + moduleKey,
-				function(json) {
-					if(json.stat == 'ok') {
-						alert("Draft Removed.");
-						window.location = "/users/contribution/";
-					}
-					else {
-						alert("unable to remove module!");
-					}
-				});
-			init();
-		
-	}
+	openPrompt({message:2});
 }
 
 

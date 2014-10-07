@@ -1,12 +1,4 @@
 $(document).ready(function() {
-
-	$("#allModulesLoading").ajaxStart(function(){
-		$(this).show();
- 	});
- 	$("#allModulesLoading").ajaxStop(function(){
-		$(this).hide();
- 	});
-
    	init();
 });
 
@@ -64,31 +56,81 @@ function getPendingModules(id) {
 }
 
 
-function acceptModule(uKey) {
-	if(confirm('Accept this module may archive other copies, proceeding?')){
-		$.getJSON("/api?method=publishCurrentVersion&module=" + uKey,
-				function(json) {
-					if(json.stat == 'ok') {
-						window.location = "/administration/pending/";
+function openPrompt(o){
+	
+	title1 = "Reject";
+	link1 = "<div>Please indicate your suggestions</div>" +
+			"<textarea id='sfaArea' rows='6' cols='50'></textarea>";
+	
+	title2 = "Accept";
+	link2 = "<div>Accept this module may archive other copies, proceeding?</div>";
+	
+	if (o.message==1){
+		var statesdemo = {
+			state0: {
+				title:title1,
+				html:link1,
+				buttons: { "Yes, Reject it": true, "No, Lets Wait": false},
+				submit: function(e,v,m,f){
+					if(v==true){
+						$.getJSON("/api?method=getModule&moduleKey=" + o.key,
+								function(json) {
+									console.log(o.key);
+									var title = json.title1;
+									var email = json.email;
+									var modKey = json.modKey;
+									var message = $("sfaArea").val();
+									json = {
+											"title": title,
+											"message" : message,
+											"email" : email,
+											"modKey": modKey
+									}
+									
+									$.post("/notify2",json,function(){window.location = "/administration/pending/"}
+									);
+								});						
 					}
-					else {
-						alert(json.message);
-					}
-				});
-			init();
-			alert("Module Published");
+				}
+			}
+		};	
 	}
-	else{
+	else if (o.message==2){
+		var statesdemo = {
+			state0: {
+				title:title2,
+				html:link2,
+				buttons: { "Yes, Accept it": true, "No, Lets Wait": false},
+				submit: function(e,v,m,f){
+					if(v==true){
+						$.getJSON("/api?method=publishCurrentVersion&module=" + o.key,
+								function(json) {
+									if(json.stat == 'ok') {
+										window.location = "/administration/pending/";
+									}
+									else {
+										alert(json.message);
+									}
+								});
+							init();					
+					}
+				}
+			}
 		
+		};	
+	}	
+	else{
 	}
+	$.prompt(statesdemo);
+	$('div.jqi').css('width','430px');
 }
 
-
 function rejectModule(uKey) {
-	$.getJSON("/api?method=getModule&moduleKey=" + uKey,
-			function(json) {
-				sendFeedback(json.title1, json.email, json.modKey);
-			});
+	openPrompt({message:1, key:uKey});
+}
+
+function acceptModule(uKey) {
+	openPrompt({message:2, key:uKey});
 }
 
 function obsoleteModule(uKey) {
@@ -113,7 +155,6 @@ function sendFeedback(title, email, modKey){
 	);
 	
 }
-
 
 function setCurrentVersion(uid, version) {
 	$.getJSON("/api?method=setCurrentVersion&module=" + uid + "&version=" + version,
@@ -141,8 +182,6 @@ function removeModule(module) {
 }
 
 function init() {
-	$("#featuredAdminContentFound").find("span").remove();
 	$("#pendingModules").find("tr").remove();
 	getPendingModules("#pendingModules");
-//	getFeaturedModule();
 }
