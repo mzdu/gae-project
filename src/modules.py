@@ -118,7 +118,8 @@ class NewModuleHandler(webapp2.RequestHandler):
 #         except search.Error:
 #             logging.exception('Document Put Failed')
         
-######### end of building search index ###########################        
+######### end of building search index ########################### 
+     
         if key_uid[0] != -1:
             uid = str(key_uid[1])
             self.response.out.write(uid)
@@ -233,30 +234,6 @@ class EditModuleHandler(webapp2.RequestHandler):
                 datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
                   
 
-##################################################################
-        
-#         #create a search document
-#         termStr = ';'.join(termDef)
-#         propStr = ';'.join(propositionList)
-#         
-#         my_doc = search.Document(
-#             doc_id = str(uid),
-#             fields = [
-#                       search.TextField(name="title", value=title),  #title
-#                       search.TextField(name="keywords", value=keywords),  #keywords
-#                       search.TextField(name="metatheory", value=markdown),  #metatheory
-#                       search.TextField(name="terms", value = termStr),  #terms and definitions
-#                       search.TextField(name="propositions", value=propStr),  #propositions
-#                       ])
-#         
-#         try:
-#             index = search.Index(name="modIdx")
-#             index.put(my_doc)
-#         
-#         except search.Error:
-#             logging.exception('Document Put Failed')
-        
-######### end of building search index ###########################   
 
         modKey = str(modKey)
         self.response.out.write(modKey)

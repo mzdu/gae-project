@@ -350,9 +350,6 @@ def getModule(self, uKey):
         
     return json.dumps(jsonData)
         
-            
-
-
 def browseModules(self):
     discipline = self.request.get('discipline')
     sort = self.request.get('sort')
@@ -406,14 +403,13 @@ def getTerms(self):
         jsonData = {'stat':'fail', 'message': 'failed to retrieve terms'}
         return json.dumps(jsonData)
     try:
-        jsonData = {'stat':'ok', 'word': [], 'slug':[], 'date_submitted':[], 'contributor':[], 'uid':[], 'popularity':[]}
+        jsonData = {'stat':'ok', 'word': [], 'slug':[], 'date_submitted':[], 'contributor':[], 'uid':[]}
         for term in terms:
             jsonData['uid'].append(term.uid)
             jsonData['word'].append(term.word)
             jsonData['contributor'].append(term.contributor.alias)
             jsonData['date_submitted'].append('%02d/%02d/%04d' % (term.date_submitted.month, term.date_submitted.day, term.date_submitted.year))
             jsonData['slug'].append(term.slug)
-            jsonData['popularity'].append(term.popularity)
     except:
         jsonData = {'stat':'fail', 'message':'failed to find all data'}
     return json.dumps(jsonData)

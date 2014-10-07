@@ -15,11 +15,10 @@ function getTerms(id) {
 	$.getJSON("/api?method=getTerms",
 		function(json) {
 			if(json.stat == 'ok') {
-				var tableRows = "<thead><tr><th>Term</th><th>Date Submitted</th><th>Popularity</th><th></th></tr></thead><tbody>";
+				var tableRows = "<thead><tr><th>Term</th><th>Date Submitted</th><th></th></tr></thead><tbody>";
 				for(var i = 0; i < json.uid.length; i++){
 					tableRows += "<td><a href='/terms/" + json.slug[i] + "'>" + json.word[i] + "</a></td>";
 					tableRows += "<td>" + json.date_submitted[i] + "</td>";
-					tableRows += "<td>" + json.popularity[i] + "</td>";
 					tableRows += "<td><span style='cursor:pointer;' onclick=removeTerm(" + json.uid[i] + ")><b>X</b></span></td></tr>";
 	  			}
 				$(id).append(tableRows + "</tbody>");
