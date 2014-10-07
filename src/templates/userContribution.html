@@ -4,6 +4,7 @@
 	{% if error %}
 		{{error}}
 	{% else %}
+	
 	<h1>Your Module Contributions</h1>
 	{% if is_current_user %}
 		<div class="box" id="contributions">
@@ -12,10 +13,11 @@
 				<th class="boxtitle">Title</th>
 				<th>Version</th>
 				<th>Update</th>
+				<th>Status</th>
 			</tr>
-			<tr><td colspan="3"><hr></td></tr>
-			<tr><td colspan="3">Pending Contributions</td></tr>
-			<tr><td colspan="3"><hr></td></tr>
+			<tr><td colspan="4"><hr></td></tr>
+			<tr><td colspan="4">Pending Contributions</td></tr>
+			<tr><td colspan="4"><hr></td></tr>
 			{% for module in unpublished_modules %}
 			<tr>
 				{% if module.version == 0 %}
@@ -26,10 +28,20 @@
 				<td class="boxtitle"><a href="/preview/{{module.key()}}">{{module.title}}</a></td>
 				<td>{{module.version}}</td>
 				<td>{{module.last_update.month}}/{{module.last_update.day}}/{{module.last_update.year}}</td>
-				{% endif %}				
+				{% endif %}	
+				
+				{% if module.status == "flag" %}
+					<td>Under Review</td>
+				{% elif module.status == "reviewed" %}
+					<td>Reviewed</td>
+				{% else %}
+					<td></td>
+				{% endif %}
+				</td>
+							
 			</tr>
-
 			{% endfor %}
+			
 			<tr><td colspan="3"><hr></td></tr>
 			<tr><td colspan="3">Published Contributions</td></tr>
 			<tr><td colspan="3"><hr></td></tr>

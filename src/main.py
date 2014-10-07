@@ -66,7 +66,7 @@ class NotifyHandler2(webapp2.RequestHandler):
         modKey = Key(modKey)
         # change the status of module
         modObj = db.Query(datamodel.Module).filter("__key__ =", modKey).get()
-        modObj.status = "reviewing"
+        modObj.status = "reviewed"
         key = db.put(modObj)        
         
         

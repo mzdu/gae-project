@@ -236,22 +236,17 @@ function submitForm(publishBool,action){
 	}
 }
 
-
-
 function sendForm(){
 	var title = $("#title").val();
 	var message = prompt("Why do you propose this suggestion?");
 	var modKey = $("#modKEY").val();
-	
 	json = {
 			"title": title,
 			"message" : message,
 			"modKey" : modKey
 	}
 	
-	$.post("/notify",json,function(){window.location = "/modules"}
-	
-	);
+	$.post("/notify",json,function(){window.location = "/modules"});
 	
 }
 
