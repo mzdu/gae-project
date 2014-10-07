@@ -23,7 +23,6 @@ def newModule(title, keywords, markdown, tscope, propositions, derivations, tevi
     else:
         # getCurrentUserEntity() is loaded from libmain
         user = getCurrentUserEntity()   
-         
         try:
             if publish == "false": 
                 module = datamodel.Module(title = title, 

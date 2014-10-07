@@ -69,8 +69,6 @@ class NotifyHandler2(webapp2.RequestHandler):
         modObj.status = "reviewed"
         key = db.put(modObj)        
         
-        
-        
         email = self.request.get("email")
         aSubject = "Feedback: Module " + title 
         aBody = "Module:" + title + "\nFeedback Suggestion:" + message
