@@ -1,4 +1,10 @@
 $(document).ready(function() {
+	$("#allModulesLoading").ajaxStart(function(){
+		$(this).show();
+ 	});
+ 	$("#allModulesLoading").ajaxStop(function(){
+		$(this).hide();
+ 	});
    	init();
 });
 
@@ -127,10 +133,12 @@ function openPrompt(o){
 
 function rejectModule(uKey) {
 	openPrompt({message:1, key:uKey});
+	init();
 }
 
 function acceptModule(uKey) {
 	openPrompt({message:2, key:uKey});
+	init();
 }
 
 function obsoleteModule(uKey) {
