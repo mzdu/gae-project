@@ -315,6 +315,46 @@ class ModuleHandler(webapp2.RequestHandler):
         uid = self.request.get("module_version_uid")
         self.redirect('/modules/' + uid + '/' + version)
 
+# class CompareModuleHandler(webapp2.RequestHandler):
+#     """ compare a module with its previous version"""
+#     def get(self):
+#         if isAdministratorUser:
+#             #convert a url to a list of segmented elements like ['preview','']
+#             pathList = getUrlResourceList(self)
+#              
+#             Values = dict()
+#             preValues = dict()
+#             from libmodule import getModuleByKey
+#              
+#             
+#             logging.error(pathList)
+#             
+#             
+#             if len(pathList) < 2:
+#                 logging.info('jump to the 1 branch')
+#              
+#             # case ['preview','keyxxxx'], which indicates the newest version   
+#             elif len(pathList) == 2 and pathList[0] == 'preview':
+#                 key = pathList[1]
+#                 values = getModuleByKey(key)
+#                 preValues = getModule(values['module_uid'])
+#                 
+#                 # Compare texts side by side and highlight the difference
+#                 # How?
+#                 if isContributingUser() is True:
+#                     values["contributing_user"] = "True"
+#     
+#                 values['css'] = ['/static/css/jquery-impromptu.css']        
+#                 values['javascript'] = ['/static/js/jquery-impromptu.min.js','/static/js/modules/newModule.js']
+#                 doRender(self, 'module.html', values)
+#                  
+#             else:
+#                 logging.info('jump to the 3 branch')
+#         else:
+#             logging.info('Failed to compare modules')
+#     
+#     def post(self):
+#         pass        
         
 class PreviewModuleHandler(webapp2.RequestHandler):
     """ Preview a editing module by its entity key"""
@@ -409,6 +449,7 @@ class MainPageHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
                                ('/module/edit.*', EditModuleHandler),
                                ('/module/new.*', NewModuleHandler),
+#                                ('/module/compare.*', CompareModuleHandler),
                                ('/preview/.*', PreviewModuleHandler),
                                ('/modules/page.*', MainPageHandler),
                                ('/modules', MainPageHandler),
