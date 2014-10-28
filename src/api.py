@@ -292,7 +292,7 @@ def setCurrentVersion(self, uid, version):
 def publishCurrentVersion(self, uKey):
     # self, uKey
     
-    from libmodule import versionIncrement,getModuleVersionCount
+    from libmodule import versionIncrement,getModuleVersionCount,updateSearchDocument
     
     try:
         current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
@@ -307,10 +307,11 @@ def publishCurrentVersion(self, uKey):
             current_module.version = 1 
             current_module.put()
             
+            # update the search index
+            updateSearchDocument(current_module.uid)
             versionIncrement(current_module.uid)
-            
             jsonData = {'stat':'ok'}
-        
+            
         # we need to pull out the uid of old_module, find the current version, set the old version current to False
         # set the new_module    
         else:
@@ -329,9 +330,13 @@ def publishCurrentVersion(self, uKey):
             for module in other_modules:
                 module.status = "archived"
                 module.put()
-            
+            # update the search index
+            updateSearchDocument(module_id)
             versionIncrement(module_id)
             jsonData = {'stat':'ok'}
+            
+            
+        
     except:
         jsonData = {'stat':'failed','message':'could not update current version'}
         

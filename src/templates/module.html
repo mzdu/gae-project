@@ -14,7 +14,6 @@
 function showSth(){
 	$('#displayInfo').append("<div class='hintInf'> Since modifications can only be made to the most up-to-date version of a module, keep in mind that you may need to reenter your modifications to the newest version of this module in the event that a newer version is published after you begin your modifications. Your saved work on a module that becomes “obsolete” will be moved to the “archived contributions” section of the “my work” page. From here you can still access it, but you cannot submit your modifications for publication unless you reenter them on the newest version of the module. </div>");
 	$('.hintInf').mouseleave(function(){$(this).fadeOut(800);});
-	
 }
  
 </script>
@@ -119,11 +118,6 @@ function showSth(){
 				<input type="submit" value="Go" />			
 			
 			{% endif %}
-			
-
-
-			
-			
 			<input type="hidden" id ="modID" name="module_version_uid" value="{{module_uid}}" />
 			<input type="hidden" id ="modVER" value="{{module_version}}" />
 			<input type="hidden" id ="modKEY" value="{{module_key}}" />

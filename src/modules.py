@@ -9,7 +9,6 @@ import datamodel
 import logging
 
 from google.appengine.ext import db
-from google.appengine.api import search
 from google.appengine.ext.db import Key
 
 
@@ -56,7 +55,7 @@ class NewModuleHandler(webapp2.RequestHandler):
         
         #using newModule in libmodule.py
         key_uid = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
-##################################################################         
+        ##################################################################         
         #terms related processing
         terms = self.request.get_all("terms[]")
         definitions = self.request.get_all("definitions[]")
@@ -95,30 +94,7 @@ class NewModuleHandler(webapp2.RequestHandler):
             else:
                 keys = newTerm(term, slug, definition)
                 datamodel.ModuleTerm(module=key_uid[0], term=keys[0], definition=keys[1]).put()
-##################################################################
-        
-#         #create a search document
-#         termStr = ';'.join(termDef)
-#         propStr = ';'.join(propositionList)
-#         
-#         my_doc = search.Document(
-#             doc_id = str(key_uid[1]),
-#             fields = [
-#                       search.TextField(name="title", value=title),  #title
-#                       search.TextField(name="keywords", value=keywords),  #keywords
-#                       search.TextField(name="metatheory", value=markdown),  #metatheory
-#                       search.TextField(name="terms", value = termStr),  #terms and definitions
-#                       search.TextField(name="propositions", value=propStr),  #propositions
-#                       ])
-#         
-#         try:
-#             index = search.Index(name="modIdx")
-#             index.put(my_doc)
-#         
-#         except search.Error:
-#             logging.exception('Document Put Failed')
-        
-######### end of building search index ########################### 
+
      
         if key_uid[0] != -1:
             uid = str(key_uid[1])
@@ -184,7 +160,7 @@ class EditModuleHandler(webapp2.RequestHandler):
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool, nVer, mVer)
 
-############################################################                                
+        ############################################################                                
         #terms related processing
         terms = self.request.get_all("terms[]")
         definitions = self.request.get_all("definitions[]")

@@ -500,3 +500,38 @@ def versionIncrement(uid):
         except db.TransactionFailedError:
             logging.error('Failed to get auto increment(version increment) value during transaction and retries')
             return -1
+        
+def updateSearchDocument(uid):        
+    # if it is a new module, create a text index
+    # else, update the text index
+    from google.appengine.api import search
+    
+    values = getModule(uid)
+    termObjs = values['terms']
+    termStr = ""
+    for termObj in termObjs:
+        termStr += termObj.term.word + ":" + termObj.definition.definition + ";"
+    
+    propStr = ";".join(values['module_propositions_general'])
+
+     
+    my_doc = search.Document(
+        doc_id = str(uid),
+        fields = [
+                  search.TextField(name="title", value=values['module_title_general']),  #title
+                  search.TextField(name="keywords", value=values['module_keywords_general']),  #keywords
+                  search.TextField(name="metatheory", value=values['markdown']),  #metatheory
+                  search.TextField(name="terms", value = termStr),  #terms and definitions
+                  search.TextField(name="propositions", value=propStr),  #propositions
+                  ])
+     
+    try:
+        index = search.Index(name="modIdx")
+        index.put(my_doc)
+     
+    except search.Error:
+        logging.exception('Document Put Failed')
+        
+
+    
+    
