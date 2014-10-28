@@ -10,6 +10,15 @@
 {% else %}
 
 <script type="text/javascript" src="/static/js/modules/newModule.js"></script>
+<script>
+function showSth(){
+	$('#displayInfo').append("<div class='hintInf'> Since modifications can only be made to the most up-to-date version of a module, keep in mind that you may need to reenter your modifications to the newest version of this module in the event that a newer version is published after you begin your modifications. Your saved work on a module that becomes “obsolete” will be moved to the “archived contributions” section of the “my work” page. From here you can still access it, but you cannot submit your modifications for publication unless you reenter them on the newest version of the module. </div>");
+	$('.hintInf').mouseleave(function(){$(this).fadeOut(800);});
+	
+}
+ 
+</script>
+
 
 <div id="moduleWrapper">
 	<div class="module">
@@ -17,7 +26,8 @@
 				<span class="title"><a href="javascript:void(0)" target="_self">{{module_title_general}}</a></span>
 				<br />Version: {{module_version}}
 				{% if show_hint == True and module_status !='archived' %}
-				<br /><span style="color:red">Warning: Another user’s suggested modifications for this module currently are under review.</span>
+				<br /><span style="color:red">Warning: Another user’s suggested modifications for this module currently are under review<a href="javascript:showSth()"><sup>?</sup></a>. </span>
+				<div id="displayInfo"></div>
 				{% else %}
 				{% endif %}
 
