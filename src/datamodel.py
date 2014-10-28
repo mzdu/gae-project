@@ -50,7 +50,7 @@ class Module(db.Model):
     # status code: 
     # flag: a module has been clicked and asking for approval
     # archived: a module has been archived
-    # reviewed: a module is being reviewed by an editor
+    # declined: a module is being declined by an editor
     status = db.StringProperty()
     
 class VersionCounter(db.Model):
