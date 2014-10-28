@@ -115,39 +115,19 @@ class TermHandler(webapp2.RequestHandler):
         else:
             pageNumber = 1        
 
-        '''   
-        pageList = []
-        pStart = 0
-        pEnd = 0        
+        
+        pageList = []       
         
         for pageN in range(pageMax):
             # starts from '1', '2', '3'...
             pageList.append(str(pageN+1))
-            # if there are less than 10 pages, list them all
-            
-        if len(pageList) > 10:
-            
-            if pageNumber < 10:
-                pageList = pageList[:10]
-            
-            else:
-                pStart = 
-                pEnd = 
-                
-                pageList = pageList[]
-        
-        else:
-            pass    
-        '''                
-            
-            
         
         if isContributingUser() is True:
             values['can_contribute'] = 'True'
                
         terms = db.Query(datamodel.Term).order('-date_submitted').fetch(limit=pageLimit, offset=(pageNumber-1)*pageLimit)
         values['terms_general'] = terms
-#         values['terms_page'] = pageList
+        values['terms_page'] = pageList
         values['terms_count'] = int(termCount)
            
         values['javascript'] = ['/static/js/jquery-1.9.1.js', 

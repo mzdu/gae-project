@@ -66,7 +66,7 @@ class NotifyHandler2(webapp2.RequestHandler):
         modKey = Key(modKey)
         # change the status of module
         modObj = db.Query(datamodel.Module).filter("__key__ =", modKey).get()
-        modObj.status = "reviewed"
+        modObj.status = "declined"
         key = db.put(modObj)        
         
         email = self.request.get("email")
