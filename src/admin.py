@@ -319,7 +319,7 @@ app = webapp2.WSGIApplication([('/upload', UploadHandler2),
                                ('/administration/advanced/.*', AdvancedHandler),
                                ('/administration/pending/.*', PendingHandler),
                                ('/administration/upload/.*', UploadHandler),
-                               ('/administration', SupportHandler),
-                               ('/administration/.*', SupportHandler)],
+                               ('/administration', PendingHandler),
+                               ('/administration/.*', PendingHandler)],
                               debug=True)
 	
