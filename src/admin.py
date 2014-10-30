@@ -235,9 +235,26 @@ class SupportHandler(webapp2.RequestHandler):
     def get(self):
         if isAdministratorUser() is True:
             values = dict()
+            values['javascript'] = ['/static/js/jquery.js',"/static/js/admin/support.js"]
             doRender(self, 'Support.html', values)
         else:
             self.redirect('/')
+            
+    def post(self):
+        from google.appengine.api import search
+    
+        """Delete all the docs in the given index."""
+        doc_index = search.Index(name='modIdx')
+    
+        # looping because get_range by default returns up to 100 documents at a time
+        while True:
+            # Get a list of documents populating only the doc_id field and extract the ids.
+            document_ids = [document.doc_id
+                            for document in doc_index.get_range(ids_only=True)]
+            if not document_ids:
+                break
+            # Delete the documents for the given ids from the Index.
+            doc_index.delete(document_ids)
             
 class PendingHandler(webapp2.RequestHandler):    
     def get(self):
@@ -315,7 +332,7 @@ app = webapp2.WSGIApplication([('/upload', UploadHandler2),
                                ('/administration/news/.*', ManageNewsHandler),
                                ('/administration/wikiwords/.*', ManageWikiWordsHandler),
                                ('/administration/support/.*', SupportHandler),
-                               ('/administration/advanced/sanitize/', SanitizeHandler),
+#                                ('/administration/advanced/sanitize/', SanitizeHandler),
                                ('/administration/advanced/.*', AdvancedHandler),
                                ('/administration/pending/.*', PendingHandler),
                                ('/administration/upload/.*', UploadHandler),
