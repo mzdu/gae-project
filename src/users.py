@@ -109,7 +109,6 @@ class UserContributionsHandler(webapp2.RequestHandler):
         except:
             from libuser import getCurrentUserID
             uid = getCurrentUserID()
-            logging.error('uid' + str(uid))
         
         if isCurrentUser(uid):
             values['is_current_user'] = 'True'

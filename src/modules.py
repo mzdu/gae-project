@@ -1,6 +1,6 @@
 #from main import getUrlResourceList, doRender, getCurrentUserEntity, createNewUID
 from libmain import doRender, getUrlResourceList
-from libmodule import newModule, getModule, updateModule, getUnpublishedModules, getModuleVersion, getModuleVersionCount
+from libmodule import newModule, updateModule, getUnpublishedModules, getModuleVersion, getModuleVersionCount
 from libuser import isContributingUser, isAdministratorUser
 
 import webapp2
@@ -191,7 +191,6 @@ class EditModuleHandler(webapp2.RequestHandler):
             
             # exisited term
             if termKey:
-                logging.error('jumping to the termKey branch')
                 # find existed definition
                 defKey = db.Query(datamodel.TermDefinition).filter('definition =', definition).filter('term =', termKey).get()
                 
@@ -205,7 +204,6 @@ class EditModuleHandler(webapp2.RequestHandler):
                     datamodel.ModuleTerm(module=modKey, term=termKey, definition=defKey).put()
             # new term
             else:
-                logging.error('jumping to the else branch')
                 keys = newTerm(term, slug, definition)
                 datamodel.ModuleTerm(module=modKey, term=keys[0], definition=keys[1]).put()
                   
@@ -341,10 +339,6 @@ class PreviewModuleHandler(webapp2.RequestHandler):
          
         values = dict()
         from libmodule import getModuleByKey
-         
-        
-        logging.error(pathList)
-        
         
         if len(pathList) < 2:
             logging.info('jump to the 1 branch')

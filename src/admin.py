@@ -51,7 +51,6 @@ class ManageUsersHandler(webapp2.RequestHandler):
                 admin.put()
         else:
             uid = self.request.get("cuid")
-            logging.error(uid)
             if getUserEntity(uid) is not None and isContributingUserByUID(uid) is not True:
                 contrib_user = newContributingUser(getUserEntity(uid))
                 contrib_user.put()

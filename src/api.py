@@ -57,14 +57,11 @@ def getModules(self,content):
     if results:
         
         num_results = len(results.results)
-        logging.error(str(num_results)+" results are returned.")
-        
         jsonData = dict()
         jsonList = []
         # get document from results
         for doc in results:
             
-#             logging.error(doc.doc_id)
             jsonData["docID"] = doc.doc_id
             # get snippet of metatheory, terms and propositions
             # expr.name, expr.value
@@ -78,7 +75,6 @@ def getModules(self,content):
                 
             jsonList.append(jsonData)
             
-        logging.error('jsonList:' + str(jsonList))
     else:
         num_results = 0
         jsonList = []
