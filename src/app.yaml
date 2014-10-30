@@ -5,6 +5,10 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /(robots\.txt)
+  static_files: \1
+  upload: (robots\.txt)
+
 - url: /api.*
   script: api.app
 
