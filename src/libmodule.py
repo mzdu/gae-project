@@ -70,10 +70,10 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
     nVersion = int(nVersion)
     mVersion = int(mVersion)
     
-    logging.info('nVer is' + str(nVersion) + ' mVer is' + str(mVersion))
+#     logging.info('nVer is' + str(nVersion) + ' mVer is' + str(mVersion))
     
     if nVersion == mVersion and nVersion == 0:
-        logging.info('version 0, unpublished')
+#         logging.info('version 0, unpublished')
         
         oldModule = getModuleEntity(uid)
         module = oldModule
@@ -95,7 +95,7 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
 
 
     elif nVersion == mVersion and nVersion > 0:
-        logging.info('editing a published current module')
+#         logging.info('editing a published current module')
         oldModule = getModuleEntity(uid)
          
          
@@ -135,7 +135,7 @@ def updateModule(uid, title, keywords, markdown, tscope, propositions, derivatio
 
 
     elif mVersion - nVersion == 1:
-        logging.info('keep on editing an unpublished module')
+#         logging.info('keep on editing an unpublished module')
         
         oldModule = getUnpublishedModuleEntity(uid)
         

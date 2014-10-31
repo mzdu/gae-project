@@ -238,8 +238,8 @@ class ModuleHandler(webapp2.RequestHandler):
             # get module info from datastore and stack them into values dictionary
             values = getModuleVersion(pathList[1])
             
-            for obj in values['terms']:
-                logging.info('term obj: ' + str(obj.term))
+#             for obj in values['terms']:
+#                 logging.info('term obj: ' + str(obj.term))
             
             
             
@@ -341,7 +341,7 @@ class PreviewModuleHandler(webapp2.RequestHandler):
         from libmodule import getModuleByKey
         
         if len(pathList) < 2:
-            logging.info('jump to the 1 branch')
+            pass
          
         # case ['preview','keyxxxx'], which indicates the newest version   
         elif len(pathList) == 2 and pathList[0] == 'preview':
@@ -356,7 +356,7 @@ class PreviewModuleHandler(webapp2.RequestHandler):
             doRender(self, 'module.html', values)
              
         else:
-            logging.info('jump to the 3 branch')
+            pass
     
     
     def post(self):
