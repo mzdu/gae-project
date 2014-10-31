@@ -505,14 +505,14 @@ class ApiHandler(webapp2.RequestHandler):
         else:
             self.response.headers['Content-Type'] = 'application/json'
             jsonData = {'error': 'Unknown method.'}
-            self.response.out.write(json.dumps(jsonData))
+#             self.response.out.write(json.dumps(jsonData))
+            self.redirect("/")
             return        
 
 
 class MarkdownHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
-
 
 
 app = webapp2.WSGIApplication(

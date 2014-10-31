@@ -39,7 +39,7 @@ function startSearch(){
 				}
 				else{
 					count = 0;
-					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' closest modules were found.<br/><br/></div>');
+					$('#searchresult').replaceWith('<div id="searchresult">' + json.num_results + ' related modules were found.<br/><br/></div>');
 					
 					while(count<json.num_results){
 						
