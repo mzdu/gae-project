@@ -134,6 +134,14 @@ def sendFeedbackEmail(aSender, aSubject, aBody):
         num = -1
     return num
 
+def sendOutEmail(aSender, aReceiver, aSubject, aBody):
+    try:
+        mail.send_mail(sender=aSender, to=aReceiver, subject=aSubject, body=aBody)
+    except:
+        logging.error('Unable to send email.')
+        
+    return 
+
 #################################################################################
 
     

@@ -54,6 +54,18 @@ class ManageUsersHandler(webapp2.RequestHandler):
             if getUserEntity(uid) is not None and isContributingUserByUID(uid) is not True:
                 contrib_user = newContributingUser(getUserEntity(uid))
                 contrib_user.put()
+                
+                # send out a confirmation message
+                from libmain import sendOutEmail 
+                from libuser import getCurrentUserInfo
+                values = dict()
+                values = getCurrentUserInfo()
+                aSubject = "Welcome to Wikitheoria"
+                aBody = "Congratulations. You are a contributor now."
+                aReceiver = values['email']
+                aSender = "wikitheoria.public@gmail.com"
+                sendOutEmail(aSender, aReceiver, aSubject, aBody)
+                
         self.redirect('/administration/users/')
 
 class ManageModulesHandler(webapp2.RequestHandler):
