@@ -289,6 +289,7 @@ def publishCurrentVersion(self, uKey):
     # self, uKey
     
     from libmodule import versionIncrement,getModuleVersionCount,updateSearchDocument
+    from google.appengine.api import mail
     
     try:
         current_module = db.Query(datamodel.Module).filter("__key__ =", Key(uKey)).get()
@@ -302,6 +303,24 @@ def publishCurrentVersion(self, uKey):
             current_module.published = True    
             current_module.version = 1 
             current_module.put()
+            # send a email to user regarding this acceptance
+            aSubject = "Proposed Contribution Accepted"
+            aReceiver = current_module.contributor.email
+            aReceiver = aReceiver[:-13]+"@gmail.com"
+            aSender = "wikitheoria.public@gmail.com"
+            aBody = """
+            Congratulations! A new module or suggested modification that you have submitted for approval on Wikitheoria.com has been accepted and is now published on the website. 
+            
+            Sincerely,
+            Wikitheoria Team
+            """
+            try:
+                mail.send_mail(sender = aSender, 
+                               to = aReceiver,
+                               subject = aSubject,
+                               body = aBody)
+            except:
+                logging.error('Failed to send email -- Congrats acceptance.')
             
             # update the search index
             updateSearchDocument(current_module.uid)
@@ -319,13 +338,45 @@ def publishCurrentVersion(self, uKey):
             current_module.current = True
             current_module.published = True
             current_module.put()
+            # send a email to user regarding this acceptance
+            aSubject = "Proposed Contribution Accepted"
+            aReceiver = str(current_module.contributor.email)
+            aReceiver = aReceiver[:-13]+"@gmail.com"
+            aSender = "wikitheoria.public@gmail.com"
+            aBody = """Congratulations! A new module or suggested modification that you have submitted for approval on Wikitheoria.com has been accepted and is now published on the website. 
             
+            Sincerely,
+            Wikitheoria Team
+            """
+            try:
+                mail.send_mail(sender = aSender, 
+                               to = aReceiver,
+                               subject = aSubject,
+                               body = aBody)
+            except:
+                logging.error('Failed to send email -- Congrats acceptance.')   
+                         
             # Once we publish the newest copy of this version, we will archive other copies.
             archived_version = getModuleVersionCount(module_id) + 1
             other_modules = db.Query(datamodel.Module).filter("uid =", module_id).filter("__key__ !=", Key(uKey)).filter("version =", archived_version).fetch(limit=None)
             for module in other_modules:
                 module.status = "archived"
                 module.put()
+                
+                # send emails to users regarding the archived modules
+                bSubject = "Proposed Contribution Archived"
+                bReceiver = str(module.contributor.email)
+                bReceiver = bReceiver[:-13]+"@gmail.com"
+                bSender = "wikitheoria.public@gmail.com"
+                bBody = """You have saved or submitted suggested modifications for a module that has been updated before your contribution was able to be reviewed. Since modifications can only be made to the most up-to-date version of a module, we can no longer review your suggested modifications for publication. This work has been moved to the “archived contributions” section of your “my work” page. You can still access it, but you cannot submit your modifications for publication unless you reenter them on the newest version of the module. We apologize for the inconvenience, and we encourage you to continue submitting your modifications to the newest version of the module.\n\nSincerely,\nWikitheoria Team"""
+                try:
+                    mail.send_mail(sender = bSender, 
+                                   to = bReceiver,
+                                   subject = bSubject,
+                                   body = bBody)
+                except:
+                    logging.error('Failed to send email -- archived notification') 
+                                
             # update the search index
             updateSearchDocument(module_id)
             versionIncrement(module_id)

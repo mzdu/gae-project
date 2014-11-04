@@ -43,6 +43,7 @@ class FeedbackHandler(webapp2.RequestHandler):
         self.redirect('/')
 
 class NotifyHandler(webapp2.RequestHandler):
+    """Send email to review board"""
     def post(self):
         title = self.request.get("title")
         message = self.request.get("message")
@@ -53,15 +54,16 @@ class NotifyHandler(webapp2.RequestHandler):
         modObj.status = "flag"
         key = db.put(modObj)
         
-        aSubject = "Module " + title + " is waiting for your approval"
-        aBody = "Module:" + title + "\nContributor's Proposal Suggestion:" + message
-        
+        aSubject = "Module " + modObj.title + " is waiting for your approval"
+        aBody = "Title: " + modObj.title + "\nID: " + str(modObj.uid) + "\nContributor's Proposal Suggestion:" + str(message) + "\nPreview: \nhttp://www.wikitheoria.com/preview/" + str(modKey) + "\nManage: http://www.wikitheoria.com/administration/pending/"
         sendFeedbackEmail("wikitheoria.public@gmail.com", aSubject, aBody)
 
 class NotifyHandler2(webapp2.RequestHandler):
+    """Send email to end users"""
     def post(self):
         title = self.request.get("title")
-        message = self.request.get("message")
+        message1 = self.request.get("message1")
+        logging.info(message1)
         modKey = self.request.get("modKey")
         modKey = Key(modKey)
         # change the status of module
@@ -69,14 +71,19 @@ class NotifyHandler2(webapp2.RequestHandler):
         modObj.status = "declined"
         key = db.put(modObj)        
         
-        email = self.request.get("email")
-        aSubject = "Feedback: Module " + title 
-        aBody = "Module:" + title + "\nFeedback Suggestion:" + message
+        aReceiver = str(modObj.contributor.email)
+        aReceiver = aReceiver[:-13]+"@gmail.com"
+        aSubject = "Feedback: Module " + str(modObj.title) 
+        aBody = "Module:" + str(modObj.title) + "\nFeedback Suggestion:" + str(message1)
         
         from google.appengine.api import mail
-        
-        mail.send_mail("wikitheoria.public@gmail.com", email, aSubject, aBody)
-        
+        try:
+            mail.send_mail(sender = "wikitheoria.public@gmail.com",
+                           to = aReceiver, 
+                           subject = aSubject, 
+                           body = aBody)
+        except:
+            logging.error('Failed to send email -- reject module.')
 
 class JoinHandler(webapp2.RequestHandler):
     def get(self):

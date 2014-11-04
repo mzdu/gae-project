@@ -6,6 +6,7 @@ import webapp2
 import jinja2
 import os
 from google.appengine.api import users
+from google.appengine.api import mail 
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -56,15 +57,25 @@ class ManageUsersHandler(webapp2.RequestHandler):
                 contrib_user.put()
                 
                 # send out a confirmation message
-                from libmain import sendOutEmail 
-                from libuser import getCurrentUserInfo
-                values = dict()
-                values = getCurrentUserInfo()
                 aSubject = "Welcome to Wikitheoria"
-                aBody = "Congratulations. You are a contributor now."
-                aReceiver = values['email']
+                aReceiver = getUserEntity(uid).email
                 aSender = "wikitheoria.public@gmail.com"
-                sendOutEmail(aSender, aReceiver, aSubject, aBody)
+                aBody = """
+                Congratulations! You are a contributor of Wikitheoria now.
+                
+                You could find some great tutorials on the index page.
+                http://www.wikitheoria.com
+                
+                Sincerely,
+                Wikitheoria Team
+                """
+                try:
+                    mail.send_mail(sender = aSender, 
+                                   to = aReceiver,
+                                   subject = aSubject,
+                                   body = aBody)
+                except:
+                    logging.error('Failed to send email -- Congrats contributor.')
                 
         self.redirect('/administration/users/')
 

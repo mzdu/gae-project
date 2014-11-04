@@ -65,8 +65,8 @@ function getPendingModules(id) {
 function openPrompt(o){
 	
 	title1 = "Reject";
-	link1 = "<div>Please indicate your suggestions</div>" +
-			"<textarea id='sfaArea' rows='6' cols='50'></textarea>";
+	link1 = "<div>Please enter user feedback here. Why are the contributions being rejected? What changes (if any) would allow the editor to publish the resubmitted contribution? </div>" +
+			"<textarea id='sfaArea1' rows='6' cols='50'></textarea>";
 	
 	title2 = "Accept";
 	link2 = "<div>Accept this module may archive other copies, proceeding?</div>";
@@ -81,16 +81,16 @@ function openPrompt(o){
 					if(v==true){
 						$.getJSON("/api?method=getModule&moduleKey=" + o.key,
 								function(json) {
-									console.log(o.key);
-									var title = json.title1;
-									var email = json.email;
-									var modKey = json.modKey;
-									var message = $("sfaArea").val();
+									var atitle = json.title1;
+									var aemail = json.email;
+									var amodKey = json.modKey;
+									var amessage = $("#sfaArea1").val();
+									console.log(amessage);
 									json = {
-											"title": title,
-											"message" : message,
-											"email" : email,
-											"modKey": modKey
+											"title": atitle,
+											"message1" : amessage,
+											"email" : aemail,
+											"modKey": amodKey
 									}
 									
 									$.post("/notify2",json,function(){window.location = "/administration/pending/"}
