@@ -86,6 +86,8 @@ class JoinHandler(webapp2.RequestHandler):
     def get(self):
         values = dict()
         userInfo = getCurrentUserInfo()
+        from libuser import isLoggedIn
+        userInfo['isLoggedin'] = isLoggedIn()
         if userInfo['isUser'] is 'True':
             values = userInfo
         

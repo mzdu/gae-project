@@ -12,6 +12,7 @@
                 All content is publicly available, however, only approved users have the ability to submit
                 materials and recommendations. 
             </p>
+            <br>
             <p>
             	Please <a href="{{login_url}}">login yourself</a> with your Gmail account first, then submit the form below to obtain approval.
             </p>
@@ -61,7 +62,11 @@
                 </tr>
                 <tr>
                 <td></td>
-                <td><input type="submit" value="Submit" /></td>
+                {% if isLoggedin %}
+	                <td><input type="submit" value="Submit" /></td>
+	            {% else %}
+	            	<td><input type="submit" value="Submit" disabled/></td>
+	            {% endif %}
                 </tr>
             </table>
         </form>
