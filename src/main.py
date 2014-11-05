@@ -1,6 +1,3 @@
-#main.py
-#Wikitheoria Project
-
 from libmain import doRender, sendFeedbackEmail
 from libuser import getCurrentUserInfo
  
