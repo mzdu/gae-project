@@ -306,7 +306,7 @@ def publishCurrentVersion(self, uKey):
             # send a email to user regarding this acceptance
             aSubject = "Proposed Contribution Accepted"
             aReceiver = current_module.contributor.email
-            aReceiver = aReceiver[:-13]+"@gmail.com"
+#             aReceiver = aReceiver[:-13]+"@gmail.com"
             aSender = "wikitheoria.public@gmail.com"
             aBody = """
             Congratulations! A new module or suggested modification that you have submitted for approval on Wikitheoria.com has been accepted and is now published on the website. 
@@ -341,7 +341,7 @@ def publishCurrentVersion(self, uKey):
             # send a email to user regarding this acceptance
             aSubject = "Proposed Contribution Accepted"
             aReceiver = str(current_module.contributor.email)
-            aReceiver = aReceiver[:-13]+"@gmail.com"
+#             aReceiver = aReceiver[:-13]+"@gmail.com"
             aSender = "wikitheoria.public@gmail.com"
             aBody = """Congratulations! A new module or suggested modification that you have submitted for approval on Wikitheoria.com has been accepted and is now published on the website. 
             
@@ -366,7 +366,7 @@ def publishCurrentVersion(self, uKey):
                 # send emails to users regarding the archived modules
                 bSubject = "Proposed Contribution Archived"
                 bReceiver = str(module.contributor.email)
-                bReceiver = bReceiver[:-13]+"@gmail.com"
+#                 bReceiver = bReceiver[:-13]+"@gmail.com"
                 bSender = "wikitheoria.public@gmail.com"
                 bBody = """You have saved or submitted suggested modifications for a module that has been updated before your contribution was able to be reviewed. Since modifications can only be made to the most up-to-date version of a module, we can no longer review your suggested modifications for publication. This work has been moved to the “archived contributions” section of your “my work” page. You can still access it, but you cannot submit your modifications for publication unless you reenter them on the newest version of the module. We apologize for the inconvenience, and we encourage you to continue submitting your modifications to the newest version of the module.\n\nSincerely,\nWikitheoria Team"""
                 try:

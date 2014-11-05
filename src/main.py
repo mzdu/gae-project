@@ -72,7 +72,7 @@ class NotifyHandler2(webapp2.RequestHandler):
         key = db.put(modObj)        
         
         aReceiver = str(modObj.contributor.email)
-        aReceiver = aReceiver[:-13]+"@gmail.com"
+#         aReceiver = aReceiver[:-13]+"@gmail.com"
         aSubject = "Feedback: Module " + str(modObj.title) 
         aBody = "Module:" + str(modObj.title) + "\nFeedback Suggestion:" + str(message1)
         
