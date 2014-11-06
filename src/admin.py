@@ -263,20 +263,42 @@ class SupportHandler(webapp2.RequestHandler):
             self.redirect('/')
             
     def post(self):
-        from google.appengine.api import search
-    
-        """Delete all the docs in the given index."""
-        doc_index = search.Index(name='modIdx')
-    
-        # looping because get_range by default returns up to 100 documents at a time
-        while True:
-            # Get a list of documents populating only the doc_id field and extract the ids.
-            document_ids = [document.doc_id
-                            for document in doc_index.get_range(ids_only=True)]
-            if not document_ids:
-                break
-            # Delete the documents for the given ids from the Index.
-            doc_index.delete(document_ids)
+        
+        operation = self.request.get("operation")
+        if operation == "cleanIndex":
+            from google.appengine.api import search
+            
+            """Delete all the docs in the given index."""
+            doc_index = search.Index(name='modIdx')
+        
+            # looping because get_range by default returns up to 100 documents at a time
+            while True:
+                # Get a list of documents populating only the doc_id field and extract the ids.
+                document_ids = [document.doc_id
+                                for document in doc_index.get_range(ids_only=True)]
+                if not document_ids:
+                    break
+                # Delete the documents for the given ids from the Index.
+                doc_index.delete(document_ids)
+        elif operation == "cleanTerms":
+            # clean all terms which are not associated with modules
+            modObjs = db.Query(datamodel.ModuleTerm).fetch(limit=None)
+            
+            userfulTermList = []
+            for obj in modObjs:
+              try:
+                userfulTermList.append(obj.term.word)
+              except:
+                pass
+            
+            termObjs = db.Query(datamodel.Term).fetch(limit=None)
+            for termObj in termObjs:
+              if termObj.word not in userfulTermList:
+                termObj.delete()
+        
+        else:
+            pass
+            
             
 class PendingHandler(webapp2.RequestHandler):    
     def get(self):
