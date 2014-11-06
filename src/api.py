@@ -368,7 +368,12 @@ def publishCurrentVersion(self, uKey):
                 bReceiver = str(module.contributor.email)
 #                 bReceiver = bReceiver[:-13]+"@gmail.com"
                 bSender = "wikitheoria.public@gmail.com"
-                bBody = """You have saved or submitted suggested modifications for a module that has been updated before your contribution was able to be reviewed. Since modifications can only be made to the most up-to-date version of a module, we can no longer review your suggested modifications for publication. This work has been moved to the “archived contributions” section of your “my work” page. You can still access it, but you cannot submit your modifications for publication unless you reenter them on the newest version of the module. We apologize for the inconvenience, and we encourage you to continue submitting your modifications to the newest version of the module.\n\nSincerely,\nWikitheoria Team"""
+                bBody = """
+                You have saved or submitted suggested modifications for a module that has been updated before your contribution was able to be reviewed. 
+                Since modifications can only be made to the most up-to-date version of a module, we can no longer review your suggested modifications for publication. 
+                This work has been moved to the "archived contributions" section of your "my work" page. 
+                You can still access it, but you cannot submit your modifications for publication unless you reenter them on the newest version of the module. 
+                We apologize for the inconvenience, and we encourage you to continue submitting your modifications to the newest version of the module.\n\nSincerely,\nWikitheoria Team"""
                 try:
                     mail.send_mail(sender = bSender, 
                                    to = bReceiver,
