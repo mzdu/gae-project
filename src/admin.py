@@ -297,7 +297,7 @@ class SupportHandler(webapp2.RequestHandler):
 #             for termObj in termObjs:
 #               if termObj.word not in userfulTermList:
 #                 termObj.delete()
-        
+            pass
         else:
             pass
             
