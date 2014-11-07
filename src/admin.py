@@ -281,20 +281,22 @@ class SupportHandler(webapp2.RequestHandler):
                 # Delete the documents for the given ids from the Index.
                 doc_index.delete(document_ids)
         elif operation == "cleanTerms":
-            # clean all terms which are not associated with modules
-            modObjs = db.Query(datamodel.ModuleTerm).fetch(limit=None)
-            
-            userfulTermList = []
-            for obj in modObjs:
-              try:
-                userfulTermList.append(obj.term.word)
-              except:
-                pass
-            
-            termObjs = db.Query(datamodel.Term).fetch(limit=None)
-            for termObj in termObjs:
-              if termObj.word not in userfulTermList:
-                termObj.delete()
+            # clean all terms that are not associated with modules
+#             moduleObjs = db.Query(datamodel.Module).fetch(limit=None)
+#             linkedModules = [moduleObj.key for moduleObj in moduleObjs]
+#             
+#             modObjs = db.Query(datamodel.ModuleTerm).fetch(limit=None)
+#             userfulTermList = []
+#             for obj in modObjs:
+#               try:
+#                 userfulTermList.append(obj.term.word)
+#               except:
+#                 pass
+#             
+#             termObjs = db.Query(datamodel.Term).fetch(limit=None)
+#             for termObj in termObjs:
+#               if termObj.word not in userfulTermList:
+#                 termObj.delete()
         
         else:
             pass
