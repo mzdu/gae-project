@@ -71,7 +71,7 @@ class NotifyHandler2(webapp2.RequestHandler):
         aReceiver = str(modObj.contributor.email)
 #         aReceiver = aReceiver[:-13]+"@gmail.com"
         aSubject = "Feedback: Module " + str(modObj.title) 
-        aBody = "Module:" + str(modObj.title) + "\nFeedback Suggestion:" + str(message1)
+        aBody = "Module:" + str(modObj.title) + "\nFeedback Suggestion:" + str(message1) + "\n"
         
         from google.appengine.api import mail
         try:
