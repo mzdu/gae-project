@@ -142,7 +142,9 @@ function showDef(){
 
 function addNewTerm(){
 	term = $("#termlist").val();
+	term = $.trim(term);
 	def = $('#termDefinition').val();
+	def = $.trim(def);
 	addTerm(term, def);
 	
 }
