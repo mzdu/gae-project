@@ -47,7 +47,7 @@ function replaceAll(find, replace, str) {
 }
 
 function showSelectedTerm(e, ui){
-	selectedValue = ui.item.value;
+	selectedValue = $.trim(ui.item.value);
 	slug = replaceAll(' ','-',selectedValue)
 	$.getJSON("/api?method=getTermDefinitions&term="+selectedValue,
 			   function(json){
