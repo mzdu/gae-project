@@ -20,9 +20,9 @@ class NewTermHandler(webapp2.RequestHandler):
     def post(self):
         values = dict()
         term = self.request.get('term').strip().lower()
-        term = str(term)
+#         term = str(term)
         definition = self.request.get('definition').strip()
-        definition = str(definition)
+#         definition = str(definition)
         
         if term == '' or definition == '':
             values['errors'] = 'term and definition cannot be empty.'

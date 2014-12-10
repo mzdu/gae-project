@@ -59,8 +59,8 @@ class NewModuleHandler(webapp2.RequestHandler):
         #terms related processing
         terms = self.request.get_all("terms[]")
         definitions = self.request.get_all("definitions[]")
-        termList = [str(term) for term in terms]
-        definitionList = [str(definition) for definition in definitions]
+        termList = [term for term in terms]
+        definitionList = [definition for definition in definitions]
        
         #adhere term and definition together and combine, then append to termString
         termDef = []
