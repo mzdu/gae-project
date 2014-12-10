@@ -49,9 +49,9 @@ class NewModuleHandler(webapp2.RequestHandler):
         markdown = self.request.get("markdown")
         publishBool = self.request.get("published")
         
-        scopeList = [str(scope) for scope in scopes]
-        propositionList = [str(prop) for prop in propositions]
-        derivationList = [str(drv) for drv in derivations]
+        scopeList = [scope for scope in scopes]
+        propositionList = [prop for prop in propositions]
+        derivationList = [drv for drv in derivations]
         
         #using newModule in libmodule.py
         key_uid = newModule(title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool)
@@ -154,9 +154,9 @@ class EditModuleHandler(webapp2.RequestHandler):
         # mVersion states the version of current editing module 
         mVer = self.request.get("mVersion")
 
-        scopeList = [str(scope) for scope in scopes]
-        propositionList = [str(prop) for prop in propositions]
-        derivationList = [str(drv) for drv in derivations]
+        scopeList = [scope for scope in scopes]
+        propositionList = [prop for prop in propositions]
+        derivationList = [drv for drv in derivations]
           
         modKey = updateModule(uid, title, keywords, markdown, scopeList, propositionList, derivationList, evidence, publishBool, nVer, mVer)
 

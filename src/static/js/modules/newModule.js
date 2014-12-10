@@ -207,7 +207,7 @@ function submitForm(publishBool,action){
 //	$("#sendBtn").remove();
 	
 	$("#sendBtn").removeAttr("disabled");
-	$("#btnInfo").html("Module Saved. Forwarding to the preview page, please <a href='/users/contribution/1'>check here</a>.");
+	$("#btnInfo").html("Module Saved. Forwarding to the preview page.</a>.");
 	if(action == "new")
 	{	
 		
