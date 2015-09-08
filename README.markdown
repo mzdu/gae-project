@@ -1,6 +1,4 @@
-The wikitheoria project, hosted at http://wikitheoria.appspot.com.
+Google App Engine Project
 
 Authors: 
 Mingzhe Du
-
-Jason Rikard and Jon Mayhak (2010)
